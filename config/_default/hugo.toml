@@ -4,7 +4,7 @@
 
 theme = "blowfish" # UNCOMMENT THIS LINE
 mainSections = ["posts"]
-baseURL = "https://konpaku-ming.github.io/my-blog/"
+baseURL = "https://konpaku-ming.github.io/"
 defaultContentLanguage = "en"
 
 # pluralizeListTitles = "true" # hugo function useful for non-english languages, find out more in  https://gohugo.io/getting-started/configuration/#pluralizelisttitles
