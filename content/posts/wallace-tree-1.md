@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "Something About Hardware Multiplier"
 math: true
+layout: "wide"
 ---
 
 为了做 CPU M-Extension 的 Bonus 接触到了 Wallace Tree 乘法器，后来的实现也基本是借鉴的这种乘法。结果 cr 的时候因为周期设计不够 balanced 被 TA 拷打了，之后又在 XiangShan 上找到了一个[基于 Wallace Tree 的乘法器实现](https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala)，感觉自己做的那个还是太低级了。
