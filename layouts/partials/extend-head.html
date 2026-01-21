@@ -13,3 +13,26 @@
         });
     });
 </script>
+
+<style>
+    :root {
+        --article-max-width: min(65ch, 100%);
+    }
+
+    @media (min-width: 1024px) {
+        :root {
+            --article-max-width: min(80ch, 100%);
+        }
+    }
+
+    article #single_header,
+    article section.prose,
+    article .article-content {
+        max-width: var(--article-max-width);
+    }
+
+    article section.prose,
+    article .article-content {
+        width: 100%;
+    }
+</style>

@@ -5,7 +5,6 @@ draft: false
 type: "posts"
 description: "Something About Hardware Multiplier"
 math: true
-layout: "wide"
 ---
 
 为了做 CPU M-Extension 的 Bonus 接触到了 Wallace Tree 乘法器，后来的实现也基本是借鉴的这种乘法。结果 cr 的时候因为周期设计不够 balanced 被 TA 拷打了，之后又在 XiangShan 上找到了一个[基于 Wallace Tree 的乘法器实现](https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala)，感觉自己做的那个还是太低级了。
@@ -16,11 +15,11 @@ layout: "wide"
 ![简单乘法](https://notes.sjtu.edu.cn/uploads/upload_6104e1fe2ba211fe5e51b6e846fad3e7.jpg)
 通过简单的分析可以知道，只需要用 $B$ 的每一位分别与 $A$ 相乘得到 $width$ 个部分积（并左移），之后将它们加起来就可以实现乘法。
 
-得到部分积是很快速的过程，对于第 $i$ 位，只需要将 $B[i]$ 复制 $width$ 位得到 全0 或 全1，之后与 $A$ 做一次 `And` 操作即可。关键的优化在于累加，因为显然做 32 次 CPA 的耗时是不太能忍受的。
+得到部分积是很快速的过程，对于第 $i$ 位，只需要将 $B[i]$ 复制 $width$ 位得到 全0 或 全1，之后与 $A$ 做一次 `And` 操作即可。关键的优化在于累加，因为做 32 次 CPA 的耗时是不能忍受的。
 
 Wallace Tree 给出了一个方案：
 
-一个 3-2 压缩器本质上就是一个全加器，接受 3 个数 $a,b,c$ 作为输入，输出 2 个数 $sum$ 和 $carry$。把 $carry$ 左移一位后 $carry+sum=a+b+c$ (这是显然的)。通过这样的一个 3-2 压缩器我们实现了把三个数相加变成两个数相加，全加器的各位之间是独立的（每一位都有 $sum=a \oplus b \oplus c$，$carry=(a \wedge b) \vee (b \wedge c) \vee (a \wedge c)$），他避免了 CPA 因需要低位向高位传播信号带来的延迟。
+一个 3-2 压缩器本质上就是一个全加器，接受 3 个数 $a,b,c$ 作为输入，输出 2 个数 $sum$ 和 $carry$。把 $carry$ 左移一位后 $carry+sum=a+b+c$ (这是显然的)。通过这样的一个 3-2 压缩器我们实现了把三个数相加变成两个数相加，全加器的各位之间是独立的（每一位都有 $sum=a \oplus b \oplus c$，$carry=(a \wedge b) \vee (b \wedge c) \vee (a \wedge c)$），避免了 CPA 因需要低位向高位传播信号带来的延迟。
 
 32 个部分积通过一层的压缩可以变成 22 个，继续逐层压缩最终只剩 2 个部分积，做一次 CPA 即可。
 
