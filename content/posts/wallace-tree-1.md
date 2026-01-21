@@ -4,6 +4,7 @@ date: 2026-01-21
 draft: false
 type: "posts"
 description: "Something About Hardware Multiplier"
+math: true
 ---
 
 为了做 CPU M-Extension 的 Bonus 接触到了 Wallace Tree 乘法器，后来的实现也基本是借鉴的这种乘法。结果 cr 的时候因为周期设计不够 balanced 被 TA 拷打了，之后又在 XiangShan 上找到了一个[基于 Wallace Tree 的乘法器实现](https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala)，感觉自己做的那个还是太低级了。
@@ -320,7 +321,8 @@ M3 需要注意一个符号修正的问题：$product_{64} = sum + carry + (-cor
 里面其实还有很多可以优化的地方，但是限于个人目前水平（以及不想为沟槽的 Assassyn 再折腾），大概就到此为止了。下次可能会写一些关于 XiangShan 所实现的乘法器的东西，不过下次的事就下次再说吧（笑）。
 
 ## Enjoy a song
-{{< ncm id="8243918033" >}}
+{{< ncm id="720340" >}}
+
 找了一首比较长的，后面研究一下怎么自动播放，这样就可以边看帖边听歌的说。
 （btw: 花都是真好听啊，怎么改都好听那种！）
 
