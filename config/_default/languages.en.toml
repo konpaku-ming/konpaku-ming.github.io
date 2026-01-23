@@ -14,6 +14,9 @@ title = "Konpaku Youming"
   # description = "My awesome website"
   # copyright = "Copy, _right?_ :thinking_face:"
 
+[params.author]
+  name = "Youming's Gensokyo"
+
 # [params.author]
 #   name = "Youming"
 #   email = "youremail@example.com"
