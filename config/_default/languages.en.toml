@@ -2,7 +2,7 @@ disabled = false
 languageCode = "en"
 languageName = "English"
 weight = 1
-title = "Konpaku Youming"
+title = "Youming's Gensokyo"
 
 [params]
   displayName = "EN"
@@ -15,7 +15,7 @@ title = "Konpaku Youming"
   # copyright = "Copy, _right?_ :thinking_face:"
 
 [params.author]
-  name = "Youming's Gensokyo"
+  name = "Konpaku Youming"
 
 # [params.author]
 #   name = "Youming"

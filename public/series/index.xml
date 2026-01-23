@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Series on Konpaku Youming</title>
+    <title>Series on Youming&#39;s Gensokyo</title>
     <link>http://localhost:1313/series/</link>
-    <description>Recent content in Series on Konpaku Youming</description>
+    <description>Recent content in Series on Youming&#39;s Gensokyo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>© 2026 Youming&#39;s Gensokyo</copyright>
+    <copyright>© 2026 Konpaku Youming</copyright>
     <atom:link href="http://localhost:1313/series/index.xml" rel="self" type="application/rss+xml" />
     
   </channel>

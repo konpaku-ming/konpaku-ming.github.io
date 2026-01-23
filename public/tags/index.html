@@ -15,8 +15,8 @@
 
   
   
-    <title>Tags &middot; Konpaku Youming</title>
-    <meta name="title" content="Tags &middot; Konpaku Youming">
+    <title>Tags &middot; Youming&#39;s Gensokyo</title>
+    <meta name="title" content="Tags &middot; Youming&#39;s Gensokyo">
   
 
   
@@ -27,18 +27,18 @@
   <link rel="canonical" href="http://localhost:1313/tags/">
   
     
-      <link rel="alternate" type="application/rss+xml" href="/tags/index.xml" title="Konpaku Youming" />
+      <link rel="alternate" type="application/rss+xml" href="/tags/index.xml" title="Youming's Gensokyo" />
   
 
   
   
-    <meta name="author" content="Youming&#39;s Gensokyo">
+    <meta name="author" content="Konpaku Youming">
   
   
 
   
   <meta property="og:url" content="http://localhost:1313/tags/">
-  <meta property="og:site_name" content="Konpaku Youming">
+  <meta property="og:site_name" content="Youming&#39;s Gensokyo">
   <meta property="og:title" content="Tags">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="website">
@@ -202,7 +202,7 @@
     "url" : "http://localhost:1313/tags/",
     "author" : {
       "@type": "Person",
-      "name": "Youming\u0027s Gensokyo"
+      "name": "Konpaku Youming"
     },
     
     
@@ -228,6 +228,10 @@
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body);"></script>
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
@@ -266,35 +270,111 @@
     #search-button-mobile {
         display: none !important;
     }
+
+    .aplayer.aplayer-fixed {
+        left: auto !important;
+        right: 1.5rem !important;
+        bottom: 1.5rem;
+        width: 320px !important;
+        max-width: calc(100vw - 2rem);
+        border-radius: 0.75rem;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.4);
+        overflow: hidden;
+    }
+
+    .aplayer.aplayer-fixed .aplayer-body {
+        border-radius: 0.75rem;
+    }
+
+    .aplayer .aplayer-icon-menu,
+    .aplayer .aplayer-list {
+        display: none !important;
+    }
+
+    .aplayer .aplayer-title,
+    .aplayer .aplayer-author {
+        color: #111111 !important;
+        text-shadow: none;
+        font-family: inherit;
+    }
+
+    .aplayer .aplayer-title {
+        font-weight: normal;
+    }
+
+    .aplayer .aplayer-author {
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+
+    .aplayer .aplayer-lrc,
+    .aplayer .aplayer-lrc-wrap {
+        display: none !important;
+    }
+
+    @media (max-width: 768px) {
+        .aplayer.aplayer-fixed {
+            left: 0.5rem !important;
+            right: 0.5rem !important;
+            width: calc(100vw - 1rem) !important;
+        }
+    }
 </style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        
         var searchLinks = document.querySelectorAll('a[href="#search"]');
-        if (!searchLinks.length) {
-            return;
+        if (searchLinks.length) {
+            var openSearchModal = function () {
+                var trigger = document.getElementById("search-button") || document.getElementById("search-button-mobile");
+                if (trigger) {
+                    trigger.click();
+                    var queryInput = document.getElementById("search-query");
+                    if (queryInput) {
+                        queryInput.focus();
+                    }
+                }
+            };
+            searchLinks.forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    openSearchModal();
+                });
+            });
         }
 
         
-        var openSearchModal = function () {
-            var trigger = document.getElementById("search-button") || document.getElementById("search-button-mobile");
-            if (trigger) {
-                trigger.click();
-                var queryInput = document.getElementById("search-query");
-                if (queryInput) {
-                    queryInput.focus();
+        var musicLinks = document.querySelectorAll('a[href="#music"]');
+        if (musicLinks.length) {
+            var player = document.querySelector('.aplayer.no-destroy');
+            var aplayer = null;
+            function showPlayerAndPlayRandom() {
+                if (!player) return;
+                player.style.display = '';
+                if (!window.aplayers || !window.aplayers.length) return;
+                aplayer = window.aplayers[0];
+                
+                var audios = aplayer.list && aplayer.list.audios;
+                if (audios && audios.length) {
+                    var idx = Math.floor(Math.random() * audios.length);
+                    aplayer.list.switch(idx);
+                    aplayer.seek(0);
+                    aplayer.play();
                 }
             }
-        };
-
-        searchLinks.forEach(function (link) {
-            link.addEventListener("click", function (event) {
-                event.preventDefault();
-                openSearchModal();
+            musicLinks.forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    showPlayerAndPlayRandom();
+                });
             });
-        });
+            
+            if (player) player.style.display = 'none';
+        }
     });
 </script>
+
 
   
 
@@ -341,7 +421,7 @@
   
   
     <a href="/" class="text-base font-medium truncate min-w-0 shrink">
-      Konpaku Youming
+      Youming&rsquo;s Gensokyo
     </a>
   
   <div class="flex items-center ms-auto">
@@ -415,6 +495,24 @@
       
         <span class="text-base font-medium break-normal">
           搜索
+        </span>
+      
+    </a>
+  
+
+    
+      
+  
+    <a
+      href="#music"
+      
+      class="flex items-center bf-icon-color-hover"
+      aria-label="Music"
+      title="">
+      
+      
+        <span class="text-base font-medium break-normal">
+          Music
         </span>
       
     </a>
@@ -581,6 +679,23 @@
       
     </div>
   
+    
+    <div class="px-2">
+      <a
+        href="#music"
+        aria-label="Music"
+        
+        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+        
+        <span title="" class="text-2xl font-bold tracking-tight">
+          Music
+        </span>
+        
+      </a>
+
+      
+    </div>
+  
 
         
   
@@ -690,7 +805,7 @@
       <p class="text-sm text-neutral-500 dark:text-neutral-400">
           &copy;
           2026
-          Youming&rsquo;s Gensokyo
+          Konpaku Youming
       </p>
     
 
@@ -760,6 +875,7 @@
 </div>
 
     </div>
+    
   </body>
   
 </html>
