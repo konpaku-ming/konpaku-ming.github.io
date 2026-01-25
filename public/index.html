@@ -423,7 +423,9 @@
       <nav class="flex items-center gap-x-5 h-12">
   
     
+    
       
+        
   
     <a
       href="/"
@@ -440,8 +442,10 @@
     </a>
   
 
+      
     
       
+        
   
     <a
       href="/posts/"
@@ -458,8 +462,10 @@
     </a>
   
 
+      
     
       
+        
   
     <a
       href="/about/"
@@ -476,8 +482,10 @@
     </a>
   
 
+      
     
       
+        
   
     <a
       href="#search"
@@ -494,8 +502,10 @@
     </a>
   
 
+      
     
       
+        
   
     <a
       href="#music"
@@ -512,6 +522,7 @@
     </a>
   
 
+      
     
   
 
@@ -605,90 +616,101 @@
       <nav class="mx-auto max-w-md space-y-6">
         
   
-    
-    <div class="px-2">
-      <a
-        href="/"
-        aria-label="首页"
-        
-        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
-        
-        <span title="" class="text-2xl font-bold tracking-tight">
-          首页
-        </span>
-        
-      </a>
-
-      
-    </div>
   
     
-    <div class="px-2">
-      <a
-        href="/posts/"
-        aria-label="文章"
-        
-        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
-        
-        <span title="Posts" class="text-2xl font-bold tracking-tight">
-          文章
-        </span>
-        
-      </a>
-
       
-    </div>
+      <div class="px-2">
+        <a
+          href="/"
+          aria-label="首页"
+          
+          class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+          
+          <span title="" class="text-2xl font-bold tracking-tight">
+            首页
+          </span>
+          
+        </a>
+
+        
+      </div>
+    
   
     
-    <div class="px-2">
-      <a
-        href="/about/"
-        aria-label="关于"
-        
-        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
-        
-        <span title="关于" class="text-2xl font-bold tracking-tight">
-          关于
-        </span>
-        
-      </a>
-
       
-    </div>
+      <div class="px-2">
+        <a
+          href="/posts/"
+          aria-label="文章"
+          
+          class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+          
+          <span title="Posts" class="text-2xl font-bold tracking-tight">
+            文章
+          </span>
+          
+        </a>
+
+        
+      </div>
+    
   
     
-    <div class="px-2">
-      <a
-        href="#search"
-        aria-label="搜索"
-        
-        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
-        
-        <span title="" class="text-2xl font-bold tracking-tight">
-          搜索
-        </span>
-        
-      </a>
-
       
-    </div>
+      <div class="px-2">
+        <a
+          href="/about/"
+          aria-label="关于"
+          
+          class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+          
+          <span title="关于" class="text-2xl font-bold tracking-tight">
+            关于
+          </span>
+          
+        </a>
+
+        
+      </div>
+    
   
     
-    <div class="px-2">
-      <a
-        href="#music"
-        aria-label="Music"
-        
-        class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
-        
-        <span title="" class="text-2xl font-bold tracking-tight">
-          Music
-        </span>
-        
-      </a>
-
       
-    </div>
+      <div class="px-2">
+        <a
+          href="#search"
+          aria-label="搜索"
+          
+          class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+          
+          <span title="" class="text-2xl font-bold tracking-tight">
+            搜索
+          </span>
+          
+        </a>
+
+        
+      </div>
+    
+  
+    
+      
+      <div class="px-2">
+        <a
+          href="#music"
+          aria-label="Music"
+          
+          class="flex items-center gap-4 group bf-icon-color-hover text-neutral-700 dark:text-neutral-200">
+          
+          <span title="" class="text-2xl font-bold tracking-tight">
+            Music
+          </span>
+          
+        </a>
+
+        
+      </div>
+    
   
 
         
@@ -1130,7 +1152,8 @@
 </div>
 
     </div>
-    <div
+    
+      <div id="global-player-wrapper" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9999;"><div
   class="aplayer no-destroy"
   data-id="8243918033"
   data-server="netease"
@@ -1145,7 +1168,20 @@
   data-list-folded="true"
   mutex="true">
 </div>
-
+</div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var musicBtn = document.querySelector('a[href="#music"]');
+          var player = document.getElementById('global-player-wrapper');
+          if(musicBtn && player) {
+            musicBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              player.style.display = (player.style.display === 'none') ? 'block' : 'none';
+            });
+          }
+        });
+      </script>
+    
   </body>
   
 </html>

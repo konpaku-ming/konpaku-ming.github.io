@@ -38,7 +38,21 @@
       {{ end }}
     </div>
     {{ if .IsHome }}
-      {{- partial "global-player.html" . -}}
+      <div id="global-player-wrapper" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9999;">
+        {{- partial "global-player.html" . -}}
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var musicBtn = document.querySelector('a[href="#music"]');
+          var player = document.getElementById('global-player-wrapper');
+          if(musicBtn && player) {
+            musicBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              player.style.display = (player.style.display === 'none') ? 'block' : 'none';
+            });
+          }
+        });
+      </script>
     {{ end }}
   </body>
   {{ if site.Params.buymeacoffee.globalWidget | default false }}
