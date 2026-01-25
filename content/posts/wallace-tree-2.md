@@ -35,7 +35,10 @@ $$
 
 上面是很符合人类智慧的优化，我们接着推广。假设乘法 $A\times B$ ，注意到：
 $$
-A=a_{n-1}a_{n-2}...a_1a_0\left( a_{-1} \right) =a_{n-1}\times \left( -2^{n-1} \right) +a_{n-2}\times 2^{n-2}...+a_0\times 2^0\ \text{（补位的}a_{-1}=0\text{）}
+A=a_{n-1}a_{n-2}...a_1a_0\left( a_{-1} \right)
+$$
+$$
+=a_{n-1}\times \left( -2^{n-1} \right) +a_{n-2}\times 2^{n-2}...+a_0\times 2^0\ \text{（补位的}a_{-1}=0\text{）}
 $$
 $$
 =\left( a_{n-2}-a_{n-1} \right) \times 2^{n-1}+\left( a_{n-3}-a_{n-2} \right) \times 2^{n-2}...+\left( a_0-a_1 \right) \times 2^1+\left( a_{-1}-a_0 \right) \times 2^0
