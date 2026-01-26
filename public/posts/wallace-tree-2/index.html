@@ -217,7 +217,7 @@
     
     
     "mainEntityOfPage": "true",
-    "wordCount": "848"
+    "wordCount": "861"
   }]
   </script>
 
@@ -776,7 +776,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2026-01-25T00:00:00&#43;00:00">25 January 2026</time><span class="px-2 text-primary-500">&middot;</span><span>848 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">4 mins</span>
+      <time datetime="2026-01-25T00:00:00&#43;00:00">25 January 2026</time><span class="px-2 text-primary-500">&middot;</span><span>861 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
     
 
     
@@ -871,12 +871,12 @@
 <p>一文一歌也算是惯例了，也是我红心的曲子，歌单太大首页不一定刷得到，就挂在文章里安利了。</p>
 <p>Rewrite 是我很喜欢的作品。今天突然发现 <a href="https://music.163.com/#/song?id=26107975"  target="_blank" rel="noreferrer">Fall in the Dark</a> 也是这位歌姬唱的，实际东 gal 共荣（喜）。</p>
 
-<h2 class="relative group">Radix-4 Booth 编码
-    <div id="radix-4-booth-编码" class="anchor"></div>
+<h2 class="relative group">Booth 编码
+    <div id="booth-编码" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#radix-4-booth-%e7%bc%96%e7%a0%81" aria-label="Anchor">#</a>
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#booth-%e7%bc%96%e7%a0%81" aria-label="Anchor">#</a>
     </span>
     
 </h2>
@@ -897,10 +897,14 @@ $$<p>
     </span>
     
 </h3>
-<p>上面是很符合人类智慧的优化，我们接着推广。假设乘法 $A\times B$ ，注意到：
+<p>上面是很符合人类智慧的优化，我们进行推广。假设乘法 $A\times B$ ，注意到：
 </p>
 $$
-A=a_{n-1}a_{n-2}...a_1a_0\left( a_{-1} \right) =a_{n-1}\times \left( -2^{n-1} \right) +a_{n-2}\times 2^{n-2}...+a_0\times 2^0\ \text{（补位的}a_{-1}=0\text{）}
+A=a_{n-1}a_{n-2}...a_1a_0\left( a_{-1} \right)
+$$<p>
+</p>
+$$
+=a_{n-1}\times \left( -2^{n-1} \right) +a_{n-2}\times 2^{n-2}...+a_0\times 2^0\ \text{（补位的}a_{-1}=0\text{）}
 $$<p>
 </p>
 $$
@@ -949,6 +953,7 @@ $$<p>由上式，可以做如下编码：</p>
   </tbody>
 </table>
 <p>这就是 Radix-2 Booth 编码，每次移动一位，观察两位。</p>
+<p>Radix-2 Booth 确实能优化掉之前例子中连续的 1 ，但是当 1 是孤立出现的时候（比如 010 ），部分积反而变多了。下面讲的 Radix-4 Booth 就不会出现这种问题。</p>
 
 <h3 class="relative group">Radix-4 Booth
     <div id="radix-4-booth" class="anchor"></div>
@@ -1040,47 +1045,47 @@ $$<p>由上式，我们可以一次移动两位，观察三位，做如下编码
       </tr>
   </tbody>
 </table>
-<p>XiangShan 乘法器通过 Radix-4 Booth 算法生成部分积。它在求补码和拼接部分积的过程中还有一些小巧思，就不详细写了，可以直接看贴在下面的代码：</p>
+<p>XiangShan 乘法器就是通过 Radix-4 Booth 算法生成部分积。它在求补码和拼接部分积的过程中还有一些小巧思，就不详细写了，可以直接看贴在下面的代码：</p>
 <div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">val b_sext, bx2, neg_b, neg_bx2 = Wire(UInt((len+1).W))
-</span></span><span class="line"><span class="cl">  b_sext := SignExt(b, len+1)
-</span></span><span class="line"><span class="cl">  bx2 := b_sext &lt;&lt; 1
-</span></span><span class="line"><span class="cl">  neg_b := (~b_sext).asUInt
-</span></span><span class="line"><span class="cl">  neg_bx2 := neg_b &lt;&lt; 1
+</span></span><span class="line"><span class="cl">b_sext := SignExt(b, len+1)
+</span></span><span class="line"><span class="cl">bx2 := b_sext &lt;&lt; 1
+</span></span><span class="line"><span class="cl">neg_b := (~b_sext).asUInt
+</span></span><span class="line"><span class="cl">neg_bx2 := neg_b &lt;&lt; 1
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  val columns: Array[Seq[Bool]] = Array.fill(2*len)(Seq())
+</span></span><span class="line"><span class="cl">val columns: Array[Seq[Bool]] = Array.fill(2*len)(Seq())
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">  var last_x = WireInit(0.U(3.W))
-</span></span><span class="line"><span class="cl">  for(i &lt;- Range(0, len, 2)){
-</span></span><span class="line"><span class="cl">    val x = if(i==0) Cat(a(1,0), 0.U(1.W)) else if(i+1==len) SignExt(a(i, i-1), 3) else a(i+1, i-1)
-</span></span><span class="line"><span class="cl">    val pp_temp = MuxLookup(x, 0.U)(Seq(
-</span></span><span class="line"><span class="cl">      1.U -&gt; b_sext,
-</span></span><span class="line"><span class="cl">      2.U -&gt; b_sext,
-</span></span><span class="line"><span class="cl">      3.U -&gt; bx2,
-</span></span><span class="line"><span class="cl">      4.U -&gt; neg_bx2,
-</span></span><span class="line"><span class="cl">      5.U -&gt; neg_b,
-</span></span><span class="line"><span class="cl">      6.U -&gt; neg_b
-</span></span><span class="line"><span class="cl">    ))
-</span></span><span class="line"><span class="cl">    val s = pp_temp(len)
-</span></span><span class="line"><span class="cl">    val t = MuxLookup(last_x, 0.U(2.W))(Seq(
-</span></span><span class="line"><span class="cl">      4.U -&gt; 2.U(2.W),
-</span></span><span class="line"><span class="cl">      5.U -&gt; 1.U(2.W),
-</span></span><span class="line"><span class="cl">      6.U -&gt; 1.U(2.W)
-</span></span><span class="line"><span class="cl">    ))
-</span></span><span class="line"><span class="cl">    last_x = x
-</span></span><span class="line"><span class="cl">    val (pp, weight) = i match {
-</span></span><span class="line"><span class="cl">      case 0 =&gt;
-</span></span><span class="line"><span class="cl">        (Cat(~s, s, s, pp_temp), 0)
-</span></span><span class="line"><span class="cl">      case n if (n==len-1) || (n==len-2) =&gt;
-</span></span><span class="line"><span class="cl">        (Cat(~s, pp_temp, t), i-2)
-</span></span><span class="line"><span class="cl">      case _ =&gt;
-</span></span><span class="line"><span class="cl">        (Cat(1.U(1.W), ~s, pp_temp, t), i-2)
+</span></span><span class="line"><span class="cl">var last_x = WireInit(0.U(3.W))
+</span></span><span class="line"><span class="cl">for(i &lt;- Range(0, len, 2)){
+</span></span><span class="line"><span class="cl">  val x = if(i==0) Cat(a(1,0), 0.U(1.W)) else if(i+1==len) SignExt(a(i, i-1), 3) else a(i+1, i-1)
+</span></span><span class="line"><span class="cl">  val pp_temp = MuxLookup(x, 0.U)(Seq(
+</span></span><span class="line"><span class="cl">    1.U -&gt; b_sext,
+</span></span><span class="line"><span class="cl">    2.U -&gt; b_sext,
+</span></span><span class="line"><span class="cl">    3.U -&gt; bx2,
+</span></span><span class="line"><span class="cl">    4.U -&gt; neg_bx2,
+</span></span><span class="line"><span class="cl">    5.U -&gt; neg_b,
+</span></span><span class="line"><span class="cl">    6.U -&gt; neg_b
+</span></span><span class="line"><span class="cl">  ))
+</span></span><span class="line"><span class="cl">  val s = pp_temp(len)
+</span></span><span class="line"><span class="cl">  val t = MuxLookup(last_x, 0.U(2.W))(Seq(
+</span></span><span class="line"><span class="cl">    4.U -&gt; 2.U(2.W),
+</span></span><span class="line"><span class="cl">    5.U -&gt; 1.U(2.W),
+</span></span><span class="line"><span class="cl">    6.U -&gt; 1.U(2.W)
+</span></span><span class="line"><span class="cl">  ))
+</span></span><span class="line"><span class="cl">  last_x = x
+</span></span><span class="line"><span class="cl">  val (pp, weight) = i match {
+</span></span><span class="line"><span class="cl">    case 0 =&gt;
+</span></span><span class="line"><span class="cl">      (Cat(~s, s, s, pp_temp), 0)
+</span></span><span class="line"><span class="cl">    case n if (n==len-1) || (n==len-2) =&gt;
+</span></span><span class="line"><span class="cl">      (Cat(~s, pp_temp, t), i-2)
+</span></span><span class="line"><span class="cl">    case _ =&gt;
+</span></span><span class="line"><span class="cl">      (Cat(1.U(1.W), ~s, pp_temp, t), i-2)
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  for(j &lt;- columns.indices){
+</span></span><span class="line"><span class="cl">    if(j &gt;= weight &amp;&amp; j &lt; (weight + pp.getWidth)){
+</span></span><span class="line"><span class="cl">      columns(j) = columns(j) :+ pp(j-weight)
 </span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">    for(j &lt;- columns.indices){
-</span></span><span class="line"><span class="cl">      if(j &gt;= weight &amp;&amp; j &lt; (weight + pp.getWidth)){
-</span></span><span class="line"><span class="cl">        columns(j) = columns(j) :+ pp(j-weight)
-</span></span><span class="line"><span class="cl">      }
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">  }</span></span></code></pre></div></div>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}</span></span></code></pre></div></div>
 
 <h2 class="relative group">列压缩乘法
     <div id="列压缩乘法" class="anchor"></div>
@@ -1212,7 +1217,7 @@ $$<p>由上式，我们可以一次移动两位，观察三位，做如下编码
 <p>以上就是 XiangShan 的乘法器，并没有那么难理解，但是很精巧。里面一些很细的优化和小巧思相当值得品味呢。</p>
 <p>这篇文章动笔于 1 月 25 日，但是写完已经是 1 月 26 号了。中途出门（被迫）去逛了门口的综合体，意外的有人气。上次来南京还是 25 年的春节，不过当时好像一直在往新街口那块跑（饭局有点多），家门口的反而没去过。再往前，印象就停留在 24 年暑假了，不过那个时候综合体疑似（？）还没开。感叹去上海一年半，南通南京都变得很陌生。不过上海也很陌生，一年半进城恐怕没有 5 次（笑）。</p>
 <p>细数了一下，去了两次旦（一次是例会），加上一次幻奏。平均下来半年进一次城，进城还是因为办车万照顾不了偏僻的闵行。</p>
-<p>上次出远门好像还是暑假时 Norb 举行的神秘出游。选在了上海最热的天，去了同样是郊区（所以不算进城）的东方绿舟，一群无聊的大学牲在 $35^{\circ}\mathrm{C}$ 的无遮挡空地上走各种桥（公园里很常见那种，各种抽象桥身和造型）。最后热的实在受不了 11 点就去找饭吃了，找了一家很实惠的家常菜来着。最后全员体验市域机场线，幸好没打车回去，我在打车来的一个小时中很坚韧地没有吐出来。</p>
+<p>上次出远门好像还是暑假时 Norb 举行的神秘出游。选在了上海最热的天，去了同样是郊区（所以不算进城）的东方绿舟，一群无聊的大学牲在 $35^{\circ}\mathrm{C}$ 的无遮挡空地上走各种桥（公园里很常见那种，各种抽象桥身和造型）。最后热的实在受不了 11 点没到就去找饭吃了，去了一家很实惠的家常菜来着。最后全员体验市域机场线，幸好没打车回去，我在打车来的一个小时中很坚韧地没有吐出来。</p>
 <p>有点恐怖的是刚才为了确认没打错地名打开搜索引擎，发现就在我们去之前一周，东方绿舟还出了事故。难道说那天人那么少也不只是因为天气（？）。</p>
 <p>好吧，回忆就止于此，我都忘了是为什么而感慨的了。诸君晚安。</p>
 
@@ -1274,6 +1279,19 @@ $$<p>由上式，我们可以一次移动两位，观察三位，做如下编码
           
         </span>
         <span class="flex flex-col items-end">
+          
+            <a
+              class="flex text-right text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+              href="/posts/srt-division/">
+              <span class="leading-6">
+                SRT Division&ensp;<span class="inline-block rtl:rotate-180">&rarr;</span>
+              </span>
+            </a>
+            
+              <span class="me-6 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                <time datetime="2026-01-26T00:00:00&#43;00:00">26 January 2026</time>
+              </span>
+            
           
         </span>
       </div>
