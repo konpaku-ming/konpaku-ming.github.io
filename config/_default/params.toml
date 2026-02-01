@@ -181,7 +181,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   # adsense = ""
 
 [sidebar]
-  avatar = "/apple-touch-icon.png"
+  avatar = "images/youmu.png"
   headline = "半灵的四分之一"
   links = [
     { github = "https://github.com/konpaku-ming" },

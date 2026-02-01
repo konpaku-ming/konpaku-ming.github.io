@@ -2,14 +2,28 @@
 <div class="sidebar-card bg-neutral-100 dark:bg-neutral-800 rounded-xl p-5 shadow-sm">
   {{/* Avatar */}}
   <div class="flex flex-col items-center">
-    {{ $avatar := site.Params.sidebar.avatar | default "/apple-touch-icon.png" }}
-    <a href="{{ site.BaseURL }}" class="block">
+    {{ $avatarParam := site.Params.sidebar.avatar | default "/apple-touch-icon.png" }}
+    {{ $avatarPath := strings.TrimPrefix "/" $avatarParam }}
+    {{ $avatar := $avatarParam }}
+    {{ with resources.Get $avatarPath }}
+      {{ $avatar = .RelPermalink }}
+    {{ end }}
+    <input id="avatar-preview-toggle" type="checkbox" class="peer sr-only">
+    <label for="avatar-preview-toggle" class="block cursor-zoom-in">
       <img 
         src="{{ $avatar }}" 
         alt="{{ site.Params.Author.name | default site.Title }}" 
-        class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 dark:border-primary-400 hover:scale-105 transition-transform duration-300"
+        class="w-[115px] h-[115px] rounded-full object-cover border-4 border-primary-500 dark:border-primary-400 hover:scale-110 transition-transform duration-300"
       >
-    </a>
+    </label>
+    <label for="avatar-preview-toggle" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 peer-checked:flex cursor-zoom-out">
+      <img
+        src="{{ $avatar }}"
+        alt="{{ site.Params.Author.name | default site.Title }}"
+        class="max-h-[85vh] max-w-[85vw] rounded-lg shadow-2xl"
+      >
+      <span class="sr-only">Close</span>
+    </label>
     
     {{/* Name */}}
     <h3 class="mt-3 text-lg font-bold text-neutral-900 dark:text-neutral-100">
