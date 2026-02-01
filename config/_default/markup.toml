@@ -19,7 +19,19 @@
         inline = [['\(', '\)']]
 
 [highlight]
+  anchorLineNos = false
+  codeFences = true
+  guessSyntax = false
+  hl_Lines = ""
+  hl_inline = false
+  lineAnchors = ""
+  lineNoStart = 1
+  lineNos = false
+  lineNumbersInTable = false
   noClasses = false
+  noHl = true
+  style = ""
+  tabWidth = 4
 
 [tableOfContents]
   startLevel = 2

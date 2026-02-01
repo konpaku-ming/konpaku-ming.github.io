@@ -94,7 +94,7 @@ $$
 | **111** | $0$ | `0.U` | 保持全 0 |
 
 XiangShan 乘法器就是通过 Radix-4 Booth 算法生成部分积。它在求补码和拼接部分积的过程中还有一些小巧思，就不详细写了，可以直接看贴在下面的代码：
-```
+```scala
 val b_sext, bx2, neg_b, neg_bx2 = Wire(UInt((len+1).W))
 b_sext := SignExt(b, len+1)
 bx2 := b_sext << 1
@@ -149,7 +149,7 @@ for(i <- Range(0, len, 2)){
 如果换个角度看，用全加器做压缩避免了进位传播的延迟，那完全可以把每一列视作的压缩过程抽离出来，不再受“行”的限制。当然每一列在压缩过程中，会接收来自后一列的进位，也会进位给前一列。最终目标是压缩到**每一列**都不超过两个。
 
 ### addOneColumn
-```
+```scala
 def addOneColumn(col: Seq[Bool], cin: Seq[Bool]): (Seq[Bool], Seq[Bool], Seq[Bool]) = {
   var sum = Seq[Bool]()
   var cout1 = Seq[Bool]()
@@ -208,7 +208,7 @@ $carry\_2 = \text{Majority}(x_4, c_{in}, (x_1 \oplus x_2 \oplus x_3))$ （前三
 ### addAll
 
 之后只要检查是否达到压缩完成的条件（每列最多两位），如果某一列没达到，就调用 `addOneColumn` 进行压缩。
-```
+```scala
 def addAll(cols: Array[Seq[Bool]], depth: Int): (UInt, UInt) = {
   if(max(cols.map(_.size)) <= 2){
     val sum = Cat(cols.map(_(0)).reverse)

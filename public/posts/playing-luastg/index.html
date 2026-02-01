@@ -217,7 +217,7 @@
     
     
     "mainEntityOfPage": "true",
-    "wordCount": "613"
+    "wordCount": "617"
   }]
   </script>
 
@@ -228,7 +228,10 @@
 
   
   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
+<link rel="stylesheet" href="/css/prism.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body);"></script>
@@ -250,12 +253,59 @@
 
 <style>
     :root {
-        --article-max-width: min(65ch, 100%);
+        --article-max-width: min(75ch, 100%);
     }
 
     @media (min-width: 1024px) {
         :root {
-            --article-max-width: min(80ch, 100%);
+            --article-max-width: min(90ch, 100%);
+        }
+
+         
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+     
+    .article-with-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .article-with-sidebar {
+            flex-direction: row;
+        }
+    }
+
+    .article-sidebar {
+        order: -1;  
+    }
+
+    @media (min-width: 1024px) {
+        .article-sidebar {
+            order: 1;  
+            width: 230px;
+            min-width: 230px;
+        }
+    }
+
+    .sidebar-sticky {
+        position: relative;
+    }
+
+    @media (min-width: 1024px) {
+        .sidebar-sticky {
+            position: sticky;
+            top: 6rem;
         }
     }
 
@@ -323,7 +373,136 @@
             width: calc(100vw - 1rem) !important;
         }
     }
+
+     
+    pre[class*="language-"],
+    pre.line-numbers {
+        margin: 1em 0;
+        border-radius: 0.5rem;
+        overflow: auto;
+        background: #2d2d2d !important;
+    }
+
+     
+    article pre[class*="language-"],
+    .prose pre[class*="language-"] {
+        max-width: 100%;
+    }
+
+     
+    pre[class*="language-"].line-numbers {
+        padding-left: 3.8em;
+    }
+
+    .line-numbers .line-numbers-rows {
+        border-right-color: rgba(255, 255, 255, 0.1);
+    }
+
+     
+    div.code-toolbar > .toolbar {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    div.code-toolbar:hover > .toolbar {
+        opacity: 1;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button,
+    div.code-toolbar > .toolbar > .toolbar-item > span {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ccc;
+        padding: 0.25em 0.5em;
+        font-size: 0.75em;
+        border-radius: 0.25rem;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
+    }
+
+     
+    .dark pre[class*="language-"] {
+        background: #1e1e1e !important;
+    }
+
+     
+    code[class*="language-"],
+    pre[class*="language-"] {
+        color: #ccc;
+    }
+
+     
+    .sidebar-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sidebar-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark .sidebar-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+     
+    .sidebar-card a svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+     
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+     
+    @media (max-width: 1023px) {
+        .article-sidebar {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .article-sidebar .sidebar-card {
+            flex-shrink: 0;
+            width: 280px;
+        }
+
+        .sidebar-sticky {
+            display: contents;
+        }
+
+        .sidebar-sticky > * {
+            flex-shrink: 0;
+        }
+    }
+
+     
+    @media (min-width: 1024px) {
+        article {
+            max-width: none;
+        }
+    }
 </style>
+
+
+<script src="/js/prism.js"></script>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -776,7 +955,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2026-01-31T00:00:00&#43;00:00">31 January 2026</time><span class="px-2 text-primary-500">&middot;</span><span>613 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
+      <time datetime="2026-01-31T00:00:00&#43;00:00">31 January 2026</time><span class="px-2 text-primary-500">&middot;</span><span>617 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">3 mins</span>
     
 
     
@@ -837,19 +1016,20 @@
     </header>
 
     
-    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    <div class="article-with-sidebar flex flex-col lg:flex-row gap-8">
       
-      
-      
-      
-      
-
-
-      <div class="min-w-0 min-h-0 max-w-fit">
+      <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row flex-1 min-w-0">
+        
+        
+        
+        
         
 
-        <div class="article-content max-w-prose mb-20">
-          <p>hello，米娜桑~</p>
+        <div class="min-w-0 min-h-0 max-w-fit">
+          
+
+          <div class="article-content max-w-prose mb-20">
+            <p>hello，米娜桑~</p>
 <p>鸽的这么多天里，主要是摆烂 + 摆弄一些（在我看来）有趣的东西，其中就包括 LuaSTG 。我第一次听说这玩意应该是因为某部同人游戏（大概率是祈华梦），之后也玩过一些算是个人制作的小 Mod ，不过我当时没有考虑过自己做点 STG ，原因也很简单：太菜了。做 STG 需要懂弹设，懂弹设一般飞机技术不会太差，但是我还困在妖E（好像要等到大一下才通😀）。</p>
 <p>大学后时间总归比高中多一点，不过 STG 强度应该是远不如之前的。以前基本每周会打一把，这个时间现在变成了一个月。大一上心血来潮（忘记是不是期中给我心态干崩了）有段时间狂练永N，拿单魔理沙还真打出了第一个 N ，不过后来也没什么热情，直到暑假那会开自动雷混关冲全N（后放弃，星莲船手段极其凶残）。大一上的寒假其实有跟人约着做一个小的单关，然而我当时太鸽了，加上假也不长，最后连文件夹都没建（笑）。最近想着稍微玩一玩吧，还能用 AI 写弹幕代码，今天算是终于做出来一张符卡吧，就写一篇纪念一下。</p>
 
@@ -881,120 +1061,120 @@
     </span>
     
 </h2>
-<p>其实之前（1.29）为了熟悉一下 Editor Sharp 怎么搭配 AI 食用，已经做过一张，不过那里面不含我的创意。</p>
+<p>其实之前（ 29 号）为了熟悉一下 Editor Sharp 怎么搭配 AI 食用，已经做过一张符卡了，不过那个纯属 AI 创意。</p>
 <p>下面这张符就是符卡「竹ノ花」，我的最初构想是让绿色米弹模拟竹子，从版底向上长，最后在末端开花。最后竹子弹幕消失，花雨散落。</p>
 <p>由于 1 月 Github Copilot 的额度被我做 CPU 和搭网站烧完了，只能用一些很捞的模型。竹子的处理一直感觉不太像，最后用两排绿色米弹错位并排，感觉差不多就妥协了。一开始做的竹花太稀疏了，都看不出花的形状，后来想做成团簇的形式，但是弹幕量就有些离谱，而且上避的难度有点小，变成纯姿势了。后来也算是妥协做成这样，是让中心相对密一点，但是又向外有一点延伸，不至于画面太空。</p>
 <p>下面是 AI 写的代码，中间调了得有几十次。明天就二月了等我换模型~</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">lasttask = task.New(self, function()
-</span></span><span class="line"><span class="cl">    task.MoveTo(0, 160, 60, MOVE_NORMAL)
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    local rng = Rand()
-</span></span><span class="line"><span class="cl">    local timer = 0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    while true do
-</span></span><span class="line"><span class="cl">        self.x = 20 * sin(timer * 1.0)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        for i = 1, 4 do
-</span></span><span class="line"><span class="cl">            local base_x = -150 + (i - 1) * 100 
-</span></span><span class="line"><span class="cl">            
-</span></span><span class="line"><span class="cl">            task.New(self, function()
-</span></span><span class="line"><span class="cl">                local bamboo_parts = {}     
-</span></span><span class="line"><span class="cl">                local current_flowers = {}  
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                local function grow_logic(sx, sy, s_angle, depth, max_j, parts, flowers)
-</span></span><span class="line"><span class="cl">                    local curr_x, curr_y = sx, sy
-</span></span><span class="line"><span class="cl">                    local ang = s_angle
-</span></span><span class="line"><span class="cl">                    
-</span></span><span class="line"><span class="cl">                    for j = 1, max_j do
-</span></span><span class="line"><span class="cl">                        ang = ang + rng:Float(-1.0, 1.0)
-</span></span><span class="line"><span class="cl">                        if ang &lt; 80 then ang = 80 elseif ang &gt; 100 then ang = 100 end
-</span></span><span class="line"><span class="cl">                        
-</span></span><span class="line"><span class="cl">                        local step = 10
-</span></span><span class="line"><span class="cl">                        local next_x = curr_x + step * cos(ang)
-</span></span><span class="line"><span class="cl">                        local next_y = curr_y + step * sin(ang)
-</span></span><span class="line"><span class="cl">                        
-</span></span><span class="line"><span class="cl">                        local b1 = New(_straight, grain_b, COLOR_GREEN, curr_x, curr_y, 0, ang, false, 0, true, true, 0, false, 0, 0, 0, false)
-</span></span><span class="line"><span class="cl">                        local b2 = New(_straight, grain_b, COLOR_GREEN, curr_x + 5*cos(ang), curr_y + 5*sin(ang), 0, ang, false, 0, true, true, 0, false, 0, 0, 0, false)
-</span></span><span class="line"><span class="cl">                        table.insert(parts, b1)
-</span></span><span class="line"><span class="cl">                        table.insert(parts, b2)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                        -- --- 【新增：竹叶生长逻辑】 ---
-</span></span><span class="line"><span class="cl">                        -- 主干每 6 节长叶，侧枝在中间长叶
-</span></span><span class="line"><span class="cl">                        if (depth == 0 and j % 6 == 0 and j &lt; max_j - 5) or (depth &gt; 0 and j == 6) then
-</span></span><span class="line"><span class="cl">                            local leaf_side = (rng:Float(0,1) &gt; 0.5 and 1 or -1)
-</span></span><span class="line"><span class="cl">                            for k = 1, 2 do -- 每次成簇长出 2 片叶子
-</span></span><span class="line"><span class="cl">                                local leaf_ang = ang + leaf_side * rng:Float(40, 70)
-</span></span><span class="line"><span class="cl">                                local leaf = New(_straight, grain_a, COLOR_DEEP_GREEN, curr_x, curr_y, 0, leaf_ang, false, 0, true, true, 0, false, 0, 0, 0, false)
-</span></span><span class="line"><span class="cl">                                table.insert(parts, leaf)
-</span></span><span class="line"><span class="cl">                                leaf_side = leaf_side * -1 -- 左右交错或对称
-</span></span><span class="line"><span class="cl">                            end
-</span></span><span class="line"><span class="cl">                        end
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                        if depth == 0 and j == 26 then
-</span></span><span class="line"><span class="cl">                            local side = (rng:Float(0, 1) &gt; 0.5 and 1 or -1)
-</span></span><span class="line"><span class="cl">                            task.New(self, function()
-</span></span><span class="line"><span class="cl">                                grow_logic(curr_x, curr_y, ang + side * 30, depth + 1, 12, parts, flowers)
-</span></span><span class="line"><span class="cl">                            end)
-</span></span><span class="line"><span class="cl">                            ang = ang - side * 8
-</span></span><span class="line"><span class="cl">                        end
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                        -- 【高密度红色中心花簇】
-</span></span><span class="line"><span class="cl">                        if j &gt;= (max_j - 1) then
-</span></span><span class="line"><span class="cl">                            local bloom_intensity = 18 + (j - (max_j - 1)) * 4
-</span></span><span class="line"><span class="cl">                            for n = 1, bloom_intensity do 
-</span></span><span class="line"><span class="cl">                                local raw_r = sqrt(rng:Float(0, 1)) * 35
-</span></span><span class="line"><span class="cl">                                local offset_a = rng:Float(0, 360) 
-</span></span><span class="line"><span class="cl">                                local fx = curr_x + (raw_r * 1.2) * cos(offset_a)
-</span></span><span class="line"><span class="cl">                                local fy = curr_y + (raw_r * 0.8) * sin(offset_a)
-</span></span><span class="line"><span class="cl">                                local f_type = (rng:Float(0, 1) &gt; 0.7) and grain_a or ball_small
-</span></span><span class="line"><span class="cl">                                local f_color = (f_type == grain_a) and COLOR_PURPLE or COLOR_RED
-</span></span><span class="line"><span class="cl">                                local flower = New(_straight, f_type, f_color, fx, fy, 0, rng:Float(0, 360), false, 0, true, true, 0, false, 0, 0, 0, false)
-</span></span><span class="line"><span class="cl">                                table.insert(flowers, flower)
-</span></span><span class="line"><span class="cl">                            end
-</span></span><span class="line"><span class="cl">                        end
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                        curr_x, curr_y = next_x, next_y
-</span></span><span class="line"><span class="cl">                        task.Wait(4)
-</span></span><span class="line"><span class="cl">                    end
-</span></span><span class="line"><span class="cl">                end
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                grow_logic(base_x, -260, 90, 0, 46, bamboo_parts, current_flowers)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                task.Wait(30) 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                task.New(self, function()
-</span></span><span class="line"><span class="cl">                    for k = 1, #bamboo_parts do
-</span></span><span class="line"><span class="cl">                        if IsValid(bamboo_parts[k]) then Del(bamboo_parts[k]) end
-</span></span><span class="line"><span class="cl">                        if k % 30 == 0 then task.Wait(1) end
-</span></span><span class="line"><span class="cl">                    end
-</span></span><span class="line"><span class="cl">                end)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                task.Wait(40) 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                for _, flower in ipairs(current_flowers) do
-</span></span><span class="line"><span class="cl">                    if IsValid(flower) then
-</span></span><span class="line"><span class="cl">                        task.New(flower, function()
-</span></span><span class="line"><span class="cl">                            local weight = rng:Float(0, 1)
-</span></span><span class="line"><span class="cl">                            local gravity = 0.005 + (weight * 0.015)
-</span></span><span class="line"><span class="cl">                            flower.vx, flower.vy = rng:Float(-0.4, 0.4), -rng:Float(0, 0.2) * weight
-</span></span><span class="line"><span class="cl">                            local wind_sense = (1.2 - weight) * rng:Float(0.02, 0.04)
-</span></span><span class="line"><span class="cl">                            local friction = 0.97 + (weight * 0.02)
-</span></span><span class="line"><span class="cl">                            while IsValid(flower) do
-</span></span><span class="line"><span class="cl">                                flower.vy = flower.vy - gravity
-</span></span><span class="line"><span class="cl">                                flower.vx = (flower.vx + wind_sense * sin(timer * 2.5 + rng:Float(0, 360))) * friction
-</span></span><span class="line"><span class="cl">                                if flower.vy &lt; -3.5 then flower.vy = -3.5 end
-</span></span><span class="line"><span class="cl">                                task.Wait(1)
-</span></span><span class="line"><span class="cl">                            end
-</span></span><span class="line"><span class="cl">                        end)
-</span></span><span class="line"><span class="cl">                    end
-</span></span><span class="line"><span class="cl">                end
-</span></span><span class="line"><span class="cl">            end)
-</span></span><span class="line"><span class="cl">        end
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        task.Wait(320) 
-</span></span><span class="line"><span class="cl">        timer = timer + 1
-</span></span><span class="line"><span class="cl">    end
-</span></span><span class="line"><span class="cl">end)</span></span></code></pre></div></div>
+<pre class="line-numbers language-lua"><code class="language-lua">lasttask = task.New(self, function()
+    task.MoveTo(0, 160, 60, MOVE_NORMAL)
+    
+    local rng = Rand()
+    local timer = 0
+
+    while true do
+        self.x = 20 * sin(timer * 1.0)
+
+        for i = 1, 4 do
+            local base_x = -150 &#43; (i - 1) * 100 
+            
+            task.New(self, function()
+                local bamboo_parts = {}     
+                local current_flowers = {}  
+
+                local function grow_logic(sx, sy, s_angle, depth, max_j, parts, flowers)
+                    local curr_x, curr_y = sx, sy
+                    local ang = s_angle
+                    
+                    for j = 1, max_j do
+                        ang = ang &#43; rng:Float(-1.0, 1.0)
+                        if ang &lt; 80 then ang = 80 elseif ang &gt; 100 then ang = 100 end
+                        
+                        local step = 10
+                        local next_x = curr_x &#43; step * cos(ang)
+                        local next_y = curr_y &#43; step * sin(ang)
+                        
+                        local b1 = New(_straight, grain_b, COLOR_GREEN, curr_x, curr_y, 0, ang, false, 0, true, true, 0, false, 0, 0, 0, false)
+                        local b2 = New(_straight, grain_b, COLOR_GREEN, curr_x &#43; 5*cos(ang), curr_y &#43; 5*sin(ang), 0, ang, false, 0, true, true, 0, false, 0, 0, 0, false)
+                        table.insert(parts, b1)
+                        table.insert(parts, b2)
+
+                        -- --- 【新增：竹叶生长逻辑】 ---
+                        -- 主干每 6 节长叶，侧枝在中间长叶
+                        if (depth == 0 and j % 6 == 0 and j &lt; max_j - 5) or (depth &gt; 0 and j == 6) then
+                            local leaf_side = (rng:Float(0,1) &gt; 0.5 and 1 or -1)
+                            for k = 1, 2 do -- 每次成簇长出 2 片叶子
+                                local leaf_ang = ang &#43; leaf_side * rng:Float(40, 70)
+                                local leaf = New(_straight, grain_a, COLOR_DEEP_GREEN, curr_x, curr_y, 0, leaf_ang, false, 0, true, true, 0, false, 0, 0, 0, false)
+                                table.insert(parts, leaf)
+                                leaf_side = leaf_side * -1 -- 左右交错或对称
+                            end
+                        end
+
+                        if depth == 0 and j == 26 then
+                            local side = (rng:Float(0, 1) &gt; 0.5 and 1 or -1)
+                            task.New(self, function()
+                                grow_logic(curr_x, curr_y, ang &#43; side * 30, depth &#43; 1, 12, parts, flowers)
+                            end)
+                            ang = ang - side * 8
+                        end
+
+                        -- 【高密度红色中心花簇】
+                        if j &gt;= (max_j - 1) then
+                            local bloom_intensity = 18 &#43; (j - (max_j - 1)) * 4
+                            for n = 1, bloom_intensity do 
+                                local raw_r = sqrt(rng:Float(0, 1)) * 35
+                                local offset_a = rng:Float(0, 360) 
+                                local fx = curr_x &#43; (raw_r * 1.2) * cos(offset_a)
+                                local fy = curr_y &#43; (raw_r * 0.8) * sin(offset_a)
+                                local f_type = (rng:Float(0, 1) &gt; 0.7) and grain_a or ball_small
+                                local f_color = (f_type == grain_a) and COLOR_PURPLE or COLOR_RED
+                                local flower = New(_straight, f_type, f_color, fx, fy, 0, rng:Float(0, 360), false, 0, true, true, 0, false, 0, 0, 0, false)
+                                table.insert(flowers, flower)
+                            end
+                        end
+
+                        curr_x, curr_y = next_x, next_y
+                        task.Wait(4)
+                    end
+                end
+
+                grow_logic(base_x, -260, 90, 0, 46, bamboo_parts, current_flowers)
+
+                task.Wait(30) 
+
+                task.New(self, function()
+                    for k = 1, #bamboo_parts do
+                        if IsValid(bamboo_parts[k]) then Del(bamboo_parts[k]) end
+                        if k % 30 == 0 then task.Wait(1) end
+                    end
+                end)
+
+                task.Wait(40) 
+
+                for _, flower in ipairs(current_flowers) do
+                    if IsValid(flower) then
+                        task.New(flower, function()
+                            local weight = rng:Float(0, 1)
+                            local gravity = 0.005 &#43; (weight * 0.015)
+                            flower.vx, flower.vy = rng:Float(-0.4, 0.4), -rng:Float(0, 0.2) * weight
+                            local wind_sense = (1.2 - weight) * rng:Float(0.02, 0.04)
+                            local friction = 0.97 &#43; (weight * 0.02)
+                            while IsValid(flower) do
+                                flower.vy = flower.vy - gravity
+                                flower.vx = (flower.vx &#43; wind_sense * sin(timer * 2.5 &#43; rng:Float(0, 360))) * friction
+                                if flower.vy &lt; -3.5 then flower.vy = -3.5 end
+                                task.Wait(1)
+                            end
+                        end)
+                    end
+                end
+            end)
+        end
+
+        task.Wait(320) 
+        timer = timer &#43; 1
+    end
+end)</code></pre>
 <p>那个注释里写的什么竹叶，我看上去更像是竹节，也就干脆做成深绿色了。</p>
 
 <h2 class="relative group">Final Scene
@@ -1010,48 +1190,215 @@
 <p>避弹的做法是找到了灵梦机体的 <code>.lua</code> 源码，在里面把灵梦的 <code>frame()</code> 函数换掉了。大致逻辑是每个弹幕给一定斥力，还要注意把自机拉回版底中部，不然会很容易飘到角落被封死。</p>
 <p>之后会继续做一些符卡，再看看能不能优化这个避弹逻辑，或许真要做成一个小项目呢&hellip;</p>
 
-<h2 class="relative group">Unrelated Things
-    <div id="unrelated-things" class="anchor"></div>
+<h2 class="relative group">Something Unrelated
+    <div id="something-unrelated" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#unrelated-things" aria-label="Anchor">#</a>
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#something-unrelated" aria-label="Anchor">#</a>
     </span>
     
 </h2>
 <p>29 号东方迷宫 3 出了，听说汉化可能这两天能好，后面必须要尝尝咸淡了。</p>
 <p>最近睡得好晚（起得也好晚），感觉精神有些萎靡啊，调作息吧调作息。</p>
 
+            
+            
+            
+          </div>
           
           
+
           
+
+          
+
         </div>
-        
-        
 
         
-
         
+          
+          
+            
+            
+          
+          
+          
+          <script
+            type="text/javascript"
+            src="/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
+            integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
+            data-oid="views_posts/playing-luastg.md"
+            data-oid-likes="likes_posts/playing-luastg.md"></script>
+        
+      </section>
 
+      
+      <aside class="article-sidebar w-full lg:w-72 flex-shrink-0 print:hidden">
+        <div class="sidebar-sticky space-y-6">
+          
+          
+<div class="sidebar-card bg-neutral-100 dark:bg-neutral-800 rounded-xl p-5 shadow-sm">
+  
+  <div class="flex flex-col items-center">
+    
+    <a href="http://localhost:1313/" class="block">
+      <img 
+        src="/apple-touch-icon.png" 
+        alt="Konpaku Youming" 
+        class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 dark:border-primary-400 hover:scale-105 transition-transform duration-300"
+      >
+    </a>
+    
+    
+    <h3 class="mt-3 text-lg font-bold text-neutral-900 dark:text-neutral-100">
+      Konpaku Youming
+    </h3>
+    
+    
+    
+      <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400 text-center">
+        半灵的四分之一
+      </p>
+    
+  </div>
+
+  
+  
+    <div class="flex justify-center gap-3 mt-4 flex-wrap">
+      
+        
+          <a 
+            href="https://github.com/konpaku-ming" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="github"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+            
+          </a>
+        
+      
+        
+          <a 
+            href="https://space.bilibili.com/1998732023" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="bilibili"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+  <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zm-3.12 7.466l-.48-.52a1.092 1.092 0 0 0-.8-.347c-.311 0-.578.116-.8.347l-2.933 2.893a1.105 1.105 0 0 0-.347.8c0 .311.116.578.347.8l.48.52c.222.231.489.347.8.347.311 0 .587-.116.8-.347l2.933-2.893c.231-.222.347-.489.347-.8 0-.311-.116-.578-.347-.8zm-7.387.84a1.14 1.14 0 0 0-.84-.347c-.311 0-.578.116-.8.347l-.507.507a1.105 1.105 0 0 0-.347.8c0 .311.116.578.347.8l3.52 3.52c.222.231.489.347.8.347.311 0 .587-.116.8-.347l.507-.507a1.14 1.14 0 0 0 .347-.84c0-.311-.116-.578-.347-.8l-3.48-3.48z"/>
+</svg>
+
+            
+          </a>
+        
+      
+        
+          <a 
+            href="mailto:dxuanming@sjtu.edu.cn" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="email"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M207.8 20.73c-93.45 18.32-168.7 93.66-187 187.1c-27.64 140.9 68.65 266.2 199.1 285.1c19.01 2.888 36.17-12.26 36.17-31.49l.0001-.6631c0-15.74-11.44-28.88-26.84-31.24c-84.35-12.98-149.2-86.13-149.2-174.2c0-102.9 88.61-185.5 193.4-175.4c91.54 8.869 158.6 91.25 158.6 183.2l0 16.16c0 22.09-17.94 40.05-40 40.05s-40.01-17.96-40.01-40.05v-120.1c0-8.847-7.161-16.02-16.01-16.02l-31.98 .0036c-7.299 0-13.2 4.992-15.12 11.68c-24.85-12.15-54.24-16.38-86.06-5.106c-38.75 13.73-68.12 48.91-73.72 89.64c-9.483 69.01 43.81 128 110.9 128c26.44 0 50.43-9.544 69.59-24.88c24 31.3 65.23 48.69 109.4 37.49C465.2 369.3 496 324.1 495.1 277.2V256.3C495.1 107.1 361.2-9.332 207.8 20.73zM239.1 304.3c-26.47 0-48-21.56-48-48.05s21.53-48.05 48-48.05s48 21.56 48 48.05S266.5 304.3 239.1 304.3z"/></svg>
+
+            
+          </a>
+        
+      
+    </div>
+  
+
+  
+  <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+    <div class="text-center">
+      <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+        5
       </div>
+      <div class="text-xs text-neutral-500 dark:text-neutral-400">文章</div>
+    </div>
+    <div class="text-center">
+      <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+        0
+      </div>
+      <div class="text-xs text-neutral-500 dark:text-neutral-400">标签</div>
+    </div>
+  </div>
+</div>
 
-      
-      
-        
-        
           
           
-        
-        
-        
-        <script
-          type="text/javascript"
-          src="/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
-          integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
-          data-oid="views_posts/playing-luastg.md"
-          data-oid-likes="likes_posts/playing-luastg.md"></script>
-      
-    </section>
+          
+<div class="sidebar-card bg-neutral-100 dark:bg-neutral-800 rounded-xl p-5 shadow-sm">
+  <h3 class="text-base font-bold text-neutral-900 dark:text-neutral-100 mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 8v4l3 3"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+    最近文章
+  </h3>
+  
+  <ul class="space-y-3">
+    
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/playing-luastg/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            Playing LuaSTG...
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-31
+          </div>
+        </a>
+      </li>
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/srt-division/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            SRT Division
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-26
+          </div>
+        </a>
+      </li>
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/wallace-tree-2/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            Wallace Tree (2)
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-25
+          </div>
+        </a>
+      </li>
+    
+  </ul>
+  
+  
+  <a 
+    href="/posts/" 
+    class="mt-4 block text-center text-sm text-primary-600 dark:text-primary-400 hover:underline"
+  >
+    查看全部 →
+  </a>
+</div>
+
+        </div>
+      </aside>
+    </div>
 
     
     <footer class="pt-8 max-w-prose print:hidden">

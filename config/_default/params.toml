@@ -179,3 +179,12 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 
 [advertisement]
   # adsense = ""
+
+[sidebar]
+  avatar = "/apple-touch-icon.png"
+  headline = "半灵的四分之一"
+  links = [
+    { github = "https://github.com/konpaku-ming" },
+    { bilibili = "https://space.bilibili.com/1998732023" },
+    { email = "mailto:dxuanming@sjtu.edu.cn" }
+  ]

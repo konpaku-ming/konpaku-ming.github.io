@@ -228,7 +228,10 @@
 
   
   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
+<link rel="stylesheet" href="/css/prism.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body);"></script>
@@ -250,12 +253,59 @@
 
 <style>
     :root {
-        --article-max-width: min(65ch, 100%);
+        --article-max-width: min(75ch, 100%);
     }
 
     @media (min-width: 1024px) {
         :root {
-            --article-max-width: min(80ch, 100%);
+            --article-max-width: min(90ch, 100%);
+        }
+
+         
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+     
+    .article-with-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .article-with-sidebar {
+            flex-direction: row;
+        }
+    }
+
+    .article-sidebar {
+        order: -1;  
+    }
+
+    @media (min-width: 1024px) {
+        .article-sidebar {
+            order: 1;  
+            width: 230px;
+            min-width: 230px;
+        }
+    }
+
+    .sidebar-sticky {
+        position: relative;
+    }
+
+    @media (min-width: 1024px) {
+        .sidebar-sticky {
+            position: sticky;
+            top: 6rem;
         }
     }
 
@@ -323,7 +373,136 @@
             width: calc(100vw - 1rem) !important;
         }
     }
+
+     
+    pre[class*="language-"],
+    pre.line-numbers {
+        margin: 1em 0;
+        border-radius: 0.5rem;
+        overflow: auto;
+        background: #2d2d2d !important;
+    }
+
+     
+    article pre[class*="language-"],
+    .prose pre[class*="language-"] {
+        max-width: 100%;
+    }
+
+     
+    pre[class*="language-"].line-numbers {
+        padding-left: 3.8em;
+    }
+
+    .line-numbers .line-numbers-rows {
+        border-right-color: rgba(255, 255, 255, 0.1);
+    }
+
+     
+    div.code-toolbar > .toolbar {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    div.code-toolbar:hover > .toolbar {
+        opacity: 1;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button,
+    div.code-toolbar > .toolbar > .toolbar-item > span {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ccc;
+        padding: 0.25em 0.5em;
+        font-size: 0.75em;
+        border-radius: 0.25rem;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
+    }
+
+     
+    .dark pre[class*="language-"] {
+        background: #1e1e1e !important;
+    }
+
+     
+    code[class*="language-"],
+    pre[class*="language-"] {
+        color: #ccc;
+    }
+
+     
+    .sidebar-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sidebar-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark .sidebar-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+     
+    .sidebar-card a svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+     
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+     
+    @media (max-width: 1023px) {
+        .article-sidebar {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .article-sidebar .sidebar-card {
+            flex-shrink: 0;
+            width: 280px;
+        }
+
+        .sidebar-sticky {
+            display: contents;
+        }
+
+        .sidebar-sticky > * {
+            flex-shrink: 0;
+        }
+    }
+
+     
+    @media (min-width: 1024px) {
+        article {
+            max-width: none;
+        }
+    }
 </style>
+
+
+<script src="/js/prism.js"></script>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

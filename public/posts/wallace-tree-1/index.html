@@ -228,7 +228,10 @@
 
   
   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    
+<link rel="stylesheet" href="/css/prism.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body);"></script>
@@ -250,12 +253,59 @@
 
 <style>
     :root {
-        --article-max-width: min(65ch, 100%);
+        --article-max-width: min(75ch, 100%);
     }
 
     @media (min-width: 1024px) {
         :root {
-            --article-max-width: min(80ch, 100%);
+            --article-max-width: min(90ch, 100%);
+        }
+
+         
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        body {
+            padding-right: 0rem !important;
+        }
+    }
+
+     
+    .article-with-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .article-with-sidebar {
+            flex-direction: row;
+        }
+    }
+
+    .article-sidebar {
+        order: -1;  
+    }
+
+    @media (min-width: 1024px) {
+        .article-sidebar {
+            order: 1;  
+            width: 230px;
+            min-width: 230px;
+        }
+    }
+
+    .sidebar-sticky {
+        position: relative;
+    }
+
+    @media (min-width: 1024px) {
+        .sidebar-sticky {
+            position: sticky;
+            top: 6rem;
         }
     }
 
@@ -323,7 +373,136 @@
             width: calc(100vw - 1rem) !important;
         }
     }
+
+     
+    pre[class*="language-"],
+    pre.line-numbers {
+        margin: 1em 0;
+        border-radius: 0.5rem;
+        overflow: auto;
+        background: #2d2d2d !important;
+    }
+
+     
+    article pre[class*="language-"],
+    .prose pre[class*="language-"] {
+        max-width: 100%;
+    }
+
+     
+    pre[class*="language-"].line-numbers {
+        padding-left: 3.8em;
+    }
+
+    .line-numbers .line-numbers-rows {
+        border-right-color: rgba(255, 255, 255, 0.1);
+    }
+
+     
+    div.code-toolbar > .toolbar {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    div.code-toolbar:hover > .toolbar {
+        opacity: 1;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button,
+    div.code-toolbar > .toolbar > .toolbar-item > span {
+        background: rgba(255, 255, 255, 0.2);
+        color: #ccc;
+        padding: 0.25em 0.5em;
+        font-size: 0.75em;
+        border-radius: 0.25rem;
+    }
+
+    div.code-toolbar > .toolbar > .toolbar-item > button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
+    }
+
+     
+    .dark pre[class*="language-"] {
+        background: #1e1e1e !important;
+    }
+
+     
+    code[class*="language-"],
+    pre[class*="language-"] {
+        color: #ccc;
+    }
+
+     
+    .sidebar-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sidebar-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark .sidebar-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+     
+    .sidebar-card a svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+     
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+     
+    @media (max-width: 1023px) {
+        .article-sidebar {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .article-sidebar .sidebar-card {
+            flex-shrink: 0;
+            width: 280px;
+        }
+
+        .sidebar-sticky {
+            display: contents;
+        }
+
+        .sidebar-sticky > * {
+            flex-shrink: 0;
+        }
+    }
+
+     
+    @media (min-width: 1024px) {
+        article {
+            max-width: none;
+        }
+    }
 </style>
+
+
+<script src="/js/prism.js"></script>
+<script>
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -837,19 +1016,20 @@
     </header>
 
     
-    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    <div class="article-with-sidebar flex flex-col lg:flex-row gap-8">
       
-      
-      
-      
-      
-
-
-      <div class="min-w-0 min-h-0 max-w-fit">
+      <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row flex-1 min-w-0">
+        
+        
+        
+        
         
 
-        <div class="article-content max-w-prose mb-20">
-          <p>为了做 CPU M-Extension 的 Bonus 接触到了 Wallace Tree 乘法器，后来的实现也基本是借鉴的这种乘法。结果 cr 的时候因为周期设计不够 balanced 被 TA 拷打了，之后又在 XiangShan 上找到了一个<a href="https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala"  target="_blank" rel="noreferrer">基于 Wallace Tree 的乘法器实现</a>，感觉自己做的那个还是太低级了。</p>
+        <div class="min-w-0 min-h-0 max-w-fit">
+          
+
+          <div class="article-content max-w-prose mb-20">
+            <p>为了做 CPU M-Extension 的 Bonus 接触到了 Wallace Tree 乘法器，后来的实现也基本是借鉴的这种乘法。结果 cr 的时候因为周期设计不够 balanced 被 TA 拷打了，之后又在 XiangShan 上找到了一个<a href="https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala"  target="_blank" rel="noreferrer">基于 Wallace Tree 的乘法器实现</a>，感觉自己做的那个还是太低级了。</p>
 
 <h2 class="relative group">Before Reading
     <div id="before-reading" class="anchor"></div>
@@ -912,278 +1092,278 @@
 <p>注意：部分积压缩的层与层之间是串联的，每一层需要等待上一层的信号，这会导致压缩的总时间远比每层压缩的时间和要大。把 8 层的压缩全部放在一个周期并不是一个很好的选择。</p>
 <p>在 M1 中，处理符号位和生成部分积都不会有太多延迟，完全可以进行 2 层压缩。
 压缩的另一个好处在于：更少的部分积意味着 M1 到 M2 之间存储这些中间结果的寄存器可以减少。</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">    def cycle_m1(self):
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        Execute EX_M1 stage: Partial Product Generation + 2 Levels of Compression
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        This stage generates 32 partial products using AND gates, then performs
-</span></span><span class="line"><span class="cl">        Level 1 (32 → 22) and Level 2 (22 → 15) compression.
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        # Only process if stage 1 is valid
-</span></span><span class="line"><span class="cl">        with Condition(self.m1_valid[0] == Bits(1)(1)):
-</span></span><span class="line"><span class="cl">            # Read pipeline registers
-</span></span><span class="line"><span class="cl">            op1 = self.m1_op1[0]
-</span></span><span class="line"><span class="cl">            op2 = self.m1_op2[0]
-</span></span><span class="line"><span class="cl">            op1_signed = self.m1_op1_signed[0]
-</span></span><span class="line"><span class="cl">            op2_signed = self.m1_op2_signed[0]
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Step 1: Sign/Zero extend operands to 64 bits
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            op1_ext = sign_zero_extend(op1, op1_signed)  # 64-bit extended op1
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Step 2: Compute signed multiplication correction for MULH
-</span></span><span class="line"><span class="cl">            # When op2 is signed and negative (op2[31]=1), we need to correct
-</span></span><span class="line"><span class="cl">            # the result because the MSB represents -2^31 instead of +2^31.
-</span></span><span class="line"><span class="cl">            # The correction is: subtract op1 from the high 32 bits of result.
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            need_correction = op2_signed &amp; op2[31:31]
-</span></span><span class="line"><span class="cl">            signed_correction = need_correction.select(op1, Bits(32)(0))
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Step 3: Generate 32 Partial Products
-</span></span><span class="line"><span class="cl">            # For each bit i of op2: pp[i] = (op2[i] ? op1_ext : 0) &lt;&lt; i
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Generate all 32 partial products with correct shifting
-</span></span><span class="line"><span class="cl">            # Note: For a left shift by i bits, we concat zeros on the right
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            pp0 = op2[0:0].select(op1_ext, Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp1 = op2[1:1].select(concat(op1_ext[0:62], Bits(1)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp2 = op2[2:2].select(concat(op1_ext[0:61], Bits(2)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp3 = op2[3:3].select(concat(op1_ext[0:60], Bits(3)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp4 = op2[4:4].select(concat(op1_ext[0:59], Bits(4)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp5 = op2[5:5].select(concat(op1_ext[0:58], Bits(5)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp6 = op2[6:6].select(concat(op1_ext[0:57], Bits(6)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp7 = op2[7:7].select(concat(op1_ext[0:56], Bits(7)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp8 = op2[8:8].select(concat(op1_ext[0:55], Bits(8)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp9 = op2[9:9].select(concat(op1_ext[0:54], Bits(9)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp10 = op2[10:10].select(concat(op1_ext[0:53], Bits(10)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp11 = op2[11:11].select(concat(op1_ext[0:52], Bits(11)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp12 = op2[12:12].select(concat(op1_ext[0:51], Bits(12)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp13 = op2[13:13].select(concat(op1_ext[0:50], Bits(13)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp14 = op2[14:14].select(concat(op1_ext[0:49], Bits(14)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp15 = op2[15:15].select(concat(op1_ext[0:48], Bits(15)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp16 = op2[16:16].select(concat(op1_ext[0:47], Bits(16)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp17 = op2[17:17].select(concat(op1_ext[0:46], Bits(17)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp18 = op2[18:18].select(concat(op1_ext[0:45], Bits(18)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp19 = op2[19:19].select(concat(op1_ext[0:44], Bits(19)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp20 = op2[20:20].select(concat(op1_ext[0:43], Bits(20)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp21 = op2[21:21].select(concat(op1_ext[0:42], Bits(21)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp22 = op2[22:22].select(concat(op1_ext[0:41], Bits(22)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp23 = op2[23:23].select(concat(op1_ext[0:40], Bits(23)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp24 = op2[24:24].select(concat(op1_ext[0:39], Bits(24)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp25 = op2[25:25].select(concat(op1_ext[0:38], Bits(25)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp26 = op2[26:26].select(concat(op1_ext[0:37], Bits(26)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp27 = op2[27:27].select(concat(op1_ext[0:36], Bits(27)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp28 = op2[28:28].select(concat(op1_ext[0:35], Bits(28)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp29 = op2[29:29].select(concat(op1_ext[0:34], Bits(29)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp30 = op2[30:30].select(concat(op1_ext[0:33], Bits(30)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">            pp31 = op2[31:31].select(concat(op1_ext[0:32], Bits(31)(0)), Bits(64)(0))
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Step 4: Wallace Tree Compression Level 1 (32 → 22 rows)
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Level 1: 32 → 22 rows (10 groups of 3, 2 passthrough)
-</span></span><span class="line"><span class="cl">            s1_0, c1_0 = full_adder_64bit(pp0, pp1, pp2)
-</span></span><span class="line"><span class="cl">            s1_1, c1_1 = full_adder_64bit(pp3, pp4, pp5)
-</span></span><span class="line"><span class="cl">            s1_2, c1_2 = full_adder_64bit(pp6, pp7, pp8)
-</span></span><span class="line"><span class="cl">            s1_3, c1_3 = full_adder_64bit(pp9, pp10, pp11)
-</span></span><span class="line"><span class="cl">            s1_4, c1_4 = full_adder_64bit(pp12, pp13, pp14)
-</span></span><span class="line"><span class="cl">            s1_5, c1_5 = full_adder_64bit(pp15, pp16, pp17)
-</span></span><span class="line"><span class="cl">            s1_6, c1_6 = full_adder_64bit(pp18, pp19, pp20)
-</span></span><span class="line"><span class="cl">            s1_7, c1_7 = full_adder_64bit(pp21, pp22, pp23)
-</span></span><span class="line"><span class="cl">            s1_8, c1_8 = full_adder_64bit(pp24, pp25, pp26)
-</span></span><span class="line"><span class="cl">            s1_9, c1_9 = full_adder_64bit(pp27, pp28, pp29)
-</span></span><span class="line"><span class="cl">            # Passthrough: pp30, pp31
-</span></span><span class="line"><span class="cl">            # Level 1 output: 22 rows total (10 sum outputs: s1_0..s1_9, 10 carry outputs: c1_0..c1_9, 2 passthrough: pp30, pp31)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Step 5: Wallace Tree Compression Level 2 (22 → 15 rows)
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Level 2: 22 → 15 rows (7 groups of 3, 1 passthrough)
-</span></span><span class="line"><span class="cl">            s2_0, c2_0 = full_adder_64bit(s1_0, c1_0, s1_1)
-</span></span><span class="line"><span class="cl">            s2_1, c2_1 = full_adder_64bit(c1_1, s1_2, c1_2)
-</span></span><span class="line"><span class="cl">            s2_2, c2_2 = full_adder_64bit(s1_3, c1_3, s1_4)
-</span></span><span class="line"><span class="cl">            s2_3, c2_3 = full_adder_64bit(c1_4, s1_5, c1_5)
-</span></span><span class="line"><span class="cl">            s2_4, c2_4 = full_adder_64bit(s1_6, c1_6, s1_7)
-</span></span><span class="line"><span class="cl">            s2_5, c2_5 = full_adder_64bit(c1_7, s1_8, c1_8)
-</span></span><span class="line"><span class="cl">            s2_6, c2_6 = full_adder_64bit(s1_9, c1_9, pp30)
-</span></span><span class="line"><span class="cl">            # Passthrough: pp31
-</span></span><span class="line"><span class="cl">            # Level 2 output: 15 rows total (7 sum outputs: s2_0..s2_6, 7 carry outputs: c2_0..c2_6, 1 passthrough: pp31)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Store 15 intermediate rows in stage 2 pipeline registers
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            self.m2_valid[0] = Bits(1)(1)
-</span></span><span class="line"><span class="cl">            self.m2_result_high[0] = self.m1_result_high[0]
-</span></span><span class="line"><span class="cl">            self.m2_rd[0] = self.m1_rd[0]
-</span></span><span class="line"><span class="cl">            self.m2_signed_correction[0] = signed_correction
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Store all 15 intermediate rows
-</span></span><span class="line"><span class="cl">            self.m2_row0[0] = s2_0
-</span></span><span class="line"><span class="cl">            self.m2_row1[0] = c2_0
-</span></span><span class="line"><span class="cl">            self.m2_row2[0] = s2_1
-</span></span><span class="line"><span class="cl">            self.m2_row3[0] = c2_1
-</span></span><span class="line"><span class="cl">            self.m2_row4[0] = s2_2
-</span></span><span class="line"><span class="cl">            self.m2_row5[0] = c2_2
-</span></span><span class="line"><span class="cl">            self.m2_row6[0] = s2_3
-</span></span><span class="line"><span class="cl">            self.m2_row7[0] = c2_3
-</span></span><span class="line"><span class="cl">            self.m2_row8[0] = s2_4
-</span></span><span class="line"><span class="cl">            self.m2_row9[0] = c2_4
-</span></span><span class="line"><span class="cl">            self.m2_row10[0] = s2_5
-</span></span><span class="line"><span class="cl">            self.m2_row11[0] = c2_5
-</span></span><span class="line"><span class="cl">            self.m2_row12[0] = s2_6
-</span></span><span class="line"><span class="cl">            self.m2_row13[0] = c2_6
-</span></span><span class="line"><span class="cl">            self.m2_row14[0] = pp31
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Clear stage 1
-</span></span><span class="line"><span class="cl">            self.m1_valid[0] = Bits(1)(0)</span></span></code></pre></div></div>
+<pre class="line-numbers language-python"><code class="language-python">def cycle_m1(self):
+    &#34;&#34;&#34;
+    Execute EX_M1 stage: Partial Product Generation &#43; 2 Levels of Compression
+
+    This stage generates 32 partial products using AND gates, then performs
+    Level 1 (32 → 22) and Level 2 (22 → 15) compression.
+    &#34;&#34;&#34;
+    # Only process if stage 1 is valid
+    with Condition(self.m1_valid[0] == Bits(1)(1)):
+        # Read pipeline registers
+        op1 = self.m1_op1[0]
+        op2 = self.m1_op2[0]
+        op1_signed = self.m1_op1_signed[0]
+        op2_signed = self.m1_op2_signed[0]
+
+        # =================================================================
+        # Step 1: Sign/Zero extend operands to 64 bits
+        # =================================================================
+        op1_ext = sign_zero_extend(op1, op1_signed)  # 64-bit extended op1
+
+        # =================================================================
+        # Step 2: Compute signed multiplication correction for MULH
+        # When op2 is signed and negative (op2[31]=1), we need to correct
+        # the result because the MSB represents -2^31 instead of &#43;2^31.
+        # The correction is: subtract op1 from the high 32 bits of result.
+        # =================================================================
+        need_correction = op2_signed &amp; op2[31:31]
+        signed_correction = need_correction.select(op1, Bits(32)(0))
+
+        # =================================================================
+        # Step 3: Generate 32 Partial Products
+        # For each bit i of op2: pp[i] = (op2[i] ? op1_ext : 0) &lt;&lt; i
+        # =================================================================
+
+        # Generate all 32 partial products with correct shifting
+        # Note: For a left shift by i bits, we concat zeros on the right
+
+        pp0 = op2[0:0].select(op1_ext, Bits(64)(0))
+        pp1 = op2[1:1].select(concat(op1_ext[0:62], Bits(1)(0)), Bits(64)(0))
+        pp2 = op2[2:2].select(concat(op1_ext[0:61], Bits(2)(0)), Bits(64)(0))
+        pp3 = op2[3:3].select(concat(op1_ext[0:60], Bits(3)(0)), Bits(64)(0))
+        pp4 = op2[4:4].select(concat(op1_ext[0:59], Bits(4)(0)), Bits(64)(0))
+        pp5 = op2[5:5].select(concat(op1_ext[0:58], Bits(5)(0)), Bits(64)(0))
+        pp6 = op2[6:6].select(concat(op1_ext[0:57], Bits(6)(0)), Bits(64)(0))
+        pp7 = op2[7:7].select(concat(op1_ext[0:56], Bits(7)(0)), Bits(64)(0))
+        pp8 = op2[8:8].select(concat(op1_ext[0:55], Bits(8)(0)), Bits(64)(0))
+        pp9 = op2[9:9].select(concat(op1_ext[0:54], Bits(9)(0)), Bits(64)(0))
+        pp10 = op2[10:10].select(concat(op1_ext[0:53], Bits(10)(0)), Bits(64)(0))
+        pp11 = op2[11:11].select(concat(op1_ext[0:52], Bits(11)(0)), Bits(64)(0))
+        pp12 = op2[12:12].select(concat(op1_ext[0:51], Bits(12)(0)), Bits(64)(0))
+        pp13 = op2[13:13].select(concat(op1_ext[0:50], Bits(13)(0)), Bits(64)(0))
+        pp14 = op2[14:14].select(concat(op1_ext[0:49], Bits(14)(0)), Bits(64)(0))
+        pp15 = op2[15:15].select(concat(op1_ext[0:48], Bits(15)(0)), Bits(64)(0))
+        pp16 = op2[16:16].select(concat(op1_ext[0:47], Bits(16)(0)), Bits(64)(0))
+        pp17 = op2[17:17].select(concat(op1_ext[0:46], Bits(17)(0)), Bits(64)(0))
+        pp18 = op2[18:18].select(concat(op1_ext[0:45], Bits(18)(0)), Bits(64)(0))
+        pp19 = op2[19:19].select(concat(op1_ext[0:44], Bits(19)(0)), Bits(64)(0))
+        pp20 = op2[20:20].select(concat(op1_ext[0:43], Bits(20)(0)), Bits(64)(0))
+        pp21 = op2[21:21].select(concat(op1_ext[0:42], Bits(21)(0)), Bits(64)(0))
+        pp22 = op2[22:22].select(concat(op1_ext[0:41], Bits(22)(0)), Bits(64)(0))
+        pp23 = op2[23:23].select(concat(op1_ext[0:40], Bits(23)(0)), Bits(64)(0))
+        pp24 = op2[24:24].select(concat(op1_ext[0:39], Bits(24)(0)), Bits(64)(0))
+        pp25 = op2[25:25].select(concat(op1_ext[0:38], Bits(25)(0)), Bits(64)(0))
+        pp26 = op2[26:26].select(concat(op1_ext[0:37], Bits(26)(0)), Bits(64)(0))
+        pp27 = op2[27:27].select(concat(op1_ext[0:36], Bits(27)(0)), Bits(64)(0))
+        pp28 = op2[28:28].select(concat(op1_ext[0:35], Bits(28)(0)), Bits(64)(0))
+        pp29 = op2[29:29].select(concat(op1_ext[0:34], Bits(29)(0)), Bits(64)(0))
+        pp30 = op2[30:30].select(concat(op1_ext[0:33], Bits(30)(0)), Bits(64)(0))
+        pp31 = op2[31:31].select(concat(op1_ext[0:32], Bits(31)(0)), Bits(64)(0))
+
+        # =================================================================
+        # Step 4: Wallace Tree Compression Level 1 (32 → 22 rows)
+        # =================================================================
+        # Level 1: 32 → 22 rows (10 groups of 3, 2 passthrough)
+        s1_0, c1_0 = full_adder_64bit(pp0, pp1, pp2)
+        s1_1, c1_1 = full_adder_64bit(pp3, pp4, pp5)
+        s1_2, c1_2 = full_adder_64bit(pp6, pp7, pp8)
+        s1_3, c1_3 = full_adder_64bit(pp9, pp10, pp11)
+        s1_4, c1_4 = full_adder_64bit(pp12, pp13, pp14)
+        s1_5, c1_5 = full_adder_64bit(pp15, pp16, pp17)
+        s1_6, c1_6 = full_adder_64bit(pp18, pp19, pp20)
+        s1_7, c1_7 = full_adder_64bit(pp21, pp22, pp23)
+        s1_8, c1_8 = full_adder_64bit(pp24, pp25, pp26)
+        s1_9, c1_9 = full_adder_64bit(pp27, pp28, pp29)
+        # Passthrough: pp30, pp31
+        # Level 1 output: 22 rows total (10 sum outputs: s1_0..s1_9, 10 carry outputs: c1_0..c1_9, 2 passthrough: pp30, pp31)
+
+        # =================================================================
+        # Step 5: Wallace Tree Compression Level 2 (22 → 15 rows)
+        # =================================================================
+        # Level 2: 22 → 15 rows (7 groups of 3, 1 passthrough)
+        s2_0, c2_0 = full_adder_64bit(s1_0, c1_0, s1_1)
+        s2_1, c2_1 = full_adder_64bit(c1_1, s1_2, c1_2)
+        s2_2, c2_2 = full_adder_64bit(s1_3, c1_3, s1_4)
+        s2_3, c2_3 = full_adder_64bit(c1_4, s1_5, c1_5)
+        s2_4, c2_4 = full_adder_64bit(s1_6, c1_6, s1_7)
+        s2_5, c2_5 = full_adder_64bit(c1_7, s1_8, c1_8)
+        s2_6, c2_6 = full_adder_64bit(s1_9, c1_9, pp30)
+        # Passthrough: pp31
+        # Level 2 output: 15 rows total (7 sum outputs: s2_0..s2_6, 7 carry outputs: c2_0..c2_6, 1 passthrough: pp31)
+
+        # =================================================================
+        # Store 15 intermediate rows in stage 2 pipeline registers
+        # =================================================================
+        self.m2_valid[0] = Bits(1)(1)
+        self.m2_result_high[0] = self.m1_result_high[0]
+        self.m2_rd[0] = self.m1_rd[0]
+        self.m2_signed_correction[0] = signed_correction
+
+        # Store all 15 intermediate rows
+        self.m2_row0[0] = s2_0
+        self.m2_row1[0] = c2_0
+        self.m2_row2[0] = s2_1
+        self.m2_row3[0] = c2_1
+        self.m2_row4[0] = s2_2
+        self.m2_row5[0] = c2_2
+        self.m2_row6[0] = s2_3
+        self.m2_row7[0] = c2_3
+        self.m2_row8[0] = s2_4
+        self.m2_row9[0] = c2_4
+        self.m2_row10[0] = s2_5
+        self.m2_row11[0] = c2_5
+        self.m2_row12[0] = s2_6
+        self.m2_row13[0] = c2_6
+        self.m2_row14[0] = pp31
+
+        # Clear stage 1
+        self.m1_valid[0] = Bits(1)(0)</code></pre>
 <p>M2 只需要用 <code>full_adder_64bit</code> 继续压缩，直到只剩下两个数 $sum$ 和 $carry$ 即可。</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">    def cycle_m2(self):
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        Execute EX_M2 stage: Wallace Tree Compression Levels 3-8 (15 → 2 rows)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        This stage continues Wallace Tree compression from 15 rows down to 2 rows.
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        # Only process if stage 2 is valid
-</span></span><span class="line"><span class="cl">        with Condition(self.m2_valid[0] == Bits(1)(1)):
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Read all 15 intermediate rows from pipeline registers
-</span></span><span class="line"><span class="cl">            # From Level 2 output: s2_0..s2_6, c2_0..c2_6, pp31
-</span></span><span class="line"><span class="cl">            s2_0 = self.m2_row0[0]
-</span></span><span class="line"><span class="cl">            c2_0 = self.m2_row1[0]
-</span></span><span class="line"><span class="cl">            s2_1 = self.m2_row2[0]
-</span></span><span class="line"><span class="cl">            c2_1 = self.m2_row3[0]
-</span></span><span class="line"><span class="cl">            s2_2 = self.m2_row4[0]
-</span></span><span class="line"><span class="cl">            c2_2 = self.m2_row5[0]
-</span></span><span class="line"><span class="cl">            s2_3 = self.m2_row6[0]
-</span></span><span class="line"><span class="cl">            c2_3 = self.m2_row7[0]
-</span></span><span class="line"><span class="cl">            s2_4 = self.m2_row8[0]
-</span></span><span class="line"><span class="cl">            c2_4 = self.m2_row9[0]
-</span></span><span class="line"><span class="cl">            s2_5 = self.m2_row10[0]
-</span></span><span class="line"><span class="cl">            c2_5 = self.m2_row11[0]
-</span></span><span class="line"><span class="cl">            s2_6 = self.m2_row12[0]
-</span></span><span class="line"><span class="cl">            c2_6 = self.m2_row13[0]
-</span></span><span class="line"><span class="cl">            pp31 = self.m2_row14[0]
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Wallace Tree Compression Levels 3-8 (15 → 2 rows)
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 3: 15 → 10 rows (5 groups of 3)
-</span></span><span class="line"><span class="cl">            s3_0, c3_0 = full_adder_64bit(s2_0, c2_0, s2_1)
-</span></span><span class="line"><span class="cl">            s3_1, c3_1 = full_adder_64bit(c2_1, s2_2, c2_2)
-</span></span><span class="line"><span class="cl">            s3_2, c3_2 = full_adder_64bit(s2_3, c2_3, s2_4)
-</span></span><span class="line"><span class="cl">            s3_3, c3_3 = full_adder_64bit(c2_4, s2_5, c2_5)
-</span></span><span class="line"><span class="cl">            s3_4, c3_4 = full_adder_64bit(s2_6, c2_6, pp31)
-</span></span><span class="line"><span class="cl">            # Level 3 output: 10 rows
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 4: 10 → 7 rows (3 groups of 3, 1 passthrough)
-</span></span><span class="line"><span class="cl">            s4_0, c4_0 = full_adder_64bit(s3_0, c3_0, s3_1)
-</span></span><span class="line"><span class="cl">            s4_1, c4_1 = full_adder_64bit(c3_1, s3_2, c3_2)
-</span></span><span class="line"><span class="cl">            s4_2, c4_2 = full_adder_64bit(s3_3, c3_3, s3_4)
-</span></span><span class="line"><span class="cl">            # Passthrough: c3_4
-</span></span><span class="line"><span class="cl">            # Level 4 output: 7 rows
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 5: 7 → 5 rows (2 groups of 3, 1 passthrough)
-</span></span><span class="line"><span class="cl">            s5_0, c5_0 = full_adder_64bit(s4_0, c4_0, s4_1)
-</span></span><span class="line"><span class="cl">            s5_1, c5_1 = full_adder_64bit(c4_1, s4_2, c4_2)
-</span></span><span class="line"><span class="cl">            # Passthrough: c3_4
-</span></span><span class="line"><span class="cl">            # Level 5 output: 5 rows
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 6: 5 → 4 rows (1 group of 3, 2 passthrough)
-</span></span><span class="line"><span class="cl">            s6_0, c6_0 = full_adder_64bit(s5_0, c5_0, s5_1)
-</span></span><span class="line"><span class="cl">            # Passthrough: c5_1, c3_4
-</span></span><span class="line"><span class="cl">            # Level 6 output: 4 rows
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 7: 4 → 3 rows (1 group of 3, 1 passthrough)
-</span></span><span class="line"><span class="cl">            s7_0, c7_0 = full_adder_64bit(s6_0, c6_0, c5_1)
-</span></span><span class="line"><span class="cl">            # Passthrough: c3_4
-</span></span><span class="line"><span class="cl">            # Level 7 output: 3 rows
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Level 8: 3 → 2 rows (final Wallace Tree compression)
-</span></span><span class="line"><span class="cl">            s8_final, c8_final = full_adder_64bit(s7_0, c7_0, c3_4)
-</span></span><span class="line"><span class="cl">            # Final 2 rows: s8_final, c8_final
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Store final 2 rows in stage 3 pipeline registers
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            self.m3_valid[0] = Bits(1)(1)
-</span></span><span class="line"><span class="cl">            self.m3_result_high[0] = self.m2_result_high[0]
-</span></span><span class="line"><span class="cl">            self.m3_rd[0] = self.m2_rd[0]
-</span></span><span class="line"><span class="cl">            self.m3_signed_correction[0] = self.m2_signed_correction[0]
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Store the 2 final rows
-</span></span><span class="line"><span class="cl">            self.m3_row0[0] = s8_final
-</span></span><span class="line"><span class="cl">            self.m3_row1[0] = c8_final
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Clear stage 2
-</span></span><span class="line"><span class="cl">            self.m2_valid[0] = Bits(1)(0)</span></span></code></pre></div></div>
+<pre class="line-numbers language-python"><code class="language-python">def cycle_m2(self):
+    &#34;&#34;&#34;
+    Execute EX_M2 stage: Wallace Tree Compression Levels 3-8 (15 → 2 rows)
+
+    This stage continues Wallace Tree compression from 15 rows down to 2 rows.
+    &#34;&#34;&#34;
+    # Only process if stage 2 is valid
+    with Condition(self.m2_valid[0] == Bits(1)(1)):
+
+        # Read all 15 intermediate rows from pipeline registers
+        # From Level 2 output: s2_0..s2_6, c2_0..c2_6, pp31
+        s2_0 = self.m2_row0[0]
+        c2_0 = self.m2_row1[0]
+        s2_1 = self.m2_row2[0]
+        c2_1 = self.m2_row3[0]
+        s2_2 = self.m2_row4[0]
+        c2_2 = self.m2_row5[0]
+        s2_3 = self.m2_row6[0]
+        c2_3 = self.m2_row7[0]
+        s2_4 = self.m2_row8[0]
+        c2_4 = self.m2_row9[0]
+        s2_5 = self.m2_row10[0]
+        c2_5 = self.m2_row11[0]
+        s2_6 = self.m2_row12[0]
+        c2_6 = self.m2_row13[0]
+        pp31 = self.m2_row14[0]
+
+        # =================================================================
+        # Wallace Tree Compression Levels 3-8 (15 → 2 rows)
+        # =================================================================
+
+        # Level 3: 15 → 10 rows (5 groups of 3)
+        s3_0, c3_0 = full_adder_64bit(s2_0, c2_0, s2_1)
+        s3_1, c3_1 = full_adder_64bit(c2_1, s2_2, c2_2)
+        s3_2, c3_2 = full_adder_64bit(s2_3, c2_3, s2_4)
+        s3_3, c3_3 = full_adder_64bit(c2_4, s2_5, c2_5)
+        s3_4, c3_4 = full_adder_64bit(s2_6, c2_6, pp31)
+        # Level 3 output: 10 rows
+
+        # Level 4: 10 → 7 rows (3 groups of 3, 1 passthrough)
+        s4_0, c4_0 = full_adder_64bit(s3_0, c3_0, s3_1)
+        s4_1, c4_1 = full_adder_64bit(c3_1, s3_2, c3_2)
+        s4_2, c4_2 = full_adder_64bit(s3_3, c3_3, s3_4)
+        # Passthrough: c3_4
+        # Level 4 output: 7 rows
+
+        # Level 5: 7 → 5 rows (2 groups of 3, 1 passthrough)
+        s5_0, c5_0 = full_adder_64bit(s4_0, c4_0, s4_1)
+        s5_1, c5_1 = full_adder_64bit(c4_1, s4_2, c4_2)
+        # Passthrough: c3_4
+        # Level 5 output: 5 rows
+
+        # Level 6: 5 → 4 rows (1 group of 3, 2 passthrough)
+        s6_0, c6_0 = full_adder_64bit(s5_0, c5_0, s5_1)
+        # Passthrough: c5_1, c3_4
+        # Level 6 output: 4 rows
+
+        # Level 7: 4 → 3 rows (1 group of 3, 1 passthrough)
+        s7_0, c7_0 = full_adder_64bit(s6_0, c6_0, c5_1)
+        # Passthrough: c3_4
+        # Level 7 output: 3 rows
+
+        # Level 8: 3 → 2 rows (final Wallace Tree compression)
+        s8_final, c8_final = full_adder_64bit(s7_0, c7_0, c3_4)
+        # Final 2 rows: s8_final, c8_final
+
+        # =================================================================
+        # Store final 2 rows in stage 3 pipeline registers
+        # =================================================================
+        self.m3_valid[0] = Bits(1)(1)
+        self.m3_result_high[0] = self.m2_result_high[0]
+        self.m3_rd[0] = self.m2_rd[0]
+        self.m3_signed_correction[0] = self.m2_signed_correction[0]
+
+        # Store the 2 final rows
+        self.m3_row0[0] = s8_final
+        self.m3_row1[0] = c8_final
+
+        # Clear stage 2
+        self.m2_valid[0] = Bits(1)(0)</code></pre>
 <p>M3 需要注意一个符号修正的问题：$product_{64} = sum + carry + (-correction \ll 32)$
 如果正常去做，会多一个减法的延迟（可以单独一个周期的程度），但是上面的写法也表明了我们可以将其视作 3 个数相加，用一次全加器就可以压缩成 2 个数相加。最后只用一次 CLA 获得最终结果。</p>
-<div class="highlight-wrapper"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">    def cycle_m3(self):
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        Execute EX_M3 stage: Final Addition using Carry-Lookahead Adder (CLA)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        This stage completes the multiplication by adding the final 2 rows
-</span></span><span class="line"><span class="cl">        using a carry-lookahead adder, with signed correction integrated via 3:2 compression.
-</span></span><span class="line"><span class="cl">        &#34;&#34;&#34;
-</span></span><span class="line"><span class="cl">        # Only process if stage 3 is valid and result is not already ready
-</span></span><span class="line"><span class="cl">        with Condition((self.m3_valid[0] == Bits(1)(1)) &amp; (self.m3_result_ready[0] == Bits(1)(0))):
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Read the 2 final rows from pipeline registers
-</span></span><span class="line"><span class="cl">            s8_final = self.m3_row0[0]
-</span></span><span class="line"><span class="cl">            c8_final = self.m3_row1[0]
-</span></span><span class="line"><span class="cl">            signed_correction = self.m3_signed_correction[0]
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # Integrate signed correction using 3:2 compression
-</span></span><span class="line"><span class="cl">            # Instead of computing: product_64 = sum + carry, then high -= correction
-</span></span><span class="line"><span class="cl">            # We compute: product_64 = sum + carry + (-correction &lt;&lt; 32)
-</span></span><span class="line"><span class="cl">            #
-</span></span><span class="line"><span class="cl">            # To subtract correction from high 32 bits, we add the two&#39;s complement:
-</span></span><span class="line"><span class="cl">            # -correction = ~correction + 1
-</span></span><span class="line"><span class="cl">            # We place this in bits [32:63] and handle the +1 in the carry row
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Create the correction value as a 64-bit number positioned in high 32 bits
-</span></span><span class="line"><span class="cl">            # correction_neg_high represents ~signed_correction in bits [32:63]
-</span></span><span class="line"><span class="cl">            correction_inv = ~signed_correction  # Inverted bits for two&#39;s complement
-</span></span><span class="line"><span class="cl">            correction_neg_64 = concat(correction_inv, Bits(32)(0))  # Place in high 32 bits
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # For the +1 of two&#39;s complement, we add 1 at bit 32
-</span></span><span class="line"><span class="cl">            # This can be merged into the carry row at position 32
-</span></span><span class="line"><span class="cl">            # Create a 64-bit value with 1 at bit position 32 (i.e., 0x100000000)
-</span></span><span class="line"><span class="cl">            correction_plus_one = Bits(64)(0x100000000)  # 1 &lt;&lt; 32
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Use 3:2 compressor to merge s8_final, c8_final, and correction_neg_64
-</span></span><span class="line"><span class="cl">            s9_0, c9_0 = full_adder_64bit(s8_final, c8_final, correction_neg_64)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Use another 3:2 compressor to merge s9_0, c9_0, and correction_plus_one
-</span></span><span class="line"><span class="cl">            s_final, c_final = full_adder_64bit(s9_0, c9_0, correction_plus_one)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            # CLA (Carry-Lookahead Adder) - Final Addition
-</span></span><span class="line"><span class="cl">            # Now we have integrated the signed correction into the compression
-</span></span><span class="line"><span class="cl">            # =================================================================
-</span></span><span class="line"><span class="cl">            product_64 = carry_lookahead_adder_64bit(s_final, c_final)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Select which 32 bits to return based on operation type
-</span></span><span class="line"><span class="cl">            partial_low = product_64[0:31].bitcast(Bits(32))
-</span></span><span class="line"><span class="cl">            partial_high = product_64[32:63].bitcast(Bits(32))
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            result = self.m3_result_high[0].select(
-</span></span><span class="line"><span class="cl">                partial_high,  # High 32 bits for MULH/MULHSU/MULHU
-</span></span><span class="line"><span class="cl">                partial_low  # Low 32 bits for MUL
-</span></span><span class="line"><span class="cl">            )
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            # Store final result and mark as ready
-</span></span><span class="line"><span class="cl">            self.m3_result[0] = result
-</span></span><span class="line"><span class="cl">            self.m3_result_ready[0] = Bits(1)(1)
-</span></span><span class="line"><span class="cl">            # Clear valid flag since processing is complete
-</span></span><span class="line"><span class="cl">            self.m3_valid[0] = Bits(1)(0)</span></span></code></pre></div></div>
+<pre class="line-numbers language-python"><code class="language-python">def cycle_m3(self):
+    &#34;&#34;&#34;
+    Execute EX_M3 stage: Final Addition using Carry-Lookahead Adder (CLA)
+
+    This stage completes the multiplication by adding the final 2 rows
+    using a carry-lookahead adder, with signed correction integrated via 3:2 compression.
+    &#34;&#34;&#34;
+    # Only process if stage 3 is valid and result is not already ready
+    with Condition((self.m3_valid[0] == Bits(1)(1)) &amp; (self.m3_result_ready[0] == Bits(1)(0))):
+
+        # Read the 2 final rows from pipeline registers
+        s8_final = self.m3_row0[0]
+        c8_final = self.m3_row1[0]
+        signed_correction = self.m3_signed_correction[0]
+
+        # =================================================================
+        # Integrate signed correction using 3:2 compression
+        # Instead of computing: product_64 = sum &#43; carry, then high -= correction
+        # We compute: product_64 = sum &#43; carry &#43; (-correction &lt;&lt; 32)
+        #
+        # To subtract correction from high 32 bits, we add the two&#39;s complement:
+        # -correction = ~correction &#43; 1
+        # We place this in bits [32:63] and handle the &#43;1 in the carry row
+        # =================================================================
+
+        # Create the correction value as a 64-bit number positioned in high 32 bits
+        # correction_neg_high represents ~signed_correction in bits [32:63]
+        correction_inv = ~signed_correction  # Inverted bits for two&#39;s complement
+        correction_neg_64 = concat(correction_inv, Bits(32)(0))  # Place in high 32 bits
+
+        # For the &#43;1 of two&#39;s complement, we add 1 at bit 32
+        # This can be merged into the carry row at position 32
+        # Create a 64-bit value with 1 at bit position 32 (i.e., 0x100000000)
+        correction_plus_one = Bits(64)(0x100000000)  # 1 &lt;&lt; 32
+
+        # Use 3:2 compressor to merge s8_final, c8_final, and correction_neg_64
+        s9_0, c9_0 = full_adder_64bit(s8_final, c8_final, correction_neg_64)
+
+        # Use another 3:2 compressor to merge s9_0, c9_0, and correction_plus_one
+        s_final, c_final = full_adder_64bit(s9_0, c9_0, correction_plus_one)
+
+        # =================================================================
+        # CLA (Carry-Lookahead Adder) - Final Addition
+        # Now we have integrated the signed correction into the compression
+        # =================================================================
+        product_64 = carry_lookahead_adder_64bit(s_final, c_final)
+
+        # Select which 32 bits to return based on operation type
+        partial_low = product_64[0:31].bitcast(Bits(32))
+        partial_high = product_64[32:63].bitcast(Bits(32))
+
+        result = self.m3_result_high[0].select(
+            partial_high,  # High 32 bits for MULH/MULHSU/MULHU
+            partial_low  # Low 32 bits for MUL
+        )
+
+        # Store final result and mark as ready
+        self.m3_result[0] = result
+        self.m3_result_ready[0] = Bits(1)(1)
+        # Clear valid flag since processing is complete
+        self.m3_valid[0] = Bits(1)(0)</code></pre>
 <p>里面其实还有很多可以优化的地方，但是限于个人目前水平（以及不想为沟槽的 Assassyn 再折腾），大概就到此为止了。下次可能会写一些关于 XiangShan 所实现的乘法器的东西，不过下次的事就下次再说吧（笑）。</p>
 
 <h2 class="relative group">Something Unrelated&hellip;
@@ -1199,36 +1379,203 @@
 <p>（btw: 花都是真好听啊，怎么改都好听那种！）</p>
 <p>之后找个时间把网站的美工搞搞好吧，现在暗色还看的过去，浅色丑的看不下去（）。</p>
 
+            
+            
+            
+          </div>
           
           
+
           
+
+          
+
         </div>
-        
-        
 
         
-
         
+          
+          
+            
+            
+          
+          
+          
+          <script
+            type="text/javascript"
+            src="/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
+            integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
+            data-oid="views_posts/wallace-tree-1.md"
+            data-oid-likes="likes_posts/wallace-tree-1.md"></script>
+        
+      </section>
 
+      
+      <aside class="article-sidebar w-full lg:w-72 flex-shrink-0 print:hidden">
+        <div class="sidebar-sticky space-y-6">
+          
+          
+<div class="sidebar-card bg-neutral-100 dark:bg-neutral-800 rounded-xl p-5 shadow-sm">
+  
+  <div class="flex flex-col items-center">
+    
+    <a href="http://localhost:1313/" class="block">
+      <img 
+        src="/apple-touch-icon.png" 
+        alt="Konpaku Youming" 
+        class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 dark:border-primary-400 hover:scale-105 transition-transform duration-300"
+      >
+    </a>
+    
+    
+    <h3 class="mt-3 text-lg font-bold text-neutral-900 dark:text-neutral-100">
+      Konpaku Youming
+    </h3>
+    
+    
+    
+      <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-400 text-center">
+        半灵的四分之一
+      </p>
+    
+  </div>
+
+  
+  
+    <div class="flex justify-center gap-3 mt-4 flex-wrap">
+      
+        
+          <a 
+            href="https://github.com/konpaku-ming" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="github"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+
+            
+          </a>
+        
+      
+        
+          <a 
+            href="https://space.bilibili.com/1998732023" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="bilibili"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+  <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zm-3.12 7.466l-.48-.52a1.092 1.092 0 0 0-.8-.347c-.311 0-.578.116-.8.347l-2.933 2.893a1.105 1.105 0 0 0-.347.8c0 .311.116.578.347.8l.48.52c.222.231.489.347.8.347.311 0 .587-.116.8-.347l2.933-2.893c.231-.222.347-.489.347-.8 0-.311-.116-.578-.347-.8zm-7.387.84a1.14 1.14 0 0 0-.84-.347c-.311 0-.578.116-.8.347l-.507.507a1.105 1.105 0 0 0-.347.8c0 .311.116.578.347.8l3.52 3.52c.222.231.489.347.8.347.311 0 .587-.116.8-.347l.507-.507a1.14 1.14 0 0 0 .347-.84c0-.311-.116-.578-.347-.8l-3.48-3.48z"/>
+</svg>
+
+            
+          </a>
+        
+      
+        
+          <a 
+            href="mailto:dxuanming@sjtu.edu.cn" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="p-2 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 transition-colors duration-200"
+            title="email"
+          >
+            
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M207.8 20.73c-93.45 18.32-168.7 93.66-187 187.1c-27.64 140.9 68.65 266.2 199.1 285.1c19.01 2.888 36.17-12.26 36.17-31.49l.0001-.6631c0-15.74-11.44-28.88-26.84-31.24c-84.35-12.98-149.2-86.13-149.2-174.2c0-102.9 88.61-185.5 193.4-175.4c91.54 8.869 158.6 91.25 158.6 183.2l0 16.16c0 22.09-17.94 40.05-40 40.05s-40.01-17.96-40.01-40.05v-120.1c0-8.847-7.161-16.02-16.01-16.02l-31.98 .0036c-7.299 0-13.2 4.992-15.12 11.68c-24.85-12.15-54.24-16.38-86.06-5.106c-38.75 13.73-68.12 48.91-73.72 89.64c-9.483 69.01 43.81 128 110.9 128c26.44 0 50.43-9.544 69.59-24.88c24 31.3 65.23 48.69 109.4 37.49C465.2 369.3 496 324.1 495.1 277.2V256.3C495.1 107.1 361.2-9.332 207.8 20.73zM239.1 304.3c-26.47 0-48-21.56-48-48.05s21.53-48.05 48-48.05s48 21.56 48 48.05S266.5 304.3 239.1 304.3z"/></svg>
+
+            
+          </a>
+        
+      
+    </div>
+  
+
+  
+  <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+    <div class="text-center">
+      <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+        5
       </div>
+      <div class="text-xs text-neutral-500 dark:text-neutral-400">文章</div>
+    </div>
+    <div class="text-center">
+      <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
+        0
+      </div>
+      <div class="text-xs text-neutral-500 dark:text-neutral-400">标签</div>
+    </div>
+  </div>
+</div>
 
-      
-      
-        
-        
           
           
-        
-        
-        
-        <script
-          type="text/javascript"
-          src="/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
-          integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
-          data-oid="views_posts/wallace-tree-1.md"
-          data-oid-likes="likes_posts/wallace-tree-1.md"></script>
-      
-    </section>
+          
+<div class="sidebar-card bg-neutral-100 dark:bg-neutral-800 rounded-xl p-5 shadow-sm">
+  <h3 class="text-base font-bold text-neutral-900 dark:text-neutral-100 mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 8v4l3 3"/>
+      <circle cx="12" cy="12" r="10"/>
+    </svg>
+    最近文章
+  </h3>
+  
+  <ul class="space-y-3">
+    
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/playing-luastg/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            Playing LuaSTG...
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-31
+          </div>
+        </a>
+      </li>
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/srt-division/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            SRT Division
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-26
+          </div>
+        </a>
+      </li>
+    
+      <li class="group">
+        <a href="http://localhost:1313/posts/wallace-tree-2/" class="block">
+          <div class="text-sm font-medium text-neutral-800 dark:text-neutral-200 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-2">
+            Wallace Tree (2)
+          </div>
+          <div class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            2026-01-25
+          </div>
+        </a>
+      </li>
+    
+  </ul>
+  
+  
+  <a 
+    href="/posts/" 
+    class="mt-4 block text-center text-sm text-primary-600 dark:text-primary-400 hover:underline"
+  >
+    查看全部 →
+  </a>
+</div>
+
+        </div>
+      </aside>
+    </div>
 
     
     <footer class="pt-8 max-w-prose print:hidden">
