@@ -67,18 +67,12 @@
   {{ end }}
 
   {{/* Stats */}}
-  <div class="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+  <div class="grid grid-cols-1 gap-4 mt-5 pt-4 border-t border-neutral-200 dark:border-neutral-700">
     <div class="text-center">
       <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
         {{ len (where site.RegularPages "Section" "posts") }}
       </div>
       <div class="text-xs text-neutral-500 dark:text-neutral-400">文章</div>
-    </div>
-    <div class="text-center">
-      <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
-        {{ len site.Taxonomies.tags }}
-      </div>
-      <div class="text-xs text-neutral-500 dark:text-neutral-400">标签</div>
     </div>
   </div>
 </div>
