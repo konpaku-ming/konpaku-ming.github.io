@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2026 Konpaku Youming</copyright>
-    <lastBuildDate>Mon, 02 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>One Last Spell Card</title>
+      <link>http://localhost:1313/posts/one-last-spellcard/</link>
+      <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/one-last-spellcard/</guid>
+      <description></description>
+      
+    </item>
     
     <item>
       <title>Bullet Dodger</title>
