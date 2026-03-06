@@ -15,18 +15,18 @@
 
   
   
-    <title>Wallace Tree (2) &middot; Youming&#39;s Gensokyo</title>
-    <meta name="title" content="Wallace Tree (2) &middot; Youming&#39;s Gensokyo">
+    <title>浅评《东方迷宫Tri》：瑕瑜互见 &middot; Youming&#39;s Gensokyo</title>
+    <meta name="title" content="浅评《东方迷宫Tri》：瑕瑜互见 &middot; Youming&#39;s Gensokyo">
   
 
   
   
-    <meta name="description" content="Something About Xiangshan Multiplier">
+    <meta name="description" content="A Game Review">
   
   
   
   
-  <link rel="canonical" href="http://localhost:1313/posts/wallace-tree-2/">
+  <link rel="canonical" href="http://localhost:1313/posts/game-review-1/">
   
 
   
@@ -36,20 +36,20 @@
   
 
   
-  <meta property="og:url" content="http://localhost:1313/posts/wallace-tree-2/">
+  <meta property="og:url" content="http://localhost:1313/posts/game-review-1/">
   <meta property="og:site_name" content="Youming&#39;s Gensokyo">
-  <meta property="og:title" content="Wallace Tree (2)">
-  <meta property="og:description" content="Something About Xiangshan Multiplier">
+  <meta property="og:title" content="浅评《东方迷宫Tri》：瑕瑜互见">
+  <meta property="og:description" content="A Game Review">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-01-25T00:00:00+00:00">
-    <meta property="article:modified_time" content="2026-01-25T00:00:00+00:00">
+    <meta property="article:published_time" content="2026-03-06T00:00:00+00:00">
+    <meta property="article:modified_time" content="2026-03-06T00:00:00+00:00">
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Wallace Tree (2)">
-  <meta name="twitter:description" content="Something About Xiangshan Multiplier">
+  <meta name="twitter:title" content="浅评《东方迷宫Tri》：瑕瑜互见">
+  <meta name="twitter:description" content="A Game Review">
 
   
   
@@ -203,25 +203,25 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Posts",
-    "name": "Wallace Tree (2)",
-    "headline": "Wallace Tree (2)",
-    "description": "Something About Xiangshan Multiplier",
+    "name": "浅评《东方迷宫Tri》：瑕瑜互见",
+    "headline": "浅评《东方迷宫Tri》：瑕瑜互见",
+    "description": "A Game Review",
     "inLanguage": "en",
-    "url" : "http://localhost:1313/posts/wallace-tree-2/",
+    "url" : "http://localhost:1313/posts/game-review-1/",
     "author" : {
       "@type": "Person",
       "name": "Konpaku Youming"
     },
     "copyrightYear": "2026",
-    "dateCreated": "2026-01-25T00:00:00\u002b00:00",
-    "datePublished": "2026-01-25T00:00:00\u002b00:00",
+    "dateCreated": "2026-03-06T00:00:00\u002b00:00",
+    "datePublished": "2026-03-06T00:00:00\u002b00:00",
     
-    "dateModified": "2026-01-25T00:00:00\u002b00:00",
+    "dateModified": "2026-03-06T00:00:00\u002b00:00",
     
     
     
     "mainEntityOfPage": "true",
-    "wordCount": "861"
+    "wordCount": "149"
   }]
   </script>
 
@@ -908,7 +908,7 @@
     <header id="single_header" class="mt-5 max-w-prose">
       
       <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-        Wallace Tree (2)
+        浅评《东方迷宫Tri》：瑕瑜互见
       </h1>
       <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
         
@@ -960,7 +960,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <time datetime="2026-01-25T00:00:00&#43;00:00">25 January 2026</time><span class="px-2 text-primary-500">&middot;</span><span>861 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
+      <time datetime="2026-03-06T00:00:00&#43;00:00">6 March 2026</time><span class="px-2 text-primary-500">&middot;</span><span>149 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
     
 
     
@@ -1034,377 +1034,114 @@
           
 
           <div class="article-content max-w-prose mb-20">
-            <p>幻影忍者前情提要：<a href="https://konpaku-ming.github.io/posts/wallace-tree-1/"  target="_blank" rel="noreferrer">Wallace Tree (1)</a></p>
-<p>鸽了几天，期间本来想修修网站的美工，可惜摆了。最后只做了一个 Music Player，还因为网页是静态的不好全局播放（笑）。主页放的是我的网易云红心歌单，如果你有跟我相近的审美，I will feel happy😀。</p>
-<p>本文主要填一下上次的坑，讲一下 XiangShan 的乘法器。采用的是 nanhu 版的代码，完整代码在<a href="https://github.com/OpenXiangShan/XiangShan/blob/nanhu/src/main/scala/xiangshan/backend/fu/Multiplier.scala"  target="_blank" rel="noreferrer">这里</a>。之后会划分成几个部分细讲一下具体实现。</p>
-
-<h2 class="relative group">Before Reading
-    <div id="before-reading" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#before-reading" aria-label="Anchor">#</a>
-    </span>
-    
-</h2>
-<div style="margin: 20px 0;">
+            <div style="margin: 20px 0;">
     <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="86" 
-        src="//music.163.com/outchain/player?type=2&id=26131698&auto=0&height=66">
+        src="//music.163.com/outchain/player?type=2&id=4942607&auto=0&height=66">
     </iframe>
 </div>
 
-<p>一文一歌也算是惯例了，也是我红心的曲子，歌单太大首页不一定刷得到，就挂在文章里安利了。</p>
-<p>Rewrite 是我很喜欢的作品。今天突然发现 <a href="https://music.163.com/#/song?id=26107975"  target="_blank" rel="noreferrer">Fall in the Dark</a> 也是这位歌姬唱的，实际东 gal 共荣（喜）。</p>
+<p>（《从晴朗的朝色泛起之际》的 OP ，这张专真的很好。游戏我还没云，不过也不太可能自己去打，毕竟无论是《朝色》还是朱门优，都已是太多年前的遗物了）</p>
+<p>晚上有点闲，遂填坑。</p>
+<p>（长文预警）</p>
+<p>（剧透预警）</p>
+<hr>
+<p>2026 年 1 月底，《东方的迷宫Tri：梦想少女与神秘的宝珠》正式版发售。2 月初，我开始游玩此作（感谢民间汉化）。2 月 28 日，我击破终 Boss ，通关 Normal 难度。</p>
+<p>说句实话，比起评价这部作品，更有趣的一点是《东迷3》的发售在国内东方圈几乎没有掀起任何波浪，即使在游戏推出一个月后，相关的讨论度也极其有限。只有一两个帖子和少数B站视频（播放量还很感人）。比较好笑的是当时国内讨论度最高的东方游戏是华心转，我没玩华心转，也无意拉踩，不过东方迷宫的正统续作无人问津，质量良莠不齐的东方套皮同人却霸占着国内东方众的关注，难免令人唏嘘。</p>
+<p>这也是我觉得东方迷宫比较好的一点，至少制作组是想好好做一个游戏，而不是做一个东方同人游戏。</p>
+<p>这是有本质区别的，点名批评光耀夜以及一众套皮作，同人游戏套皮我能理解，问题是你不能只会套皮，还套的不咋地。光耀夜照着尖塔直接搬都不会太差（像尖塔有很多优质东方 mod 所做的那样），然而它照搬都搬不好，角色卡组做不出特色，路线规划像宝宝游戏，事件单调画风简陋，这种超级缩水版尖塔却敢卖尖塔三倍价钱（囧仙特色）。我觉得很大的问题在于套皮套的太“生硬”，就好像要把游戏的所有地方都要体现车万元素，都要非得往车万设定上靠。</p>
+<p>东方迷宫好的点在于，它完全是对标一款正经的 DRPG 去做的，即使把其中的车万元素去掉，它的完成度和游戏性仍然相当不错。而且相比于世界树迷宫，东迷还有 UI 与画风上的优势，从我的角度，如果要选择一款 DRPG 上手的话，东迷的优先级或许比不少经典作品还要更高。</p>
+<p>如你所见，我打的只是 Normal 难度（只要刷刷刷就能通关，不太需要考虑配对和加点），所以以下的内容并非攻略，也不包含对角色强度的点评。仅仅是从游戏设计的层面，纵向对比十余年前的二代，对本作做一个粗浅的点评。</p>
+<hr>
 
-<h2 class="relative group">Booth 编码
-    <div id="booth-编码" class="anchor"></div>
+<h2 class="relative group">音乐与作画
+    <div id="音乐与作画" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#booth-%e7%bc%96%e7%a0%81" aria-label="Anchor">#</a>
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e9%9f%b3%e4%b9%90%e4%b8%8e%e4%bd%9c%e7%94%bb" aria-label="Anchor">#</a>
     </span>
     
 </h2>
-<p>我们上次讲了最 naive 的二进制乘法，也就是生成部分积，把 32 位乘法变成了 32 次加法。我们注意到，对于二进制乘法 $A\times B$ ，如果 $B$ 的第 $i$ 位是 0，我们可以直接忽略这一位产生的部分积（为 0）。</p>
-<p>举个例子，如果乘数 $B=00111110$ ，如果按照 naive 的做法，需要将 5 个部分积相加。但是我们在小学阶段就学过：$114514\times 99=114514\times \left( 100-1 \right) =11451400-114514$ ，这样处理会好算很多。在二进制的例子中，我们可以类似的有：
-</p>
-$$
-B=\left( 00111110 \right) _2=2^5+2^4+2^3+2^2+2^1=2^6-2^1=\left( 010000\overline{1}0 \right) _2
-$$<p>
-其中 $\overline{1}$ 表示 $-1$ 。注意到我们把一串<strong>连续的1</strong>消掉了，这样只会产生两个部分积。</p>
+<p>有一说一，东方迷宫2的 bgm 太顶级了。不同于大多数东方套皮游戏会使用同人曲做 bgm ，东迷的 bgm 会让你忘记这是一个东方同人游戏。很正统的 JRPG 配乐完美贴合迷宫氛围，让人感受到剧情的推进。我至今仍记得二代海洋关的 bgm ，幽静中透着神秘与孤独。天空关 bgm 的神圣与史诗感则完全将临近终战的情绪烘托到位，当时进迷宫挂机只为听完整首 bgm 。本作在 bgm 层面虽不如二代本篇的惊艳，但也完全称得上优秀。游戏初森林关的 bgm 使人眼前一亮，沉浸于简单的探索与收集之中。后续的 bgm 也都能契合对应地图的主题，我个人认为沼泽地图的 bgm 最好，只可惜没有优质到能使人泡在迷宫里只为听 bgm 的感觉。</p>
+<p>（写这段时为了防止情怀成分影响，又去听了一下二代的 bgm ，惊艳不减当年）</p>
+<p>作画这方面跟二代没什么区别（指立绘沿用二代），其实这点我有点没绷住，过了十多年了立绘都还不换一下。但二代的 UI 和画面已经相当不错了（无论是在 DRPG 还是东方同人中），所以作画总体来说绝对是够格的。</p>
+<hr>
 
-<h3 class="relative group">Radix-2 Booth
-    <div id="radix-2-booth" class="anchor"></div>
+<h2 class="relative group">角色与系统
+    <div id="角色与系统" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#radix-2-booth" aria-label="Anchor">#</a>
-    </span>
-    
-</h3>
-<p>上面是很符合人类智慧的优化，我们进行推广。假设乘法 $A\times B$ ，注意到：
-</p>
-$$
-A=a_{n-1}a_{n-2}...a_1a_0\left( a_{-1} \right)
-$$<p>
-</p>
-$$
-=a_{n-1}\times \left( -2^{n-1} \right) +a_{n-2}\times 2^{n-2}...+a_0\times 2^0\ \text{（补位的}a_{-1}=0\text{）}
-$$<p>
-</p>
-$$
-=\left( a_{n-2}-a_{n-1} \right) \times 2^{n-1}+\left( a_{n-3}-a_{n-2} \right) \times 2^{n-2}...+\left( a_0-a_1 \right) \times 2^1+\left( a_{-1}-a_0 \right) \times 2^0
-$$<p>由上式，可以做如下编码：</p>
-<p>每次移动 1 位，观察 2 位（当前位 $a_i$ 与低位相邻位 $a_{i-1}$）。</p>
-<table>
-  <thead>
-      <tr>
-          <th style="text-align: center">当前位 $a_i$</th>
-          <th style="text-align: center">右邻位 $a_{i-1}$</th>
-          <th style="text-align: left">观察到的模式</th>
-          <th style="text-align: center">操作值</th>
-          <th style="text-align: left">对被乘数 $B$ 的操作</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: center"><strong>0</strong></td>
-          <td style="text-align: center"><strong>0</strong></td>
-          <td style="text-align: left">连续的 0</td>
-          <td style="text-align: center">$0$</td>
-          <td style="text-align: left">无操作</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>0</strong></td>
-          <td style="text-align: center"><strong>1</strong></td>
-          <td style="text-align: left">1 序列结束</td>
-          <td style="text-align: center">$+1$</td>
-          <td style="text-align: left">加上 $B$</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>1</strong></td>
-          <td style="text-align: center"><strong>0</strong></td>
-          <td style="text-align: left">1 序列开始</td>
-          <td style="text-align: center">$-1$</td>
-          <td style="text-align: left">减去 $B$ (加补码)</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>1</strong></td>
-          <td style="text-align: center"><strong>1</strong></td>
-          <td style="text-align: left">连续的 1</td>
-          <td style="text-align: center">$0$</td>
-          <td style="text-align: left">无操作</td>
-      </tr>
-  </tbody>
-</table>
-<p>这就是 Radix-2 Booth 编码，每次移动一位，观察两位。</p>
-<p>Radix-2 Booth 确实能优化掉之前例子中连续的 1 ，但是当 1 是孤立出现的时候（比如 010 ），部分积反而变多了。下面讲的 Radix-4 Booth 就不会出现这种问题。</p>
-
-<h3 class="relative group">Radix-4 Booth
-    <div id="radix-4-booth" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#radix-4-booth" aria-label="Anchor">#</a>
-    </span>
-    
-</h3>
-<p>如果你的注意力再好一些，会发现：
-</p>
-$$
-A=\left( a_{2n+1}a_{2n} \right) a_{2n-1}a_{2n-2}...a_1a_0\left( a_{-1} \right)
-$$<p>
-（其中 $a_{-1}$ 是补位的0， $a_{2n+1},a_{2n}$ 由符号扩展得到。）</p>
-$$
-A=a_{2n-1}\times \left( -2^{2n-1} \right) +a_{2n-2}\times 2^{2n-2}...+a_0\times 2^0
-$$<p>
-</p>
-$$
-=\left( a_{2n-1}+a_{2n}-2a_{2n+1} \right) \times 2^{2n}+\left( a_{2n-3}+a_{2n-2}-2a_{2n-1} \right) \times 2^{2n-2}+
-$$<p>
-</p>
-$$
-...+\left( a_1+a_2-2a_3 \right) \times 2^2+\left( a_{-1}+a_0-2a_1 \right) \times 2^0
-$$<p>
-</p>
-$$
-=\sum_{i=0}^n{\left( a_{2i-1}+a_{2i}-2a_{2i+1} \right) \cdot 2^{2i}}
-$$<p>由上式，我们可以一次移动两位，观察三位，做如下编码：</p>
-<table>
-  <thead>
-      <tr>
-          <th style="text-align: center">3位编码窗口 $(a_{i+1}, a_i, a_{i-1})$</th>
-          <th style="text-align: center">代表的操作值</th>
-          <th style="text-align: left">对应代码变量</th>
-          <th style="text-align: left">硬件实现逻辑</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: center"><strong>000</strong></td>
-          <td style="text-align: center">$0$</td>
-          <td style="text-align: left"><code>0.U</code></td>
-          <td style="text-align: left">保持全 0</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>001</strong></td>
-          <td style="text-align: center">$+1$</td>
-          <td style="text-align: left"><code>b_sext</code></td>
-          <td style="text-align: left">加被乘数原码</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>010</strong></td>
-          <td style="text-align: center">$+1$</td>
-          <td style="text-align: left"><code>b_sext</code></td>
-          <td style="text-align: left">加被乘数原码</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>011</strong></td>
-          <td style="text-align: center">$+2$</td>
-          <td style="text-align: left"><code>bx2</code></td>
-          <td style="text-align: left">被乘数左移 1 位</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>100</strong></td>
-          <td style="text-align: center">$-2$</td>
-          <td style="text-align: left"><code>neg_bx2</code></td>
-          <td style="text-align: left">被乘数取反左移 1 位</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>101</strong></td>
-          <td style="text-align: center">$-1$</td>
-          <td style="text-align: left"><code>neg_b</code></td>
-          <td style="text-align: left">加被乘数补码</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>110</strong></td>
-          <td style="text-align: center">$-1$</td>
-          <td style="text-align: left"><code>neg_b</code></td>
-          <td style="text-align: left">加被乘数补码</td>
-      </tr>
-      <tr>
-          <td style="text-align: center"><strong>111</strong></td>
-          <td style="text-align: center">$0$</td>
-          <td style="text-align: left"><code>0.U</code></td>
-          <td style="text-align: left">保持全 0</td>
-      </tr>
-  </tbody>
-</table>
-<p>XiangShan 乘法器就是通过 Radix-4 Booth 算法生成部分积。它在求补码和拼接部分积的过程中还有一些小巧思，就不详细写了，可以直接看贴在下面的代码：</p>
-<pre class="line-numbers language-scala"><code class="language-scala">val b_sext, bx2, neg_b, neg_bx2 = Wire(UInt((len&#43;1).W))
-b_sext := SignExt(b, len&#43;1)
-bx2 := b_sext &lt;&lt; 1
-neg_b := (~b_sext).asUInt
-neg_bx2 := neg_b &lt;&lt; 1
-
-val columns: Array[Seq[Bool]] = Array.fill(2*len)(Seq())
-
-var last_x = WireInit(0.U(3.W))
-for(i &lt;- Range(0, len, 2)){
-  val x = if(i==0) Cat(a(1,0), 0.U(1.W)) else if(i&#43;1==len) SignExt(a(i, i-1), 3) else a(i&#43;1, i-1)
-  val pp_temp = MuxLookup(x, 0.U)(Seq(
-    1.U -&gt; b_sext,
-    2.U -&gt; b_sext,
-    3.U -&gt; bx2,
-    4.U -&gt; neg_bx2,
-    5.U -&gt; neg_b,
-    6.U -&gt; neg_b
-  ))
-  val s = pp_temp(len)
-  val t = MuxLookup(last_x, 0.U(2.W))(Seq(
-    4.U -&gt; 2.U(2.W),
-    5.U -&gt; 1.U(2.W),
-    6.U -&gt; 1.U(2.W)
-  ))
-  last_x = x
-  val (pp, weight) = i match {
-    case 0 =&gt;
-      (Cat(~s, s, s, pp_temp), 0)
-    case n if (n==len-1) || (n==len-2) =&gt;
-      (Cat(~s, pp_temp, t), i-2)
-    case _ =&gt;
-      (Cat(1.U(1.W), ~s, pp_temp, t), i-2)
-  }
-  for(j &lt;- columns.indices){
-    if(j &gt;= weight &amp;&amp; j &lt; (weight &#43; pp.getWidth)){
-      columns(j) = columns(j) :&#43; pp(j-weight)
-    }
-  }
-}</code></pre>
-
-<h2 class="relative group">列压缩乘法
-    <div id="列压缩乘法" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%88%97%e5%8e%8b%e7%bc%a9%e4%b9%98%e6%b3%95" aria-label="Anchor">#</a>
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e8%a7%92%e8%89%b2%e4%b8%8e%e7%b3%bb%e7%bb%9f" aria-label="Anchor">#</a>
     </span>
     
 </h2>
-<p>上一篇文章介绍了 Wallace Tree 的思想，简单来说就是利用全加器将 3 个部分积压缩成 2 个。每层都能实现一次 3:2 的压缩，在 $O(\log N)$ 的层数内就能压缩到只剩 2 个部分积相加。</p>
-<p>以 32 位乘法为例。注意到每一个 3:2 压缩，需要一个 64 位压缩器。但其实很多时候低位都是空的，也就是一直做 $+0$ ，会浪费相当一部分的硬件资源。</p>
+<p>本作在平衡性这一块应该是要比二代做的好点（二代本篇 + Plus 能用的角色都比较有限），本作大多数角色至少都能在某几场 Boss 站或某些图有点用。加上本作在 AOE 符卡上比较吝啬，导致打小怪还需要看属性，如果是打高难度的话，估计要练的角色会相当多（Normal 把等级刷到比小怪多几十级都还需要注意一些机制怪，高难度不敢想）</p>
+<p>加点这块的创新是合理的，通过等级来限制某些极度强力的技能（比如河童双倍副装备），也算是一种强度上的平衡。至于角色流派，看的出来技能树的本意就是让单个角色能分叉出多种打法，加点的丰富性相比二代确实有突破。让基础值强化与战斗经验挂钩其实是让我觉得不合理的，战斗经验强化导致一些晚入队的角色几乎不太可能享受到这部分的强化。二代对战斗经验的处理就让我觉得合适很多，它会指定一些角色的战斗经验作为通过迷宫的必要条件，这样来保证角色的练度。</p>
+<p>二代的副职业算是做的不太好的地方之一，对应本作的主装备系统。其实某种意义上，主装备系统或许做的比二代的副职业还烂，毕竟觉醒石都能明显分出属性好坏，也没有什么可以搭配特定角色的特殊机制，感觉比副职业还要公式。</p>
+<p>装备系统跟二代的区别不太大，三代特有的装备强化还是不错的（符合我刷刷刷的风格）。其中有个叫“海洋猎手”的装备在 +0 时还是路边一条，然而强化收益高的离谱，拉到 +10 可以一直用到终战。</p>
 <figure><img
     class="my-0 rounded-md"
     loading="lazy"
     decoding="async"
     fetchpriority="low"
-    alt="部分积"
-    src="https://notes.sjtu.edu.cn/uploads/upload_8aacfd07ddb32cd21775d15affd24117.jpg"
+    alt=""
+    src="https://notes.sjtu.edu.cn/uploads/upload_59217905cad970b74b3d28fb6da4948c.png"
     ></figure>
-<p>这是 wikipedia 上摘下来的图，生成的部分积其实就类似这样，更像是一个平行四边形。图中其实是在按行压缩（每三行做一组压缩），但是这样明显浪费了左上角和右下角的计算空白。</p>
-<p>如果换个角度看，用全加器做压缩避免了进位传播的延迟，那完全可以把每一列视作的压缩过程抽离出来，不再受“行”的限制。当然每一列在压缩过程中，会接收来自后一列的进位，也会进位给前一列。最终目标是压缩到<strong>每一列</strong>都不超过两个。</p>
+<p>（你敢相信这数值是沼泽关就能爆出来的装备？）</p>
+<p>莲子的学习机制也比较好，有很高的自由度，完全看你的喜好来配置莲子的技能组。主攻主魔包括打辅助都行，几十个技能里自由组合。里面有个技能要打力之翼龙，最后看了贴吧才发现这玩意只在一两个特殊位置才刷。这种情报不查攻略怕是不太可能知道。</p>
+<figure><img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt=""
+    src="https://notes.sjtu.edu.cn/uploads/upload_86a0751247d6006971fa21aa09d92cc4.png"
+    ></figure>
+<p>（只差这几个打 Lunatic Boss 的技能了）</p>
+<p>做菜系统还是挺有意思的，与角色解锁也有一定关系，我觉得是三代不错的创新。就是通关本篇之后还是有一个无法制作的菜解锁不了，我应该是全宝箱的（除了最后一个梦琥珀的宝箱），不明白哪里有遗漏（总不能是 bug 吧）。</p>
+<figure><img
+    class="my-0 rounded-md"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+    alt=""
+    src="https://notes.sjtu.edu.cn/uploads/upload_d60d979b61d8f8905d8236ca005912b1.png"
+    ></figure>
+<p>（唯一一个毫无头绪的菜）</p>
+<p>至于其他什么抽卡、采集之类的东西，感觉意义不大，我只能说这游戏缝了多少只有制作者知道&hellip;</p>
+<hr>
 
-<h3 class="relative group">addOneColumn
-    <div id="addonecolumn" class="anchor"></div>
+<h2 class="relative group">迷宫与打怪
+    <div id="迷宫与打怪" class="anchor"></div>
     
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#addonecolumn" aria-label="Anchor">#</a>
-    </span>
-    
-</h3>
-<pre class="line-numbers language-scala"><code class="language-scala">def addOneColumn(col: Seq[Bool], cin: Seq[Bool]): (Seq[Bool], Seq[Bool], Seq[Bool]) = {
-  var sum = Seq[Bool]()
-  var cout1 = Seq[Bool]()
-  var cout2 = Seq[Bool]()
-  col.size match {
-    case 1 =&gt;  // do nothing
-      sum = col &#43;&#43; cin
-    case 2 =&gt;
-      val c22 = Module(new C22)
-      c22.io.in := col
-      sum = c22.io.out(0).asBool &#43;: cin
-      cout2 = Seq(c22.io.out(1).asBool)
-    case 3 =&gt;
-      val c32 = Module(new C32)
-      c32.io.in := col
-      sum = c32.io.out(0).asBool &#43;: cin
-      cout2 = Seq(c32.io.out(1).asBool)
-    case 4 =&gt;
-      val c53 = Module(new C53)
-      for((x, y) &lt;- c53.io.in.take(4) zip col){
-        x := y
-      }
-      c53.io.in.last := (if(cin.nonEmpty) cin.head else 0.U)
-      sum = Seq(c53.io.out(0).asBool) &#43;&#43; (if(cin.nonEmpty) cin.drop(1) else Nil)
-      cout1 = Seq(c53.io.out(1).asBool)
-      cout2 = Seq(c53.io.out(2).asBool)
-    case n =&gt;
-      val cin_1 = if(cin.nonEmpty) Seq(cin.head) else Nil
-      val cin_2 = if(cin.nonEmpty) cin.drop(1) else Nil
-      val (s_1, c_1_1, c_1_2) = addOneColumn(col take 4, cin_1)
-      val (s_2, c_2_1, c_2_2) = addOneColumn(col drop 4, cin_2)
-      sum = s_1 &#43;&#43; s_2
-      cout1 = c_1_1 &#43;&#43; c_2_1
-      cout2 = c_1_2 &#43;&#43; c_2_2
-  }
-  (sum, cout1, cout2)
-}</code></pre>
-<p><code>addOneColumn</code> 的作用是压缩某一列的部分积，具体设计如下：</p>
-<p>如果这一列只有 1 位，无需压缩。（加上进位不超过 2 个）
-如果有 2 位，使用半加器。（ C22 压缩器，输出 <code>sum</code> 留在本列，<code>carry</code> 进位）
-如果有 3 位，使用全加器。（ C32 压缩器，输出 <code>sum</code> 留在本列，<code>carry</code> 进位）
-如果有 4 位，结合来自低位的 1 个进位，凑成 5 位使用 C53 压缩器。
-如果 <code>addOneColumn</code> 的这一列还有更多位，将会分组做 <code>addOneColumn</code> 。前四位分成一组，后面的所有位作为第二组。</p>
-<p>这里简单提一下 C53 的实现，它接受 4 个本列输入和 1 个低位进位，输出 1 个 <code>sum</code> 留在本列，和 2 个向高位的进位 <code>carry_1</code> <code>carry_2</code>。</p>
-<p>$sum=x_1\oplus x_2\oplus x_3\oplus x_4\oplus c_{in}$ （一直加，很好理解）</p>
-<p>$carry_1 = \text{Majority}(x_1, x_2, x_3)$ （前三个相加的进位， $\text{Majority}$ 指的是三者中多数决定，也就是 $(x_1 \wedge x_2) \vee (x_2 \wedge x_3) \vee (x_1 \wedge x_3)$ ）</p>
-<p>$carry_2 = \text{Majority}(x_4, c_{in}, (x_1 \oplus x_2 \oplus x_3))$ （前三个的和与 $x_4, c_{in}$ 相加的进位）</p>
-
-<h3 class="relative group">addAll
-    <div id="addall" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#addall" aria-label="Anchor">#</a>
-    </span>
-    
-</h3>
-<p>之后只要检查是否达到压缩完成的条件（每列最多两位），如果某一列没达到，就调用 <code>addOneColumn</code> 进行压缩。</p>
-<pre class="line-numbers language-scala"><code class="language-scala">def addAll(cols: Array[Seq[Bool]], depth: Int): (UInt, UInt) = {
-  if(max(cols.map(_.size)) &lt;= 2){
-    val sum = Cat(cols.map(_(0)).reverse)
-    var k = 0
-    while(cols(k).size == 1) k = k&#43;1
-    val carry = Cat(cols.drop(k).map(_(1)).reverse)
-    (sum, Cat(carry, 0.U(k.W)))
-  } else {
-    val columns_next = Array.fill(2*len)(Seq[Bool]())
-    var cout1, cout2 = Seq[Bool]()
-    for( i &lt;- cols.indices){
-      val (s, c1, c2) = addOneColumn(cols(i), cout1)
-      columns_next(i) = s &#43;&#43; cout2
-      cout1 = c1
-      cout2 = c2
-    }
-
-    val needReg = depth == 4
-    val toNextLayer = if(needReg)
-      columns_next.map(_.map(x =&gt; RegEnable(x, io.regEnables(1))))
-    else
-      columns_next
-
-    addAll(toNextLayer, depth&#43;1)
-  }
-}</code></pre>
-<p>代码中的 <code>cout1</code> <code>cout2</code> 是为了照顾到 C53 压缩器，可以同时存两位进位。但是某列在进行压缩时只会用到 <code>cout1</code> 作为低位进位 $c_{in}$ ，<code>cout2</code> 会直接存到本列并参与下一轮压缩。</p>
-<p>深度为 4 时切了一刀，存进寄存器。 XiangShan 中的乘法占两个流水级，等下一个周期继续压缩。</p>
-
-<h2 class="relative group">写在最后
-    <div id="写在最后" class="anchor"></div>
-    
-    <span
-        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
-        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%86%99%e5%9c%a8%e6%9c%80%e5%90%8e" aria-label="Anchor">#</a>
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e8%bf%b7%e5%ae%ab%e4%b8%8e%e6%89%93%e6%80%aa" aria-label="Anchor">#</a>
     </span>
     
 </h2>
-<p>以上就是 XiangShan 的乘法器，并没有那么难理解，但是很精巧。里面一些很细的优化和小巧思相当值得品味呢。</p>
-<p>这篇文章动笔于 1 月 25 日，但是写完已经是 1 月 26 号了。中途出门（被迫）去逛了门口的综合体，意外的有人气。上次来南京还是 25 年的春节，不过当时好像一直在往新街口那块跑（饭局有点多），家门口的反而没去过。再往前，印象就停留在 24 年暑假了，不过那个时候综合体疑似（？）还没开。感叹去上海一年半，南通南京都变得很陌生。不过上海也很陌生，一年半进城恐怕没有 5 次（笑）。</p>
-<p>细数了一下，去了两次旦（一次是例会），加上一次幻奏。平均下来半年进一次城，进城还是因为办车万照顾不了偏僻的闵行。</p>
-<p>上次出远门好像还是暑假时 Norb 举行的神秘出游。选在了上海最热的天，去了同样是郊区（所以不算进城）的东方绿舟，一群无聊的大学牲在 $35^{\circ}\mathrm{C}$ 的无遮挡空地上走各种桥（公园里很常见那种，各种抽象桥身和造型）。最后热的实在受不了 11 点没到就去找饭吃了，去了一家很实惠的家常菜来着。最后全员体验市域机场线，幸好没打车回去，我在打车来的一个小时中很坚韧地没有吐出来。</p>
-<p>有点恐怖的是刚才为了确认没打错地名打开搜索引擎，发现就在我们去之前一周，东方绿舟还出了事故。难道说那天人那么少也不只是因为天气（？）。</p>
-<p>好吧，回忆就止于此，我都忘了是为什么而感慨的了。诸君晚安。</p>
+<p>我给这篇评测的主题词叫“瑕瑜互见”，其实主要想说的点也是在这一块。上面所提的部分，不管创新还是不足，其实对游戏的整体体验都不会造成太大的影响。但是迷宫和敌人的设计是 DRPG 的核心，我只能说《东方迷宫Tri》并没有做到完美。</p>
+<p>打完三代，最大的感觉就是“就结束了？”，总感觉体量比二代小了不止半点。实际上通关时长是 56 小时，二代通关就算比这个数字大，但也不会大很多。这种感觉上的差异，我觉得还是迷宫丰富性上的差距。</p>
+<p>值得注意的是，三代的迷宫是被拆分成多个小迷宫的，虽然总层数达到了 28 层（不算宝箱层），但是每一个地图最多也就 3~4 层，跟二代差不多。然而三代最大的问题就在于完全缺乏层与层的迷宫联动，几乎每张图都是先把某一层全部清完，沿着唯一的向上台阶到上一层。这其实不太有趣，二代中的火关能用会落到下一层的洞把三层的地图串连在一起（火关地图确实难的逆天），森林关上下层的事件互相挂锁，其他图也常有多个向上与向下的台阶，强调层与层的连接性。到了三代，没有一张图是能体现层间联系的。这也是为什么我觉得三代更像是“解谜”而非“迷宫”，它完全丢失了立体的探索感觉。这种丢失，是我感觉三代体量不足的原因之一。</p>
+<p>说句实话，三代迷宫对标的应该是二代 Plus 部分，二代地下层的设计也是缺少联动感（即使如此也比三代联动要多）。我不清楚是制作组江郎才尽，再做不成一个能达到二代火关高度的迷宫，还是完全沉浸于他们在 Plus 里大玩的解谜（包括但不限于推箱子、滑滑冰、隐形路），总之三代在迷宫设计上还是有明显缺点的。</p>
+<p>其次很难理解的点在于三代的 Boss 数量未免有点太少了，几乎只打了一些会入队的角色，以及大后期的几个宝珠，除此之外几乎没遇到什么其他的 Boss 了。很多时候一层都遇不到一个 Boss ，所以带来体量不足的感觉。还有一个点是没有了一些剧情杀的点（二代的天子战，虽然有大佬开发出了打赢的办法），显得整体剧情也略显单薄。中间散队那一段还是挺有新意的，但是感觉有点意义不明（因为几乎对后续配队不会有影响），总体来说后期的剧情没有能得住前期的铺垫，有些遗憾。</p>
+<p>本作的守门怪对标的应该是二代的FOE，我个人觉得FOE的设计会更好一点，DRPG 不应该允许无视迷宫的捷径。而且守门怪的存在未免太有利于刷刷刷了，对于 Normal 难度下的平衡性不是很理想吧。</p>
+<p>谈完了瑕，我们说说瑜。</p>
+<p>本作最突出的优点是充分地给怪物加了“机制”。三代的小怪有了很多有趣的机制，比如变化和死亡强化，这就使得清杂也不能直接无脑 AOE ，在常规战斗里加入不多不少的博弈，偶尔还能阴一把，其实是优化了玩家探索迷宫的体验的（一直无脑 AOE 和割草游戏有什么区别）。Boss 虽然数量不能使人满意，但是几个机制怪做的还是相当不错的。印象比较深刻的有勇仪和紫妈吧，后面几个宝珠机制也很足。不像打二代的 Normal ，等级刷够了几乎可以一套阵容无脑莽。三代还是需要多一些配队，以及针对 Boss 机制来打，相比之下游戏性是高了很多的。（虽然很可惜的是移除了对 Boss 的即死机制，把即死杀这一趣味的小手段送 ban 了）</p>
+<hr>
+
+<h2 class="relative group">总评
+    <div id="总评" class="anchor"></div>
+    
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e6%80%bb%e8%af%84" aria-label="Anchor">#</a>
+    </span>
+    
+</h2>
+<p>本作相比二代，可以说有明显的突出与不足，虽然在剧情完整性与内容丰富度上不如二代，但仍然算是一部优秀的东方同人游戏。找个小长假打一打，体感还是很不错的。</p>
+<p>对于想找一款车万同人或是想尝试 DRPG 的人，我更推荐你先去品鉴二代（本篇 + Plus）。本作更适合那些玩完了二代，但意犹未尽的人，可以借此作延续余味。虽不及当日鲜美，但也聊胜于无。</p>
 
             
             
@@ -1432,8 +1169,8 @@ for(i &lt;- Range(0, len, 2)){
             type="text/javascript"
             src="/js/page.min.54b6f4371722649edbe871e431d8670d670878c22be8f36e229fe53cc9b786fe25a834def5e6de621f7a3e37b72bc8cd73839aa5ed907ed6cbd45cd3e1b0fa20.js"
             integrity="sha512-VLb0NxciZJ7b6HHkMdhnDWcIeMIr6PNuIp/lPMm3hv4lqDTe9ebeYh96Pje3K8jNc4Oape2QftbL1FzT4bD6IA=="
-            data-oid="views_posts/wallace-tree-2.md"
-            data-oid-likes="likes_posts/wallace-tree-2.md"></script>
+            data-oid="views_posts/game-review-1.md"
+            data-oid-likes="likes_posts/game-review-1.md"></script>
         
       </section>
 
@@ -1626,32 +1363,19 @@ for(i &lt;- Range(0, len, 2)){
           
             <a
               class="flex text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
-              href="/posts/wallace-tree-1/">
+              href="/posts/end-of-the-vacation/">
               <span class="leading-6">
-                <span class="inline-block rtl:rotate-180">&larr;</span>&ensp;Wallace Tree (1)
+                <span class="inline-block rtl:rotate-180">&larr;</span>&ensp;End of the Vacation
               </span>
             </a>
             
               <span class="ms-6 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
-                <time datetime="2026-01-21T00:00:00&#43;00:00">21 January 2026</time>
+                <time datetime="2026-03-01T00:00:00&#43;00:00">1 March 2026</time>
               </span>
             
           
         </span>
         <span class="flex flex-col items-end">
-          
-            <a
-              class="flex text-right text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
-              href="/posts/srt-division/">
-              <span class="leading-6">
-                SRT Division&ensp;<span class="inline-block rtl:rotate-180">&rarr;</span>
-              </span>
-            </a>
-            
-              <span class="me-6 mt-1 text-xs text-neutral-500 dark:text-neutral-400">
-                <time datetime="2026-01-26T00:00:00&#43;00:00">26 January 2026</time>
-              </span>
-            
           
         </span>
       </div>
