@@ -1,5 +1,5 @@
 ---
-title: "浅评《东方迷宫Tri》：瑕瑜互见"
+title: "浅评《东方迷宫Tri》：瑕瑜互见的缺憾续作"
 date: 2026-03-06
 draft: false
 type: "posts"

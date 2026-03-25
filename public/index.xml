@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2026 Konpaku Youming</copyright>
-    <lastBuildDate>Fri, 06 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 25 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>浅评《东方迷宫Tri》：瑕瑜互见</title>
+      <title>Time of Delete-Min in Pairing Heaps</title>
+      <link>http://localhost:1313/posts/pairing-heap/</link>
+      <pubDate>Wed, 25 Mar 2026 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/pairing-heap/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>浅评《东方迷宫Tri》：瑕瑜互见的缺憾续作</title>
       <link>http://localhost:1313/posts/game-review-1/</link>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
       
