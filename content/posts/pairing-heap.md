@@ -78,7 +78,7 @@ Node* meld(Node* x, Node* y) {
 
 假设 $C$ 子树非空，势能的变化只在于 $r(x)$ 和 $r(y)$ ，而且这个上升值与 $x,y$ 的大小无关（见图中双向箭头）。由图可知势能上升：
 $$
-\log \left( s\left( a \right) +s\left( b \right) +1 \right) +\log \left( s\left( a \right) +s\left( b \right) +s\left( c \right) +2 \right) -\log \left( s\left( b \right) +s\left( c \right) +1 \right) +\log \left( s\left( a \right) +s\left( b \right) +s\left( c \right) +2 \right) 
+r'\left( x \right) +r'\left( y \right) -r''\left( x \right) -r''\left( y \right) 
 $$
 $$
 =\log \left( s\left( a \right) +s\left( b \right) +1 \right) -\log \left( s\left( b \right) +s\left( c \right) +1 \right) 
