@@ -330,3 +330,208 @@
     });
 </script>
 
+{{/* 随机背景图片功能 */}}
+{{ if site.Params.backgroundImages.enabled }}
+{{ $urls := site.Params.backgroundImages.urls }}
+{{ if $urls }}
+<style>
+/* 随机背景图片样式 */
+.random-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.random-background-container.active {
+  opacity: 1;
+}
+
+/* 深色模式下隐藏背景 */
+.dark .random-background-container {
+  opacity: 0 !important;
+}
+
+/* 浅色模式下为整个页面添加半透明背景层 */
+.random-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.random-background-overlay.active {
+  opacity: 1;
+}
+
+/* 深色模式下隐藏覆盖层 */
+.dark .random-background-overlay {
+  opacity: 0 !important;
+}
+
+/* 导航栏层级提升，不被覆盖层遮挡 */
+body:has(.random-background-container.active) header,
+body:has(.random-background-container.active) nav {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* 浅色模式下导航栏字体颜色调整 */
+body:has(.random-background-container.active) header a,
+body:has(.random-background-container.active) header button,
+body:has(.random-background-container.active) header span,
+body:has(.random-background-container.active) nav a,
+body:has(.random-background-container.active) nav button,
+body:has(.random-background-container.active) nav span {
+  color: #1f2937 !important; /* 深灰色 */
+}
+
+/* 导航栏链接悬停效果 */
+body:has(.random-background-container.active) header a:hover,
+body:has(.random-background-container.active) nav a:hover {
+  color: #111827 !important; /* 更深的灰色 */
+}
+
+/* 导航栏图标颜色 */
+body:has(.random-background-container.active) header svg,
+body:has(.random-background-container.active) nav svg {
+  fill: #1f2937 !important;
+  color: #1f2937 !important;
+}
+</style>
+
+<script>
+(function() {
+  // 从 Hugo 配置获取图片 URL 列表
+  var backgroundUrls = JSON.parse({{ $urls | jsonify }});
+  
+  // 验证配置
+  if (!backgroundUrls || !Array.isArray(backgroundUrls) || backgroundUrls.length === 0) {
+    console.warn('未配置背景图片或配置无效');
+    return;
+  }
+  
+  // 随机选择图片
+  function selectRandomImage(urls) {
+    if (!urls || urls.length === 0) return null;
+    if (urls.length === 1) return urls[0];
+    var index = Math.floor(Math.random() * urls.length);
+    return urls[index];
+  }
+  
+  // 应用背景图片
+  function applyBackground(url) {
+    var container = document.querySelector('.random-background-container');
+    if (!container) {
+      console.warn('背景容器不存在');
+      return;
+    }
+    
+    // 预加载图片
+    var img = new Image();
+    
+    img.onload = function() {
+      // 应用背景
+      container.style.backgroundImage = 'url(' + url + ')';
+      
+      // 检查当前主题，决定是否显示
+      var isDark = document.documentElement.classList.contains('dark');
+      if (!isDark) {
+        container.classList.add('active');
+        // 显示半透明覆盖层
+        var overlay = document.querySelector('.random-background-overlay');
+        if (overlay) {
+          overlay.classList.add('active');
+        }
+      }
+    };
+    
+    img.onerror = function() {
+      console.warn('背景图片加载失败:', url);
+      // 优雅降级：保持默认背景
+    };
+    
+    // 开始加载
+    img.src = url;
+  }
+  
+  // 监听主题切换
+  function observeTheme() {
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+          var isDark = document.documentElement.classList.contains('dark');
+          var container = document.querySelector('.random-background-container');
+          var overlay = document.querySelector('.random-background-overlay');
+          if (container) {
+            if (isDark) {
+              container.classList.remove('active');
+            } else {
+              container.classList.add('active');
+            }
+          }
+          if (overlay) {
+            if (isDark) {
+              overlay.classList.remove('active');
+            } else {
+              overlay.classList.add('active');
+            }
+          }
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+  
+  // 初始化
+  function init() {
+    // 创建背景容器
+    var container = document.createElement('div');
+    container.className = 'random-background-container';
+    document.body.insertBefore(container, document.body.firstChild);
+    
+    // 创建半透明覆盖层
+    var overlay = document.createElement('div');
+    overlay.className = 'random-background-overlay';
+    document.body.insertBefore(overlay, container.nextSibling);
+    
+    // 随机选择图片
+    var selectedUrl = selectRandomImage(backgroundUrls);
+    if (selectedUrl) {
+      applyBackground(selectedUrl);
+    }
+    
+    // 监听主题切换
+    observeTheme();
+  }
+  
+  // DOM 加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+{{ end }}
+{{ end }}
+

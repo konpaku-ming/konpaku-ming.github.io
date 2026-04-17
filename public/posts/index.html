@@ -208,11 +208,11 @@
       "@type": "Person",
       "name": "Konpaku Youming"
     },
-    "copyrightYear": "2026",
-    "dateCreated": "2026-03-25T00:00:00\u002b00:00",
-    "datePublished": "2026-03-25T00:00:00\u002b00:00",
     
-    "dateModified": "2026-03-25T00:00:00\u002b00:00",
+    
+    
+    
+    
     
     
     
@@ -559,6 +559,211 @@
         }
     });
 </script>
+
+
+
+
+
+<style>
+ 
+.random-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  pointer-events: none;
+}
+
+.random-background-container.active {
+  opacity: 1;
+}
+
+ 
+.dark .random-background-container {
+  opacity: 0 !important;
+}
+
+ 
+.random-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.random-background-overlay.active {
+  opacity: 1;
+}
+
+ 
+.dark .random-background-overlay {
+  opacity: 0 !important;
+}
+
+ 
+body:has(.random-background-container.active) header,
+body:has(.random-background-container.active) nav {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+ 
+body:has(.random-background-container.active) header a,
+body:has(.random-background-container.active) header button,
+body:has(.random-background-container.active) header span,
+body:has(.random-background-container.active) nav a,
+body:has(.random-background-container.active) nav button,
+body:has(.random-background-container.active) nav span {
+  color: #1f2937 !important;  
+}
+
+ 
+body:has(.random-background-container.active) header a:hover,
+body:has(.random-background-container.active) nav a:hover {
+  color: #111827 !important;  
+}
+
+ 
+body:has(.random-background-container.active) header svg,
+body:has(.random-background-container.active) nav svg {
+  fill: #1f2937 !important;
+  color: #1f2937 !important;
+}
+</style>
+
+<script>
+(function() {
+  
+  var backgroundUrls = JSON.parse("[\"https://i.imgur.com/esfcrFx.jpg\",\"https://i.imgur.com/mmDOYBB.jpg\",\"https://i.imgur.com/LOKfY1n.jpg\",\"https://i.imgur.com/YFKG3wr.jpg\",\"https://i.imgur.com/MgflNXZ.jpg\",\"https://i.imgur.com/3Jv43C6.jpg\",\"https://i.imgur.com/WUVkHPL.jpg\",\"https://i.imgur.com/sbpLvxU.jpg\",\"https://i.imgur.com/ZqwvXrm.jpg\",\"https://i.imgur.com/MACINMJ.jpg\",\"https://i.imgur.com/REOMZhW.jpg\",\"https://i.imgur.com/2F143xJ.jpg\"]");
+  
+  
+  if (!backgroundUrls || !Array.isArray(backgroundUrls) || backgroundUrls.length === 0) {
+    console.warn('未配置背景图片或配置无效');
+    return;
+  }
+  
+  
+  function selectRandomImage(urls) {
+    if (!urls || urls.length === 0) return null;
+    if (urls.length === 1) return urls[0];
+    var index = Math.floor(Math.random() * urls.length);
+    return urls[index];
+  }
+  
+  
+  function applyBackground(url) {
+    var container = document.querySelector('.random-background-container');
+    if (!container) {
+      console.warn('背景容器不存在');
+      return;
+    }
+    
+    
+    var img = new Image();
+    
+    img.onload = function() {
+      
+      container.style.backgroundImage = 'url(' + url + ')';
+      
+      
+      var isDark = document.documentElement.classList.contains('dark');
+      if (!isDark) {
+        container.classList.add('active');
+        
+        var overlay = document.querySelector('.random-background-overlay');
+        if (overlay) {
+          overlay.classList.add('active');
+        }
+      }
+    };
+    
+    img.onerror = function() {
+      console.warn('背景图片加载失败:', url);
+      
+    };
+    
+    
+    img.src = url;
+  }
+  
+  
+  function observeTheme() {
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+          var isDark = document.documentElement.classList.contains('dark');
+          var container = document.querySelector('.random-background-container');
+          var overlay = document.querySelector('.random-background-overlay');
+          if (container) {
+            if (isDark) {
+              container.classList.remove('active');
+            } else {
+              container.classList.add('active');
+            }
+          }
+          if (overlay) {
+            if (isDark) {
+              overlay.classList.remove('active');
+            } else {
+              overlay.classList.add('active');
+            }
+          }
+        }
+      });
+    });
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+  
+  
+  function init() {
+    
+    var container = document.createElement('div');
+    container.className = 'random-background-container';
+    document.body.insertBefore(container, document.body.firstChild);
+    
+    
+    var overlay = document.createElement('div');
+    overlay.className = 'random-background-overlay';
+    document.body.insertBefore(overlay, container.nextSibling);
+    
+    
+    var selectedUrl = selectRandomImage(backgroundUrls);
+    if (selectedUrl) {
+      applyBackground(selectedUrl);
+    }
+    
+    
+    observeTheme();
+  }
+  
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+
 
 
   
