@@ -191,23 +191,6 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 
 # 随机背景图片配置
 # 在浅色模式下随机显示背景图片，增强视觉效果
+# 图片请存放在 assets/backgrounds/ 目录下，每次页面加载时随机选择一张
 [backgroundImages]
   enabled = true  # 是否启用随机背景功能
-
-  # Imgur 图片链接列表
-  # 每次页面加载时随机选择一张图片作为背景
-  # 请将下面的示例链接替换为你自己的 imgur 图片链接
-  urls = [
-    "https://i.imgur.com/esfcrFx.jpg",
-    "https://i.imgur.com/mmDOYBB.jpg",
-    "https://i.imgur.com/LOKfY1n.jpg",
-    "https://i.imgur.com/YFKG3wr.jpg",
-    "https://i.imgur.com/MgflNXZ.jpg",
-    "https://i.imgur.com/3Jv43C6.jpg",
-    "https://i.imgur.com/WUVkHPL.jpg",
-    "https://i.imgur.com/sbpLvxU.jpg",
-    "https://i.imgur.com/ZqwvXrm.jpg",
-    "https://i.imgur.com/MACINMJ.jpg",
-    "https://i.imgur.com/REOMZhW.jpg",
-    "https://i.imgur.com/2F143xJ.jpg"
-  ]

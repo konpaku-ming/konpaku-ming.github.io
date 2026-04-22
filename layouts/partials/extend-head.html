@@ -332,7 +332,11 @@
 
 {{/* 随机背景图片功能 */}}
 {{ if site.Params.backgroundImages.enabled }}
-{{ $urls := site.Params.backgroundImages.urls }}
+{{ $bgImages := resources.Match "backgrounds/*" }}
+{{ $urls := slice }}
+{{ range $bgImages }}
+  {{ $urls = $urls | append .RelPermalink }}
+{{ end }}
 {{ if $urls }}
 <style>
 /* 随机背景图片样式 */
@@ -413,7 +417,14 @@ body:has(.random-background-container.active) .main-menu span {
 }
 
 /* 导航栏链接悬停效果 */
-body:has(.random-background-container.active) .main-menu a:hover {
+body:has(.random-background-container.active) .main-menu a:hover,
+body:has(.random-background-container.active) .main-menu a:hover span {
+  color: #0891b2 !important; /* 青蓝色 */
+}
+
+/* 深色模式下导航栏悬停效果 */
+.dark .main-menu a:hover,
+.dark .main-menu a:hover span {
   color: #0891b2 !important; /* 青蓝色 */
 }
 
