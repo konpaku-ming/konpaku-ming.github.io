@@ -384,32 +384,41 @@
   opacity: 0 !important;
 }
 
+/* 背景激活时 body 背景透明，让背景图可见 */
+body:has(.random-background-container.active) {
+  background-color: transparent !important;
+}
+
 /* 导航栏层级提升，不被覆盖层遮挡 */
-body:has(.random-background-container.active) header,
-body:has(.random-background-container.active) nav {
-  position: relative !important;
-  z-index: 10 !important;
+body:has(.random-background-container.active) .main-menu {
+  position: relative;
+  z-index: 1;
+}
+
+/* 内容根容器提升层级，确保页面内容在覆盖层之上 */
+body:has(.random-background-container.active) > div.relative {
+  z-index: 1;
+}
+
+/* 无障碍跳转链接也需要在覆盖层之上 */
+body:has(.random-background-container.active) #the-top {
+  z-index: 1;
 }
 
 /* 浅色模式下导航栏字体颜色调整 */
-body:has(.random-background-container.active) header a,
-body:has(.random-background-container.active) header button,
-body:has(.random-background-container.active) header span,
-body:has(.random-background-container.active) nav a,
-body:has(.random-background-container.active) nav button,
-body:has(.random-background-container.active) nav span {
+body:has(.random-background-container.active) .main-menu a,
+body:has(.random-background-container.active) .main-menu button,
+body:has(.random-background-container.active) .main-menu span {
   color: #1f2937 !important; /* 深灰色 */
 }
 
 /* 导航栏链接悬停效果 */
-body:has(.random-background-container.active) header a:hover,
-body:has(.random-background-container.active) nav a:hover {
-  color: #111827 !important; /* 更深的灰色 */
+body:has(.random-background-container.active) .main-menu a:hover {
+  color: #0891b2 !important; /* 青蓝色 */
 }
 
 /* 导航栏图标颜色 */
-body:has(.random-background-container.active) header svg,
-body:has(.random-background-container.active) nav svg {
+body:has(.random-background-container.active) .main-menu svg {
   fill: #1f2937 !important;
   color: #1f2937 !important;
 }
