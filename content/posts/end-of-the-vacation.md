@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "About the rest of my vacation"
 math: true
+categories: ["随笔"]
 ---
 
 {{< ncm id="515278" >}}

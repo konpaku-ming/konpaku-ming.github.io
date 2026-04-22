@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "My Luastg Trial"
 math: true
+categories: ["游戏", "有趣的项目"]
 ---
 
 hello，米娜桑~

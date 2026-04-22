@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "Something About Xiangshan Multiplier"
 math: true
+categories: ["硬件"]
 ---
 
 幻影忍者前情提要：[Wallace Tree (1)](https://konpaku-ming.github.io/posts/wallace-tree-1/)

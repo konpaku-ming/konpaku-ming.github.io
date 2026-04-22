@@ -4,6 +4,7 @@ date: 2026-02-02
 draft: false
 type: "posts"
 description: "Interesting Tiny Project"
+categories: ["游戏", "有趣的项目"]
 ---
 
 Ciallo～(∠・ω< )⌒★

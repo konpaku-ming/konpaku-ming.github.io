@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "A Game Review"
 math: true
+categories: ["游戏", "杂谈"]
 ---
 
 {{< ncm id="4942607" >}}

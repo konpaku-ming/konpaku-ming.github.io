@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "Analysis on the time complexity of pairing heaps"
 math: true
+categories: ["数据结构", "理论"]
 ---
 
 {{< ncm id="4968757" >}}

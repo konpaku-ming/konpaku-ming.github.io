@@ -8,6 +8,7 @@ mainSections = ["posts"]
 baseURL = "https://konpaku-ming.github.io/"
 title = "Youming's Gensokyo"
 defaultContentLanguage = "en"
+hasCJKLanguage = true
 
 # pluralizeListTitles = "true" # hugo function useful for non-english languages, find out more in  https://gohugo.io/getting-started/configuration/#pluralizelisttitles
 

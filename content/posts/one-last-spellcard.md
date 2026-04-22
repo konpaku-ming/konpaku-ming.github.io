@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "Continuing LuaSTG"
 math: true
+categories: ["游戏", "有趣的项目"]
 ---
 
 现在是 2 月 6 号的凌晨 0:26，我开始写这篇日记，大致交代一下这几天我的工作（虽然是白忙活）。不然好像我一直在当鸽子，实则这几天牢的要死。

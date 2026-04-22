@@ -4,6 +4,7 @@ date: 2026-01-19
 draft: false
 type: "posts"
 description: "My New Home"
+categories: ["随笔"]
 ---
 
 ## Birth！
