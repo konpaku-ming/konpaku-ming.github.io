@@ -16,6 +16,7 @@ title = "Youming's Gensokyo"
 
 [params.author]
   name = "Konpaku Youming"
+  image = "images/youmu.png"
 
 # [params.author]
 #   name = "Youming"
