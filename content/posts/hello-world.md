@@ -5,6 +5,7 @@ draft: false
 type: "posts"
 description: "My New Home"
 categories: ["随笔"]
+featureimage: "images/hello-world.png"
 ---
 
 ## Birth！

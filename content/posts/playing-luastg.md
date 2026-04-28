@@ -6,6 +6,7 @@ type: "posts"
 description: "My Luastg Trial"
 math: true
 categories: ["游戏", "有趣的项目"]
+featureimage: "images/playing-luastg.jpg"
 ---
 
 hello，米娜桑~

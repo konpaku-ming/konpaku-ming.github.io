@@ -6,6 +6,7 @@ type: "posts"
 description: "Something About SRT Division"
 math: true
 categories: ["硬件"]
+featureimage: "images/srt-division.jpg"
 ---
 
 这几天比较勤奋哈，干脆再更一篇。

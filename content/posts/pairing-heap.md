@@ -6,6 +6,7 @@ type: "posts"
 description: "Analysis on the time complexity of pairing heaps"
 math: true
 categories: ["数据结构", "理论"]
+featureimage: "images/paring-heap.jpg"
 ---
 
 {{< ncm id="4968757" >}}
