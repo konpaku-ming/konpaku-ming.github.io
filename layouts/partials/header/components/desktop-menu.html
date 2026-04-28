@@ -1,9 +1,7 @@
 <nav class="flex items-center gap-x-5 h-12">
   {{ if .Site.Menus.main }}
     {{ range .Site.Menus.main }}
-      {{ if or $.IsHome (ne .Name "Music") }}
         {{ template "DesktopMenu" . }}
-      {{ end }}
     {{ end }}
   {{ end }}
 

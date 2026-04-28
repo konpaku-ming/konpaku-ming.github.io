@@ -4,23 +4,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body);"></script>
+></script>
 <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
 <script>var meting_api = "https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&r=:r";</script>
 <script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement(document.body, {
-            delimiters: [
-                {left: "2375", right: "2375", display: true},
-                {left: "$", right: "$", display: false}
-            ],
-            throwOnError : false
-        });
-    });
-</script>
+<script defer src="https://cdn.jsdelivr.net/npm/swup@4/dist/Swup.umd.js"></script>
 
 <style>
     :root {
@@ -392,67 +382,92 @@
 
 <!-- Prism.js for code highlighting with line numbers and copy button -->
 <script src="/js/prism.js"></script>
-<script>
-    // 确保 Prism 高亮所有代码块
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof Prism !== 'undefined') {
-            Prism.highlightAll();
-        }
-    });
-</script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // 搜索按钮
-        var searchLinks = document.querySelectorAll('a[href="#search"]');
-        if (searchLinks.length) {
-            var openSearchModal = function () {
-                var trigger = document.getElementById("search-button") || document.getElementById("search-button-mobile");
-                if (trigger) {
-                    trigger.click();
-                    var queryInput = document.getElementById("search-query");
-                    if (queryInput) {
-                        queryInput.focus();
-                    }
-                }
-            };
-            searchLinks.forEach(function (link) {
-                link.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    openSearchModal();
-                });
-            });
-        }
-
-        // Music 按钮
-        var musicLinks = document.querySelectorAll('a[href="#music"]');
-        if (musicLinks.length) {
-            var player = document.querySelector('.aplayer.no-destroy');
-            var aplayer = null;
-            function showPlayerAndPlayRandom() {
-                if (!player) return;
-                player.style.display = '';
-                if (!window.aplayers || !window.aplayers.length) return;
-                aplayer = window.aplayers[0];
-                // 随机选一首
-                var audios = aplayer.list && aplayer.list.audios;
-                if (audios && audios.length) {
-                    var idx = Math.floor(Math.random() * audios.length);
-                    aplayer.list.switch(idx);
-                    aplayer.seek(0);
-                    aplayer.play();
-                }
-            }
-            musicLinks.forEach(function (link) {
-                link.addEventListener("click", function (event) {
-                    event.preventDefault();
-                    showPlayerAndPlayRandom();
-                });
-            });
-            // 默认隐藏播放器
-            if (player) player.style.display = 'none';
-        }
+(function () {
+  function reExecuteScripts(container) {
+    container.querySelectorAll('script').forEach(function (oldScript) {
+      var newScript = document.createElement('script');
+      for (var i = 0; i < oldScript.attributes.length; i++) {
+        var attr = oldScript.attributes[i];
+        newScript.setAttribute(attr.name, attr.value);
+      }
+      if (oldScript.textContent) newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
     });
+  }
+
+  function initContent(container) {
+    if (!container) return;
+    if (typeof renderMathInElement === 'function') {
+      try {
+        renderMathInElement(container, {
+          delimiters: [
+            { left: '2375', right: '2375', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      } catch (e) { console.warn('KaTeX init failed', e); }
+    }
+    if (typeof Prism !== 'undefined') {
+      try { Prism.highlightAllUnder(container); } catch (e) { console.warn('Prism init failed', e); }
+    }
+    if (typeof mediumZoom === 'function') {
+      try { mediumZoom(container.querySelectorAll('img:not(.nozoom)')); } catch (e) { console.warn('mediumZoom init failed', e); }
+    }
+    reExecuteScripts(container);
+  }
+
+  document.addEventListener('click', function (e) {
+    var music = e.target.closest('a[href="#music"]');
+    if (music) {
+      e.preventDefault();
+      var wrapper = document.getElementById('global-player-wrapper');
+      if (wrapper) wrapper.style.display = 'block';
+      var ap = window.aplayers && window.aplayers[0];
+      if (ap && ap.list && ap.list.audios && ap.list.audios.length) {
+        var idx = Math.floor(Math.random() * ap.list.audios.length);
+        ap.list.switch(idx);
+        ap.seek(0);
+        ap.play();
+      }
+      return;
+    }
+    var search = e.target.closest('a[href="#search"]');
+    if (search) {
+      e.preventDefault();
+      var btn = document.getElementById('search-button') || document.getElementById('search-button-mobile');
+      if (btn) {
+        btn.click();
+        var q = document.getElementById('search-query');
+        if (q) q.focus();
+      }
+    }
+  });
+
+  function bootstrapSwup() {
+    if (typeof Swup === 'undefined') return;
+    var swup = new Swup({
+      containers: ['#main-content'],
+      animationSelector: false
+    });
+    swup.hooks.on('content:replace', function () {
+      initContent(document.getElementById('main-content'));
+    });
+    window._swup = swup;
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      initContent(document.body);
+      bootstrapSwup();
+    });
+  } else {
+    initContent(document.body);
+    bootstrapSwup();
+  }
+})();
 </script>
 
 {{/* 随机背景图片功能 */}}

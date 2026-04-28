@@ -28,32 +28,18 @@
     <div class="relative flex flex-col grow">
       <main id="main-content" class="grow">
         {{ block "main" . }}{{ end }}
-        {{ if and (site.Params.footer.showScrollToTop | default true) }}
-          {{- partial "scroll-to-top.html" . -}}
-        {{ end }}
       </main>
+      {{ if and (site.Params.footer.showScrollToTop | default true) }}
+        {{- partial "scroll-to-top.html" . -}}
+      {{ end }}
       {{- partial "footer.html" . -}}
       {{ if site.Params.enableSearch | default false }}
         {{- partial "search.html" . -}}
       {{ end }}
     </div>
-    {{ if .IsHome }}
-      <div id="global-player-wrapper" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9999;">
-        {{- partial "global-player.html" . -}}
-      </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var musicBtn = document.querySelector('a[href="#music"]');
-          var player = document.getElementById('global-player-wrapper');
-          if(musicBtn && player) {
-            musicBtn.addEventListener('click', function(e) {
-              e.preventDefault();
-              player.style.display = (player.style.display === 'none') ? 'block' : 'none';
-            });
-          }
-        });
-      </script>
-    {{ end }}
+    <div id="global-player-wrapper" style="display:none;position:fixed;bottom:20px;right:20px;z-index:9999;">
+      {{- partial "global-player.html" . -}}
+    </div>
   </body>
   {{ if site.Params.buymeacoffee.globalWidget | default false }}
     <script

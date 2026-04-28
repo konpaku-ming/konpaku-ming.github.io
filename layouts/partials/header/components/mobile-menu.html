@@ -56,8 +56,7 @@
 
 {{ define "mobile-main-menu" }}
   {{ range .Site.Menus.main }}
-    {{ if or $.IsHome (ne .Name "Music") }}
-      {{ $submenuId := printf "fullscreen-submenu-%s" (.Identifier | default .Name | anchorize) }}
+    {{ $submenuId := printf "fullscreen-submenu-%s" (.Identifier | default .Name | anchorize) }}
       <div class="px-2">
         <a
           href="{{ .URL }}"
@@ -113,7 +112,6 @@
           </div>
         {{ end }}
       </div>
-    {{ end }}
   {{ end }}
 {{ end }}
 
