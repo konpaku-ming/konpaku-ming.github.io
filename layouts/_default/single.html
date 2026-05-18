@@ -31,20 +31,30 @@
 
     {{/* Body with Sidebar */}}
     <div class="article-with-sidebar flex flex-col lg:flex-row gap-8">
+      {{/* Left TOC */}}
+      {{ $hasToc := in .TableOfContents "<ul" }}
+      {{ if $hasToc }}
+      <div class="article-toc w-full flex-shrink-0 print:hidden">
+        <div class="article-toc-sticky">
+          <h3 class="text-sm font-bold text-neutral-900 dark:text-neutral-100 mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <line x1="8" y1="7" x2="16" y2="7"/>
+              <line x1="8" y1="11" x2="16" y2="11"/>
+              <line x1="8" y1="15" x2="12" y2="15"/>
+            </svg>
+            目录
+          </h3>
+          <div class="sidebar-toc-content toc bf-scrollbar text-sm pr-1">
+            {{ .TableOfContents | emojify }}
+          </div>
+        </div>
+      </div>
+      {{ end }}
+
       {{/* Main Content */}}
       <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row flex-1 min-w-0">
-        {{ $enableToc := site.Params.article.showTableOfContents | default false }}
-        {{ $enableToc = .Params.showTableOfContents | default $enableToc }}
-        {{ $showToc := and $enableToc (in .TableOfContents "<ul") }}
-        {{ $topClass := cond (hasPrefix site.Params.header.layout "fixed") "lg:top-[140px]" "lg:top-10" }}
-        {{ if $showToc }}
-          <div class="order-first lg:ms-auto px-0 lg:order-last lg:ps-8 lg:max-w-2xs">
-            <div class="toc ps-5 print:hidden lg:sticky {{ $topClass }}">
-              {{ partial "toc.html" . }}
-            </div>
-          </div>
-        {{ end }}
-
         <div class="min-w-0 min-h-0 max-w-fit">
           {{ partial "series/series.html" . }}
           <div class="article-content max-w-prose mb-20">
@@ -93,7 +103,7 @@
         <div class="sidebar-sticky space-y-6">
           {{/* Author Profile Card */}}
           {{ partial "sidebar/author-card.html" . }}
-          
+
           {{/* Recent Posts */}}
           {{ partial "sidebar/recent-posts.html" . }}
         </div>
