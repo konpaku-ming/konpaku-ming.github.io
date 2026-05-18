@@ -29,15 +29,14 @@
       {{ end }}
     </header>
 
-    {{/* Body with Sidebar */}}
-    <div class="article-with-sidebar flex flex-col lg:flex-row gap-8">
-      {{/* Left TOC */}}
-      {{ $hasToc := in .TableOfContents "<ul" }}
-      {{ if $hasToc }}
-      <div class="article-toc w-full flex-shrink-0 print:hidden">
-        <div class="article-toc-sticky">
-          <h3 class="text-sm font-bold text-neutral-900 dark:text-neutral-100 mb-3 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    {{/* Post TOC - 标题上方目录，滚动时折叠成 sticky 长条 */}}
+    {{ $hasToc := in .TableOfContents "<ul" }}
+    {{ if $hasToc }}
+    <div class="post-toc-bar print:hidden">
+      <div class="post-toc-details">
+        <div class="post-toc-summary">
+          <span class="post-toc-label">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block -mt-0.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
               <line x1="8" y1="7" x2="16" y2="7"/>
@@ -45,14 +44,20 @@
               <line x1="8" y1="15" x2="12" y2="15"/>
             </svg>
             目录
-          </h3>
-          <div class="sidebar-toc-content toc bf-scrollbar text-sm pr-1">
-            {{ .TableOfContents | emojify }}
-          </div>
+          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="post-toc-chevron w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="post-toc-body toc bf-scrollbar">
+          {{ .TableOfContents | emojify }}
         </div>
       </div>
-      {{ end }}
+    </div>
+    {{ end }}
 
+    {{/* Body with Sidebar */}}
+    <div class="article-with-sidebar flex flex-col lg:flex-row gap-8">
       {{/* Main Content */}}
       <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row flex-1 min-w-0">
         <div class="min-w-0 min-h-0 max-w-fit">
