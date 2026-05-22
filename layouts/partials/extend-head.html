@@ -580,6 +580,41 @@
     reExecuteScripts(container);
     initTOC();
     initPostTOCBar();
+    updateViews();
+  }
+
+  function updateViews() {
+    var nodes = document.querySelectorAll("span[id^='views_']");
+    if (!nodes.length) return;
+
+    var currentPath = window.location.pathname;
+    var workerUrl = {{ site.Params.views.workerUrl | default "" | jsonify }};
+    if (!workerUrl) return;
+
+    nodes.forEach(function (node) {
+      var path = node.getAttribute('data-view-path');
+      if (!path) {
+        var id = node.id.replace(/^views_/, '');
+        path = '/' + id;
+      }
+
+      fetch(workerUrl + '/views?path=' + encodeURIComponent(path))
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          node.innerText = data.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          node.classList.remove('animate-pulse', 'text-transparent', 'bg-neutral-300', 'dark:bg-neutral-400');
+        })
+        .catch(function (err) {
+          console.warn('Views fetch failed:', err);
+          node.innerText = '0';
+          node.classList.remove('animate-pulse', 'text-transparent', 'bg-neutral-300', 'dark:bg-neutral-400');
+        });
+
+      if (path === currentPath || path === currentPath.replace(/\/$/, '') || currentPath.replace(/\/$/, '') === path) {
+        fetch(workerUrl + '/views?path=' + encodeURIComponent(path), { method: 'POST' })
+          .catch(function (err) { console.warn('Views increment failed:', err); });
+      }
+    });
   }
 
   function initTOC() {
@@ -700,6 +735,7 @@
     });
     swup.hooks.on('content:replace', function () {
       initContent(document.getElementById('main-content'));
+      updateViews();
     });
     window._swup = swup;
   }

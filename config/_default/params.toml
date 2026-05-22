@@ -62,7 +62,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 
 [article]
   showDate = true
-  showViews = false
+  showViews = true
   showLikes = false
   showDateOnlyInArticle = false
   showDateUpdated = false
@@ -211,3 +211,8 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   theme = "preferred_color_scheme"
   lang = "zh-CN"
   loading = "lazy"
+
+# 浏览量统计配置（Cloudflare Worker）
+# 部署 Worker 后将 URL 填入下方
+[views]
+  workerUrl = "https://blog-views.dxuanming.workers.dev"
