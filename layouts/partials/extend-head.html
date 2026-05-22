@@ -588,7 +588,7 @@
     if (!nodes.length) return;
 
     var currentPath = window.location.pathname;
-    var workerUrl = {{ site.Params.views.workerUrl | default "" | jsonify }};
+    var workerUrl = {{ site.Params.views.workerUrl | default "" | jsonify | safeJS }};
     if (!workerUrl) return;
 
     nodes.forEach(function (node) {
@@ -602,12 +602,12 @@
         .then(function (res) { return res.json(); })
         .then(function (data) {
           node.innerText = data.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          node.classList.remove('animate-pulse', 'text-transparent', 'bg-neutral-300', 'dark:bg-neutral-400');
+          node.classList.remove('animate-pulse', 'text-transparent', 'max-h-3', 'rounded-full', 'bg-neutral-300', 'dark:bg-neutral-400');
         })
         .catch(function (err) {
           console.warn('Views fetch failed:', err);
           node.innerText = '0';
-          node.classList.remove('animate-pulse', 'text-transparent', 'bg-neutral-300', 'dark:bg-neutral-400');
+          node.classList.remove('animate-pulse', 'text-transparent', 'max-h-3', 'rounded-full', 'bg-neutral-300', 'dark:bg-neutral-400');
         });
 
       if (path === currentPath || path === currentPath.replace(/\/$/, '') || currentPath.replace(/\/$/, '') === path) {

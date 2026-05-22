@@ -1,4 +1,4 @@
-<span class="inline-flex items-center gap-1">
+<span class="inline-block align-middle">
   {{ $id := "null" }}
   {{ if eq .Kind "taxonomy" }}
     {{ $id = delimit (slice "views_taxonomy_" .Page.Data.Plural) "" }}
@@ -18,9 +18,9 @@
   <span
     id="{{ $id }}"
     data-view-path="{{ .RelPermalink }}"
-    class="animate-pulse inline-block text-transparent max-h-3 rounded-full bg-neutral-300 dark:bg-neutral-400"
+    class="animate-pulse inline-block text-transparent max-h-3 rounded-full align-middle bg-neutral-300 dark:bg-neutral-400"
     title="views"
     >loading</span
   >
-  <span class="inline-flex items-center">{{ partial "icon.html" "eye" }}</span>
+  <span class="inline-block align-middle">{{ partial "icon.html" "eye" }}</span>
 </span>
