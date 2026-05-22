@@ -5,13 +5,13 @@
     {{ $latest := index $items (sub (len $items) 1) }}
     <div class="w-full max-w-prose mx-auto mb-8">
       <div class="flex items-start gap-3 rounded-lg bg-primary-100 dark:bg-neutral-800 border border-primary-200 dark:border-white px-4 py-3">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-primary-600 dark:text-amber-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mt-0.5 text-primary-600 flex-shrink-0" style="color: #fbbf24;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
           <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
         </svg>
         <div class="flex-1 min-w-0">
           <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-            <span class="self-start text-xs font-medium text-primary-700 dark:text-amber-300 bg-primary-200 dark:bg-amber-900/30 px-2 py-0.5 rounded">
+            <span class="self-start text-xs font-medium px-2 py-0.5 rounded" style="color: #fcd34d; background-color: rgba(251, 191, 36, 0.15);">
               {{ $latest.date }}
             </span>
             <span class="text-sm text-neutral-700 dark:text-white">
@@ -19,7 +19,7 @@
             </span>
           </div>
         </div>
-        <a href="{{ $announcements.viewMoreLink | default `/updates/` }}" class="text-xs text-primary-600 dark:text-amber-400 hover:underline whitespace-nowrap flex-shrink-0 mt-0.5">
+        <a href="{{ $announcements.viewMoreLink | default `/updates/` }}" class="text-xs hover:underline whitespace-nowrap flex-shrink-0 mt-0.5" style="color: #fbbf24;">
           查看历史 →
         </a>
       </div>
