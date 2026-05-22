@@ -1,0 +1,7 @@
+<span title="{{ i18n "article.reading_time_title" }}">
+  {{ $wpm := .Site.Params.article.wordsPerMinute | default 350 }}
+  {{ $rt := int (math.Ceil (div (float .WordCount) (float $wpm))) }}
+  {{ if eq $rt 0 }}{{ $rt = 1 }}{{ end }}
+  {{- i18n "article.reading_time" $rt | markdownify | emojify -}}
+</span>
+{{- /* Trim EOF */ -}}
