@@ -746,11 +746,6 @@
   opacity: 1;
 }
 
-/* 深色模式下隐藏背景 */
-.dark .random-background-container {
-  opacity: 0 !important;
-}
-
 /* 浅色模式下为整个页面添加半透明背景层 */
 .random-background-overlay {
   position: fixed;
@@ -769,9 +764,9 @@
   opacity: 1;
 }
 
-/* 深色模式下隐藏覆盖层 */
-.dark .random-background-overlay {
-  opacity: 0 !important;
+/* 深色模式下使用与主题背景色一致的覆盖层 */
+.dark .random-background-overlay.active {
+  background-color: rgba(var(--color-neutral-800), 0.92);
 }
 
 /* 背景激活时 body 背景透明，让背景图可见 */
@@ -819,6 +814,25 @@ body:has(.random-background-container.active) .main-menu svg {
   fill: #1f2937 !important;
   color: #1f2937 !important;
 }
+
+/* 深色模式下背景图激活时导航栏保持浅色文字 */
+.dark body:has(.random-background-container.active) .main-menu a,
+.dark body:has(.random-background-container.active) .main-menu button,
+.dark body:has(.random-background-container.active) .main-menu span {
+  color: #e5e7eb !important;
+}
+
+/* 深色模式下背景图激活时导航栏悬停效果 */
+.dark body:has(.random-background-container.active) .main-menu a:hover,
+.dark body:has(.random-background-container.active) .main-menu a:hover span {
+  color: #22d3ee !important;
+}
+
+/* 深色模式下背景图激活时导航栏图标保持浅色 */
+.dark body:has(.random-background-container.active) .main-menu svg {
+  fill: #e5e7eb !important;
+  color: #e5e7eb !important;
+}
 </style>
 
 <script>
@@ -854,16 +868,12 @@ body:has(.random-background-container.active) .main-menu svg {
     img.onload = function() {
       // 应用背景
       container.style.backgroundImage = 'url(' + url + ')';
-      
-      // 检查当前主题，决定是否显示
-      var isDark = document.documentElement.classList.contains('dark');
-      if (!isDark) {
-        container.classList.add('active');
-        // 显示半透明覆盖层
-        var overlay = document.querySelector('.random-background-overlay');
-        if (overlay) {
-          overlay.classList.add('active');
-        }
+
+      // 显示背景和覆盖层（浅色和深色模式都显示）
+      container.classList.add('active');
+      var overlay = document.querySelector('.random-background-overlay');
+      if (overlay) {
+        overlay.classList.add('active');
       }
     };
     
@@ -876,32 +886,17 @@ body:has(.random-background-container.active) .main-menu svg {
     img.src = url;
   }
   
-  // 监听主题切换
+  // 监听主题切换（覆盖层颜色通过 CSS 自动切换，无需 JS 干预 active 状态）
   function observeTheme() {
     var observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.attributeName === 'class') {
-          var isDark = document.documentElement.classList.contains('dark');
-          var container = document.querySelector('.random-background-container');
-          var overlay = document.querySelector('.random-background-overlay');
-          if (container) {
-            if (isDark) {
-              container.classList.remove('active');
-            } else {
-              container.classList.add('active');
-            }
-          }
-          if (overlay) {
-            if (isDark) {
-              overlay.classList.remove('active');
-            } else {
-              overlay.classList.add('active');
-            }
-          }
+          // 主题切换时覆盖层颜色由 CSS .dark .random-background-overlay.active 处理
+          // 背景图片在深浅色模式下均保持显示，无需切换 active 状态
         }
       });
     });
-    
+
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class']
