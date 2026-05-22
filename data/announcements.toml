@@ -1,0 +1,11 @@
+# 网站更新公告
+# items 按时间正序排列（越早越前），页面自动取最后一条作为最新
+viewMoreLink = "/updates/"
+
+[[items]]
+  date = "2025-05-20"
+  content = "重新设计文章目录为可折叠的 sticky 导航栏。"
+
+[[items]]
+  date = "2025-05-22"
+  content = "新增 Giscus 评论系统，支持深色模式自动切换。"

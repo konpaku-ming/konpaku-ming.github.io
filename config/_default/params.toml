@@ -211,16 +211,3 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   theme = "preferred_color_scheme"
   lang = "zh-CN"
   loading = "lazy"
-
-# 首页公告栏配置
-# items 按时间正序排列（越早越前），首页自动显示最新一条
-[announcements]
-  viewMoreLink = "/updates/"
-
-  [[announcements.items]]
-    date = "2025-05-20"
-    content = "重新设计文章目录为可折叠的 sticky 导航栏。"
-
-  [[announcements.items]]
-    date = "2025-05-22"
-    content = "新增 Giscus 评论系统，支持深色模式自动切换。"

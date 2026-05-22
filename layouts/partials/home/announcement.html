@@ -1,4 +1,4 @@
-{{ $announcements := site.Params.announcements }}
+{{ $announcements := site.Data.announcements }}
 {{ if and $announcements $announcements.items }}
   {{ $items := $announcements.items }}
   {{ if gt (len $items) 0 }}
