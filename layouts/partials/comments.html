@@ -1,0 +1,67 @@
+{{ $giscus := site.Params.giscus | default dict }}
+{{ $repo := $giscus.repo | default "konpaku-ming/konpaku-ming.github.io" }}
+{{ $repoId := $giscus.repoId | default "" }}
+{{ $category := $giscus.category | default "Comments" }}
+{{ $categoryId := $giscus.categoryId | default "" }}
+{{ $mapping := $giscus.mapping | default "pathname" }}
+{{ $strict := $giscus.strict | default "0" }}
+{{ $reactionsEnabled := $giscus.reactionsEnabled | default "1" }}
+{{ $emitMetadata := $giscus.emitMetadata | default "0" }}
+{{ $inputPosition := $giscus.inputPosition | default "bottom" }}
+{{ $theme := $giscus.theme | default "preferred_color_scheme" }}
+{{ $lang := $giscus.lang | default "zh-CN" }}
+{{ $loading := $giscus.loading | default "lazy" }}
+
+{{ if and $repoId $categoryId }}
+<div class="giscus-wrapper">
+  <script>
+    (function() {
+      const getTheme = function() {
+        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      };
+
+      const script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.setAttribute('data-repo', '{{ $repo }}');
+      script.setAttribute('data-repo-id', '{{ $repoId }}');
+      script.setAttribute('data-category', '{{ $category }}');
+      script.setAttribute('data-category-id', '{{ $categoryId }}');
+      script.setAttribute('data-mapping', '{{ $mapping }}');
+      script.setAttribute('data-strict', '{{ $strict }}');
+      script.setAttribute('data-reactions-enabled', '{{ $reactionsEnabled }}');
+      script.setAttribute('data-emit-metadata', '{{ $emitMetadata }}');
+      script.setAttribute('data-input-position', '{{ $inputPosition }}');
+      script.setAttribute('data-theme', getTheme());
+      script.setAttribute('data-lang', '{{ $lang }}');
+      script.setAttribute('data-loading', '{{ $loading }}');
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
+      document.currentScript.parentNode.appendChild(script);
+
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'class') {
+            const newTheme = getTheme();
+            const iframe = document.querySelector('iframe.giscus-frame');
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                { giscus: { setConfig: { theme: newTheme } } },
+                'https://giscus.app'
+              );
+            }
+          }
+        });
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    })();
+  </script>
+</div>
+{{ else }}
+<div class="my-8 p-4 text-center text-neutral-500 dark:text-neutral-400 border border-dashed border-neutral-300 dark:border-neutral-600 rounded">
+  <p class="text-sm">
+    评论系统尚未完全配置。请前往
+    <a href="https://giscus.app/zh-CN" target="_blank" class="underline hover:text-primary-500 dark:hover:text-primary-400">giscus.app</a>
+    生成配置后，在 <code class="bg-neutral-200 dark:bg-neutral-700 px-1 rounded">config/_default/params.toml</code> 的 <code class="bg-neutral-200 dark:bg-neutral-700 px-1 rounded">[giscus]</code> 段填入 <code class="bg-neutral-200 dark:bg-neutral-700 px-1 rounded">repoId</code> 和 <code class="bg-neutral-200 dark:bg-neutral-700 px-1 rounded">categoryId</code>。
+  </p>
+</div>
+{{ end }}

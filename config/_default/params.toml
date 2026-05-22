@@ -93,6 +93,7 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
   showZenMode = false
   # externalLinkForceNewTab = false # disable to allow external links in the same tab (defaults to true)
   math = true
+  showComments = true
 
 [list]
   showHero = false
@@ -194,3 +195,19 @@ forgejoDefaultServer = "https://v11.next.forgejo.org"
 # 图片请存放在 assets/backgrounds/ 目录下，每次页面加载时随机选择一张
 [backgroundImages]
   enabled = true  # 是否启用随机背景功能
+
+# Giscus 评论系统配置
+# 请前往 https://giscus.app/zh-CN 获取 repoId 和 categoryId 后填入
+[giscus]
+  repo = "konpaku-ming/konpaku-ming.github.io"
+  repoId = "R_kgDOQ8i5cw"
+  category = "Announcements"
+  categoryId = "DIC_kwDOQ8i5c84C9lmm"
+  mapping = "pathname"
+  strict = "0"
+  reactionsEnabled = "1"
+  emitMetadata = "0"
+  inputPosition = "bottom"
+  theme = "preferred_color_scheme"
+  lang = "zh-CN"
+  loading = "lazy"
