@@ -736,6 +736,11 @@
   }
 
   window.initLayout = function() {
+    if (window._layoutInitialized) {
+      applyLayout();
+      return;
+    }
+    window._layoutInitialized = true;
     var btn = document.getElementById('layout-btn');
     if (btn) {
       btn.addEventListener('click', function(e) {

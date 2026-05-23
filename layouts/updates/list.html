@@ -20,11 +20,11 @@
       {{ range $i := seq (sub $count 1) 0 }}
         {{ $item := index $items $i }}
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700">
-          <time class="text-sm font-mono text-neutral-500 dark:text-neutral-400 whitespace-nowrap pt-0.5">
+          <time class="text-sm font-mono text-neutral-500 dark:text-neutral-400 whitespace-nowrap flex-shrink-0 pt-0.5">
             {{ $item.date }}
           </time>
-          <div class="text-sm text-neutral-700 dark:text-neutral-300">
-            {{ $item.content | markdownify }}
+          <div class="flex-1 min-w-0 text-sm text-neutral-700 dark:text-neutral-300 break-words">
+            {{ $item.content }}
           </div>
         </div>
       {{ end }}
