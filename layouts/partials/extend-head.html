@@ -539,6 +539,25 @@
     .dark .announcement-link {
         color: #fbbf24 !important;
     }
+
+    /* 单栏模式：隐藏侧边栏，放宽文章宽度 */
+    .article-with-sidebar.single-column {
+        --article-max-width: min(100ch, 100%);
+    }
+
+    @media (min-width: 1024px) {
+        .article-with-sidebar.single-column {
+            --article-max-width: min(110ch, 100%);
+        }
+    }
+
+    .article-with-sidebar.single-column .article-sidebar {
+        display: none;
+    }
+
+    .article-with-sidebar.single-column section.prose > div {
+        max-width: 100%;
+    }
 </style>
 
 <!-- Prism.js for code highlighting with line numbers and copy button -->
@@ -690,6 +709,43 @@
     }
   };
 
+  var layoutState = localStorage.getItem('layout-state') || 'double';
+
+  function applyLayout() {
+    var articleContainer = document.querySelector('.article-with-sidebar');
+    if (!articleContainer) return;
+    if (layoutState === 'single') {
+      articleContainer.classList.add('single-column');
+    } else {
+      articleContainer.classList.remove('single-column');
+    }
+  }
+
+  function toggleLayout() {
+    var articleContainer = document.querySelector('.article-with-sidebar');
+    if (!articleContainer) return;
+    if (layoutState === 'double') {
+      articleContainer.classList.add('single-column');
+      layoutState = 'single';
+      localStorage.setItem('layout-state', 'single');
+    } else {
+      articleContainer.classList.remove('single-column');
+      layoutState = 'double';
+      localStorage.setItem('layout-state', 'double');
+    }
+  }
+
+  window.initLayout = function() {
+    var btn = document.getElementById('layout-btn');
+    if (btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleLayout();
+      });
+    }
+    applyLayout();
+  };
+
   function reExecuteScripts(container) {
     container.querySelectorAll('script').forEach(function (oldScript) {
       var newScript = document.createElement('script');
@@ -726,6 +782,7 @@
     initPostTOCBar();
     updateViews();
     if (window.initS2T) window.initS2T();
+    if (window.initLayout) window.initLayout();
   }
 
   function updateViews() {

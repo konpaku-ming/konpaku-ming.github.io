@@ -36,6 +36,7 @@
         {{ $needAvoidCoffee := ne $coffeeIsRight $isRTL }}
         {{ $toTopYOffset := cond $needAvoidCoffee "bottom-24" "bottom-6" }}
         <div class="fixed {{ $toTopYOffset }} end-6 z-50 flex flex-col gap-3">
+          {{- partial "layout-toggle.html" . -}}
           {{- partial "bg-blur-toggle.html" . -}}
           {{- partial "s2t-toggle.html" . -}}
           {{- partial "scroll-to-top.html" . -}}
