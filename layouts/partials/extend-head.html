@@ -575,18 +575,21 @@
       return;
     }
 
-    var mainContent = document.getElementById('main-content');
-    if (!mainContent) return;
+    var root = document.body;
+    if (!root) return;
 
     s2tNodes = [];
 
     var treeWalker = document.createTreeWalker(
-      mainContent,
+      root,
       NodeFilter.SHOW_TEXT,
       {
         acceptNode: function(node) {
           var parent = node.parentNode;
           if (!parent || !parent.tagName) return NodeFilter.FILTER_REJECT;
+          if (parent.closest && (parent.closest('#s2t-toggle') || parent.closest('#bg-blur-toggle'))) {
+            return NodeFilter.FILTER_REJECT;
+          }
           var tag = parent.tagName.toLowerCase();
           if (tag === 'script' || tag === 'style' || tag === 'code' || tag === 'pre' || tag === 'textarea') {
             return NodeFilter.FILTER_REJECT;
