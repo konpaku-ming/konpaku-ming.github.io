@@ -544,8 +544,149 @@
 <!-- Prism.js for code highlighting with line numbers and copy button -->
 <script src="/js/prism.js"></script>
 
+<!-- OpenCC.js for Simplified/Traditional Chinese conversion -->
+<script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>
+
 <script>
 (function () {
+  var s2tState = localStorage.getItem('s2t-state') || 'simplified';
+  var s2tConverters = { cn2tw: null, initialized: false };
+
+  function initS2TConverters() {
+    if (typeof OpenCC === 'undefined') return false;
+    if (s2tConverters.cn2tw) return true;
+    try {
+      s2tConverters.cn2tw = OpenCC.Converter({ from: 'cn', to: 'tw' });
+      return true;
+    } catch (e) {
+      console.warn('OpenCC init failed', e);
+      return false;
+    }
+  }
+
+  var s2tNodes = [];
+
+  function applyS2T() {
+    if (s2tState !== 'traditional') return;
+    if (!initS2TConverters()) {
+      if (typeof OpenCC === 'undefined') {
+        setTimeout(applyS2T, 200);
+      }
+      return;
+    }
+
+    var mainContent = document.getElementById('main-content');
+    if (!mainContent) return;
+
+    s2tNodes = [];
+
+    var treeWalker = document.createTreeWalker(
+      mainContent,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function(node) {
+          var parent = node.parentNode;
+          if (!parent || !parent.tagName) return NodeFilter.FILTER_REJECT;
+          var tag = parent.tagName.toLowerCase();
+          if (tag === 'script' || tag === 'style' || tag === 'code' || tag === 'pre' || tag === 'textarea') {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (!/[一-鿿]/.test(node.textContent)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    var nodes = [];
+    var node;
+    while (node = treeWalker.nextNode()) {
+      if (!node._s2tOriginal) {
+        node._s2tOriginal = node.textContent;
+      }
+      nodes.push(node);
+    }
+
+    var batchSize = 100;
+    var index = 0;
+
+    function processBatch() {
+      var end = Math.min(index + batchSize, nodes.length);
+      for (var i = index; i < end; i++) {
+        nodes[i].textContent = s2tConverters.cn2tw(nodes[i]._s2tOriginal);
+        s2tNodes.push(nodes[i]);
+      }
+      index = end;
+      if (index < nodes.length) {
+        requestAnimationFrame(processBatch);
+      }
+    }
+
+    processBatch();
+  }
+
+  function restoreS2T() {
+    for (var i = 0; i < s2tNodes.length; i++) {
+      var node = s2tNodes[i];
+      if (node._s2tOriginal) {
+        node.textContent = node._s2tOriginal;
+      }
+    }
+    s2tNodes = [];
+  }
+
+  function updateS2TButton() {
+    var label = document.getElementById('s2t-label');
+    var btn = document.getElementById('s2t-btn');
+    if (!label || !btn) return;
+    if (s2tState === 'traditional') {
+      label.textContent = '简';
+      btn.setAttribute('data-state', 'traditional');
+    } else {
+      label.textContent = '繁';
+      btn.setAttribute('data-state', 'simplified');
+    }
+  }
+
+  function toggleS2T() {
+    if (typeof OpenCC === 'undefined') {
+      setTimeout(toggleS2T, 200);
+      return;
+    }
+    if (!initS2TConverters()) {
+      console.warn('OpenCC init failed, cannot toggle S2T');
+      return;
+    }
+    if (s2tState === 'simplified') {
+      s2tState = 'traditional';
+      localStorage.setItem('s2t-state', 'traditional');
+      applyS2T();
+    } else {
+      s2tState = 'simplified';
+      localStorage.setItem('s2t-state', 'simplified');
+      restoreS2T();
+    }
+    updateS2TButton();
+  }
+
+  window.initS2T = function() {
+    if (!s2tConverters.initialized) {
+      var btn = document.getElementById('s2t-btn');
+      if (btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          toggleS2T();
+        });
+      }
+      s2tConverters.initialized = true;
+    }
+    updateS2TButton();
+    if (s2tState === 'traditional') {
+      applyS2T();
+    }
+  };
+
   function reExecuteScripts(container) {
     container.querySelectorAll('script').forEach(function (oldScript) {
       var newScript = document.createElement('script');
@@ -581,6 +722,7 @@
     initTOC();
     initPostTOCBar();
     updateViews();
+    if (window.initS2T) window.initS2T();
   }
 
   function updateViews() {
@@ -782,6 +924,14 @@
   opacity: 1;
 }
 
+.random-background-container {
+  transition: filter 1s ease-out;
+}
+
+.random-background-container.blurred {
+  filter: blur(25px);
+}
+
 /* 浅色模式下为整个页面添加半透明背景层 */
 .random-background-overlay {
   position: fixed;
@@ -803,6 +953,11 @@
 /* 深色模式下使用与主题背景色一致的覆盖层 */
 .dark .random-background-overlay.active {
   background-color: rgba(var(--color-neutral-800), 0.92);
+}
+
+/* 深色模式下背景模糊开启时，覆盖层变透 */
+.dark .random-background-overlay.active.blurred {
+  background-color: rgba(var(--color-neutral-800), 0.75);
 }
 
 /* 背景激活时 body 背景透明，让背景图可见 */
@@ -939,26 +1094,70 @@ body:has(.random-background-container.active) .main-menu svg {
     });
   }
   
+  var bgBlurState = localStorage.getItem('bg-blur-state') || 'sharp';
+
+  function applyBgBlur() {
+    var container = document.querySelector('.random-background-container');
+    var overlay = document.querySelector('.random-background-overlay');
+    if (!container) return;
+    if (bgBlurState === 'blurred') {
+      container.classList.add('blurred');
+      if (overlay) overlay.classList.add('blurred');
+    } else {
+      container.classList.remove('blurred');
+      if (overlay) overlay.classList.remove('blurred');
+    }
+  }
+
+  function toggleBgBlur() {
+    var container = document.querySelector('.random-background-container');
+    var overlay = document.querySelector('.random-background-overlay');
+    if (!container) return;
+    if (bgBlurState === 'blurred') {
+      container.classList.remove('blurred');
+      if (overlay) overlay.classList.remove('blurred');
+      bgBlurState = 'sharp';
+      localStorage.setItem('bg-blur-state', 'sharp');
+    } else {
+      container.classList.add('blurred');
+      if (overlay) overlay.classList.add('blurred');
+      bgBlurState = 'blurred';
+      localStorage.setItem('bg-blur-state', 'blurred');
+    }
+  }
+
   // 初始化
   function init() {
     // 创建背景容器
     var container = document.createElement('div');
     container.className = 'random-background-container';
     document.body.insertBefore(container, document.body.firstChild);
-    
+
     // 创建半透明覆盖层
     var overlay = document.createElement('div');
     overlay.className = 'random-background-overlay';
     document.body.insertBefore(overlay, container.nextSibling);
-    
+
     // 随机选择图片
     var selectedUrl = selectRandomImage(backgroundUrls);
     if (selectedUrl) {
       applyBackground(selectedUrl);
     }
-    
+
     // 监听主题切换
     observeTheme();
+
+    // 应用背景模糊
+    applyBgBlur();
+
+    // 绑定背景模糊切换按钮
+    var blurBtn = document.getElementById('bg-blur-btn');
+    if (blurBtn) {
+      blurBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleBgBlur();
+      });
+    }
   }
   
   // DOM 加载完成后初始化

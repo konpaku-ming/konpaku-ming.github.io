@@ -30,7 +30,16 @@
         {{ block "main" . }}{{ end }}
       </main>
       {{ if and (site.Params.footer.showScrollToTop | default true) }}
-        {{- partial "scroll-to-top.html" . -}}
+        {{ $isRTL := .Site.Params.rtl | default false }}
+        {{ $coffeeIsRight := and (eq (lower site.Params.buymeacoffee.globalWidgetPosition) "right") .Site.Params.buymeacoffee.globalWidget }}
+        {{ if not $coffeeIsRight }}{{ $coffeeIsRight = false }}{{ end }}
+        {{ $needAvoidCoffee := ne $coffeeIsRight $isRTL }}
+        {{ $toTopYOffset := cond $needAvoidCoffee "bottom-24" "bottom-6" }}
+        <div class="fixed {{ $toTopYOffset }} end-6 z-50 flex flex-col gap-3">
+          {{- partial "bg-blur-toggle.html" . -}}
+          {{- partial "s2t-toggle.html" . -}}
+          {{- partial "scroll-to-top.html" . -}}
+        </div>
       {{ end }}
       {{- partial "footer.html" . -}}
       {{ if site.Params.enableSearch | default false }}
