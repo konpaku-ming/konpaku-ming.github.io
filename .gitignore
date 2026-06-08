@@ -7,6 +7,9 @@
 # Hugo build lock file
 .hugo_build.lock
 
+# Wrangler local state
+.wrangler/
+
 # OS files
 .DS_Store
 Thumbs.db

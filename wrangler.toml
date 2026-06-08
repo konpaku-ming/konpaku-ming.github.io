@@ -1,0 +1,22 @@
+name = "blog-views"
+main = "worker.js"
+compatibility_date = "2026-06-08"
+preview_urls = false
+
+[[durable_objects.bindings]]
+name = "VIEW_COUNTER"
+class_name = "ViewCounter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ViewCounter"]
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+
+# Optional: override the default allowed origins.
+# [vars]
+# ALLOWED_ORIGINS = "https://konpaku-ming.github.io,http://localhost:1313"

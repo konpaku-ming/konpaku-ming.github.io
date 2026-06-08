@@ -13,49 +13,20 @@
 {{ $loading := $giscus.loading | default "lazy" }}
 
 {{ if and $repoId $categoryId }}
-<div class="giscus-wrapper">
-  <script>
-    (function() {
-      const getTheme = function() {
-        return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-      };
-
-      const script = document.createElement('script');
-      script.src = 'https://giscus.app/client.js';
-      script.setAttribute('data-repo', '{{ $repo }}');
-      script.setAttribute('data-repo-id', '{{ $repoId }}');
-      script.setAttribute('data-category', '{{ $category }}');
-      script.setAttribute('data-category-id', '{{ $categoryId }}');
-      script.setAttribute('data-mapping', '{{ $mapping }}');
-      script.setAttribute('data-strict', '{{ $strict }}');
-      script.setAttribute('data-reactions-enabled', '{{ $reactionsEnabled }}');
-      script.setAttribute('data-emit-metadata', '{{ $emitMetadata }}');
-      script.setAttribute('data-input-position', '{{ $inputPosition }}');
-      script.setAttribute('data-theme', getTheme());
-      script.setAttribute('data-lang', '{{ $lang }}');
-      script.setAttribute('data-loading', '{{ $loading }}');
-      script.setAttribute('crossorigin', 'anonymous');
-      script.async = true;
-      document.currentScript.parentNode.appendChild(script);
-
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.attributeName === 'class') {
-            const newTheme = getTheme();
-            const iframe = document.querySelector('iframe.giscus-frame');
-            if (iframe && iframe.contentWindow) {
-              iframe.contentWindow.postMessage(
-                { giscus: { setConfig: { theme: newTheme } } },
-                'https://giscus.app'
-              );
-            }
-          }
-        });
-      });
-      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    })();
-  </script>
-</div>
+<div
+  class="giscus-wrapper"
+  data-giscus-repo="{{ $repo }}"
+  data-giscus-repo-id="{{ $repoId }}"
+  data-giscus-category="{{ $category }}"
+  data-giscus-category-id="{{ $categoryId }}"
+  data-giscus-mapping="{{ $mapping }}"
+  data-giscus-strict="{{ $strict }}"
+  data-giscus-reactions-enabled="{{ $reactionsEnabled }}"
+  data-giscus-emit-metadata="{{ $emitMetadata }}"
+  data-giscus-input-position="{{ $inputPosition }}"
+  data-giscus-theme="{{ $theme }}"
+  data-giscus-lang="{{ $lang }}"
+  data-giscus-loading="{{ $loading }}"></div>
 {{ else }}
 <div class="my-8 p-4 text-center text-neutral-500 dark:text-neutral-400 border border-dashed border-neutral-300 dark:border-neutral-600 rounded">
   <p class="text-sm">
