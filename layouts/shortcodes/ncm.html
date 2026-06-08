@@ -1,5 +1,73 @@
-<div style="margin: 20px 0;">
-    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="100%" height="86" 
-        src="//music.163.com/outchain/player?type=2&id={{ .Get "id" }}&auto=0&height=66">
-    </iframe>
-</div>
+{{- $id := .Get "id" | default (.Get 0) -}}
+{{- if $id -}}
+  <div class="ncm-player ncm-aplayer-card" data-server="netease" data-type="song" data-id="{{ $id }}"></div>
+  <script data-pjax-reexecute>
+    (function () {
+      var script = document.currentScript;
+      var container = script && script.previousElementSibling;
+      if (!container || container._musicInitialized) return;
+      container._musicInitialized = true;
+      var attempts = 0;
+      var disposed = false;
+      var player = null;
+
+      function destroyPlayer(instance) {
+        var target = instance || player;
+        if (!target) return;
+        try {
+          if (typeof target.pause === 'function') target.pause();
+          if (typeof target.destroy === 'function') target.destroy();
+        } catch (error) {
+          console.warn('NetEase music player cleanup failed:', error);
+        }
+        if (!instance || instance === player) {
+          player = null;
+        }
+      }
+
+      if (typeof window.registerPageDisposer === 'function') {
+        window.registerPageDisposer(function () {
+          disposed = true;
+          destroyPlayer();
+        });
+      }
+
+      function init() {
+        if (disposed || !document.documentElement.contains(container)) return;
+        if (typeof window.createNeteaseAPlayer !== 'function') {
+          attempts += 1;
+          if (attempts > 40) {
+            console.warn('NetEase music helper is not available for:', container.getAttribute('data-id'));
+            return;
+          }
+          setTimeout(init, 50);
+          return;
+        }
+
+        window.createNeteaseAPlayer(container, {
+          server: container.getAttribute('data-server') || 'netease',
+          type: container.getAttribute('data-type') || 'song',
+          id: container.getAttribute('data-id'),
+          autoplay: false,
+          fixed: false,
+          preload: 'metadata',
+          listFolded: true,
+          mutex: true,
+          lrcType: 0
+        }).then(function (aplayer) {
+          if (disposed || !document.documentElement.contains(container)) {
+            destroyPlayer(aplayer);
+            return;
+          }
+          player = aplayer;
+        }).catch(function (error) {
+          console.warn('NetEase APlayer card failed to initialize:', error);
+        });
+      }
+
+      init();
+    })();
+  </script>
+{{- else -}}
+  {{- warnf "Missing NetEase Cloud Music id in %s" .Page.File.Path -}}
+{{- end -}}

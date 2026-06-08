@@ -1,0 +1,32 @@
+{{- $items := slice -}}
+{{- $coverExts := slice "jpg" "jpeg" "png" "webp" -}}
+
+{{- range resources.Match "music/*.mp3" -}}
+  {{- $id := path.BaseName .Name -}}
+  {{- $lrc := resources.Get (printf "music/%s.lrc" $id) -}}
+  {{- $cover := false -}}
+
+  {{- range $coverExts -}}
+    {{- if not $cover -}}
+      {{- with resources.Get (printf "music/%s.%s" $id .) -}}
+        {{- $cover = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if not $lrc -}}
+    {{- warnf "Missing LRC fallback for NetEase music id %s" $id -}}
+  {{- end -}}
+
+  {{- $item := dict "id" $id "url" .RelPermalink "cover" "/images/youmu.png" -}}
+  {{- with $lrc -}}
+    {{- $item = merge $item (dict "lrc" .RelPermalink) -}}
+  {{- end -}}
+  {{- with $cover -}}
+    {{- $item = merge $item (dict "cover" .RelPermalink) -}}
+  {{- end -}}
+
+  {{- $items = $items | append $item -}}
+{{- end -}}
+
+{{- return $items -}}

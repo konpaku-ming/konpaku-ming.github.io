@@ -112,6 +112,53 @@
         display: none !important;
     }
 
+    article .ncm-aplayer-card {
+        width: 97%;
+        max-width: 100%;
+        min-height: 66px;
+        margin: 1.25rem 0 1.5rem;
+    }
+
+    article .ncm-aplayer-card.aplayer {
+        box-sizing: border-box;
+        min-height: 0;
+        border: 2px solid rgba(226, 232, 240, 0.78);
+        border-radius: 0;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+        overflow: hidden;
+    }
+
+    .dark article .ncm-aplayer-card.aplayer {
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+    }
+
+    article .ncm-aplayer-card.aplayer .aplayer-body {
+        border-radius: 0;
+        overflow: hidden;
+    }
+
+    article .ncm-aplayer-card.aplayer .aplayer-info {
+        border-bottom: 0;
+    }
+
+    article .ncm-aplayer-card.aplayer .aplayer-music {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    article .ncm-aplayer-card.aplayer .aplayer-bar,
+    article .ncm-aplayer-card.aplayer .aplayer-loaded,
+    article .ncm-aplayer-card.aplayer .aplayer-played {
+        border-radius: 999px;
+    }
+
+    article .ncm-aplayer-card.aplayer .aplayer-time {
+        font-size: 0.78rem;
+        font-variant-numeric: tabular-nums;
+    }
+
     @media (max-width: 768px) {
         .aplayer.aplayer-fixed {
             left: 0.5rem !important;

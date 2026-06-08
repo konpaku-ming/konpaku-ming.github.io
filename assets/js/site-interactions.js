@@ -22,6 +22,13 @@
     });
   }
 
+  var queuedPageDisposers = window.pageDisposerQueue || [];
+  window.pageDisposerQueue = queuedPageDisposers;
+  window.registerPageDisposer = addPageDisposer;
+  while (queuedPageDisposers.length) {
+    addPageDisposer(queuedPageDisposers.shift());
+  }
+
   function cleanupPage() {
     while (pageDisposers.length) {
       var dispose = pageDisposers.pop();
@@ -583,13 +590,18 @@
       e.preventDefault();
       var wrapper = document.getElementById('global-player-wrapper');
       if (wrapper) wrapper.style.display = 'block';
-      var ap = window.aplayers && window.aplayers[0];
-      if (ap && ap.list && ap.list.audios && ap.list.audios.length) {
-        var idx = Math.floor(Math.random() * ap.list.audios.length);
-        ap.list.switch(idx);
-        ap.seek(0);
-        ap.play();
-      }
+      var playerReady = window.initGlobalAPlayer
+        ? window.initGlobalAPlayer()
+        : Promise.resolve(window.globalAPlayer || (window.aplayers && window.aplayers[0]));
+
+      playerReady.then(function (ap) {
+        if (ap && ap.list && ap.list.audios && ap.list.audios.length) {
+          var idx = Math.floor(Math.random() * ap.list.audios.length);
+          ap.list.switch(idx);
+          ap.seek(0);
+          ap.play();
+        }
+      });
       return;
     }
     var search = e.target.closest('a[href="#search"]');

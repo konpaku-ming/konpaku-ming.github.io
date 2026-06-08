@@ -1,15 +1,57 @@
 <div
-  class="aplayer no-destroy"
-  data-id="8243918033"
+  id="global-aplayer"
+  class="no-destroy"
   data-server="netease"
   data-type="playlist"
-  data-fixed="true"
-  data-autoplay="false"
-  data-order="random"
-  data-loop="all"
-  data-volume="0.6"
-  data-theme="#86efac"
-  data-preload="auto"
-  data-list-folded="true"
-  mutex="true">
-</div>
+  data-id="8243918033"></div>
+
+<script>
+  (function () {
+    var playerPromise = null;
+
+    window.initGlobalAPlayer = function () {
+      var container = document.getElementById('global-aplayer');
+      if (!container || typeof APlayer === 'undefined') {
+        return Promise.resolve(null);
+      }
+
+      if (typeof window.createNeteaseAPlayer !== 'function') {
+        return Promise.resolve(null);
+      }
+
+      if (window.globalAPlayer) {
+        return Promise.resolve(window.globalAPlayer);
+      }
+
+      if (playerPromise) {
+        return playerPromise;
+      }
+
+      playerPromise = window.createNeteaseAPlayer(container, {
+          server: container.getAttribute('data-server') || 'netease',
+          type: container.getAttribute('data-type') || 'playlist',
+          id: container.getAttribute('data-id'),
+          fixed: true,
+          autoplay: false,
+          order: 'random',
+          loop: 'all',
+          volume: 0.6,
+          theme: '#86efac',
+          preload: 'auto',
+          listFolded: true,
+          mutex: true
+        })
+        .then(function (aplayer) {
+          window.globalAPlayer = aplayer;
+          return window.globalAPlayer;
+        })
+        .catch(function (error) {
+          console.warn('Global music player failed to initialize:', error);
+          playerPromise = null;
+          return null;
+        });
+
+      return playerPromise;
+    };
+  })();
+</script>
