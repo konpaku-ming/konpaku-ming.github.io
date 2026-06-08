@@ -1,6 +1,8 @@
 const VIEW_ROUTE = "/views";
+const VIEW_BATCH_ROUTE = "/views/batch";
 const COUNT_KEY = "count";
 const MAX_PATH_LENGTH = 256;
+const MAX_BATCH_PATHS = 50;
 const DEFAULT_ALLOWED_ORIGINS = [
   "https://konpaku-ming.github.io",
   "http://localhost:1313",
@@ -13,9 +15,6 @@ export class ViewCounter {
   }
 
   async fetch(request) {
-    const url = new URL(request.url);
-    const path = normalizePath(url.searchParams.get("path")) || "/";
-
     if (request.method === "GET") {
       const count = await this.getCount();
       return jsonResponse({ views: count });
@@ -58,8 +57,23 @@ export default {
     }
 
     const url = new URL(request.url);
-    if (url.pathname !== VIEW_ROUTE) {
+    if (url.pathname !== VIEW_ROUTE && url.pathname !== VIEW_BATCH_ROUTE) {
       return jsonResponse({ error: "Not found" }, { status: 404, headers: corsHeaders });
+    }
+
+    if (!env.VIEW_COUNTER) {
+      return jsonResponse(
+        { error: "Missing VIEW_COUNTER Durable Object binding" },
+        { status: 500, headers: corsHeaders },
+      );
+    }
+
+    if (url.pathname === VIEW_BATCH_ROUTE) {
+      if (request.method !== "GET") {
+        return methodNotAllowedResponse(corsHeaders, "GET, OPTIONS");
+      }
+
+      return handleBatchViewRequest(url, env, corsHeaders);
     }
 
     if (request.method !== "GET" && request.method !== "POST") {
@@ -74,21 +88,78 @@ export default {
       );
     }
 
-    if (!env.VIEW_COUNTER) {
-      return jsonResponse(
-        { error: "Missing VIEW_COUNTER Durable Object binding" },
-        { status: 500, headers: corsHeaders },
-      );
-    }
-
-    url.searchParams.set("path", path);
-    const counterId = env.VIEW_COUNTER.idFromName(path);
-    const counter = env.VIEW_COUNTER.get(counterId);
-    const response = await counter.fetch(new Request(url.toString(), request));
+    const response = await fetchCounter(env, path, request.method);
 
     return withHeaders(response, corsHeaders);
   },
 };
+
+async function handleBatchViewRequest(url, env, corsHeaders) {
+  const rawPaths = url.searchParams.getAll("path");
+  const paths = [];
+  const seen = new Set();
+
+  if (!rawPaths.length) {
+    return jsonResponse(
+      { error: "Missing path" },
+      { status: 400, headers: corsHeaders },
+    );
+  }
+
+  for (const rawPath of rawPaths) {
+    const path = normalizePath(rawPath);
+    if (!path) {
+      return jsonResponse(
+        { error: "Invalid path" },
+        { status: 400, headers: corsHeaders },
+      );
+    }
+
+    if (!seen.has(path)) {
+      seen.add(path);
+      paths.push(path);
+    }
+
+    if (paths.length > MAX_BATCH_PATHS) {
+      return jsonResponse(
+        { error: "Too many paths" },
+        { status: 400, headers: corsHeaders },
+      );
+    }
+  }
+
+  try {
+    const entries = await Promise.all(
+      paths.map(async (path) => {
+        const response = await fetchCounter(env, path, "GET");
+        const data = await response.json();
+        return [path, parseStoredCount(data.views)];
+      }),
+    );
+
+    const views = {};
+    for (const [path, count] of entries) {
+      views[path] = count;
+    }
+
+    return jsonResponse({ views }, { headers: corsHeaders });
+  } catch (error) {
+    console.error("Views batch failed", error);
+    return jsonResponse(
+      { error: "Views batch failed" },
+      { status: 500, headers: corsHeaders },
+    );
+  }
+}
+
+function fetchCounter(env, path, method) {
+  const url = new URL("https://view-counter.internal/views");
+  url.searchParams.set("path", path);
+
+  const counterId = env.VIEW_COUNTER.idFromName(path);
+  const counter = env.VIEW_COUNTER.get(counterId);
+  return counter.fetch(new Request(url.toString(), { method }));
+}
 
 function normalizePath(rawPath) {
   if (typeof rawPath !== "string") return null;
@@ -162,6 +233,7 @@ function getCorsHeaders(request, env) {
 function jsonResponse(data, init = {}) {
   const headers = new Headers(init.headers);
   headers.set("Content-Type", "application/json; charset=utf-8");
+  headers.set("Cache-Control", "no-store");
 
   return new Response(JSON.stringify(data), {
     ...init,
@@ -169,9 +241,9 @@ function jsonResponse(data, init = {}) {
   });
 }
 
-function methodNotAllowedResponse(headers = new Headers()) {
+function methodNotAllowedResponse(headers = new Headers(), allow = "GET, POST, OPTIONS") {
   const responseHeaders = new Headers(headers);
-  responseHeaders.set("Allow", "GET, POST, OPTIONS");
+  responseHeaders.set("Allow", allow);
   return jsonResponse(
     { error: "Method not allowed" },
     { status: 405, headers: responseHeaders },

@@ -9,6 +9,7 @@
   var pageDisposers = [];
   var postedViewPaths = new Set();
   var viewsWorkerUrl = {{ site.Params.views.workerUrl | default "" | jsonify | safeJS }};
+  var VIEW_BATCH_SIZE = 40;
 
   function addPageDisposer(disposer) {
     pageDisposers.push(disposer);
@@ -276,53 +277,167 @@
     node.classList.remove('animate-pulse', 'text-transparent', 'max-h-3', 'rounded-full', 'bg-neutral-300', 'dark:bg-neutral-400');
   }
 
-  function updateViewNumbers(container) {
-    var root = container || document;
+  function getViewsWorkerEndpoint(route) {
+    return viewsWorkerUrl.replace(/\/+$/, '') + route;
+  }
+
+  function formatViewCount(count) {
+    var value = parseInt(count, 10);
+    if (!isFinite(value) || value < 0) value = 0;
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function setViewNodes(nodes, count) {
+    nodes.forEach(function (node) {
+      node.innerText = formatViewCount(count);
+      clearViewLoadingState(node);
+    });
+  }
+
+  function setCurrentViewNodes(path, count) {
+    var nodes = [];
+    document.querySelectorAll("span[id^='views_']").forEach(function (node) {
+      if (getViewPath(node) === path) {
+        nodes.push(node);
+      }
+    });
+
+    setViewNodes(nodes, count);
+  }
+
+  function collectViewNodes(root) {
     var nodes = root.querySelectorAll("span[id^='views_']");
     var paths = [];
-    if (!nodes.length || !viewsWorkerUrl) return paths;
+    var nodesByPath = new Map();
 
     nodes.forEach(function (node) {
       var path = getViewPath(node);
-      paths.push(path);
+      if (!path) return;
 
-      fetch(viewsWorkerUrl + '/views?path=' + encodeURIComponent(path))
-        .then(function (res) { return res.json(); })
-        .then(function (data) {
-          node.innerText = data.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          clearViewLoadingState(node);
-        })
-        .catch(function (err) {
-          console.warn('Views fetch failed:', err);
-          node.innerText = '0';
-          clearViewLoadingState(node);
-        });
+      if (!nodesByPath.has(path)) {
+        nodesByPath.set(path, []);
+        paths.push(path);
+      }
+
+      nodesByPath.get(path).push(node);
     });
 
-    return paths;
+    return {
+      paths: paths,
+      nodesByPath: nodesByPath
+    };
   }
 
-  function incrementCurrentViewOnce(paths) {
-    if (!viewsWorkerUrl || !paths.length) return;
+  function fetchPageJson(url, options) {
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var requestOptions = Object.assign({}, options || {});
 
-    var currentPath = normalizeViewPath(window.location.pathname);
-    var hasCurrentPath = paths.some(function(path) {
-      return normalizeViewPath(path) === currentPath;
+    if (controller) {
+      requestOptions.signal = controller.signal;
+      addPageDisposer(function() {
+        controller.abort();
+      });
+    }
+
+    return fetch(url, requestOptions).then(function (res) {
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status);
+      }
+      return res.json();
+    });
+  }
+
+  function fetchSingleView(path, nodesByPath) {
+    var nodes = nodesByPath.get(path) || [];
+
+    return fetchPageJson(getViewsWorkerEndpoint('/views') + '?path=' + encodeURIComponent(path))
+      .then(function (data) {
+        setViewNodes(nodes, data.views);
+      })
+      .catch(function (err) {
+        if (err.name === 'AbortError') return;
+        console.warn('Views fetch failed:', err);
+        setViewNodes(nodes, 0);
+      });
+  }
+
+  function fetchBatchViews(paths, nodesByPath) {
+    var url = new URL(getViewsWorkerEndpoint('/views/batch'), window.location.href);
+    paths.forEach(function (path) {
+      url.searchParams.append('path', path);
     });
 
-    if (!hasCurrentPath || postedViewPaths.has(currentPath)) return;
+    return fetchPageJson(url.toString())
+      .then(function (data) {
+        var views = data.views || {};
+        paths.forEach(function (path) {
+          setViewNodes(nodesByPath.get(path) || [], views[path]);
+        });
+      })
+      .catch(function (err) {
+        if (err.name === 'AbortError') return;
+        console.warn('Views batch fetch failed, falling back:', err);
+        paths.forEach(function (path) {
+          fetchSingleView(path, nodesByPath);
+        });
+      });
+  }
+
+  function updateViewNumbers(paths, nodesByPath) {
+    if (!paths.length) return;
+
+    if (paths.length === 1) {
+      fetchSingleView(paths[0], nodesByPath);
+      return;
+    }
+
+    for (var start = 0; start < paths.length; start += VIEW_BATCH_SIZE) {
+      fetchBatchViews(paths.slice(start, start + VIEW_BATCH_SIZE), nodesByPath);
+    }
+  }
+
+  function incrementCurrentViewOnce(currentPath, nodesByPath) {
     postedViewPaths.add(currentPath);
 
-    fetch(viewsWorkerUrl + '/views?path=' + encodeURIComponent(currentPath), { method: 'POST' })
+    fetch(getViewsWorkerEndpoint('/views') + '?path=' + encodeURIComponent(currentPath), { method: 'POST' })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        setCurrentViewNodes(currentPath, data.views);
+      })
       .catch(function (err) {
         postedViewPaths.delete(currentPath);
         console.warn('Views increment failed:', err);
+        fetchSingleView(currentPath, nodesByPath);
       });
   }
 
   function updateViews(container) {
-    var paths = updateViewNumbers(container);
-    incrementCurrentViewOnce(paths);
+    var root = container || document;
+    var viewNodes = collectViewNodes(root);
+    var paths = viewNodes.paths;
+    var nodesByPath = viewNodes.nodesByPath;
+
+    if (!paths.length || !viewsWorkerUrl) return;
+
+    var currentPath = normalizeViewPath(window.location.pathname);
+    var hasCurrentPath = paths.some(function(path) {
+      return path === currentPath;
+    });
+    var shouldIncrementCurrentPath = hasCurrentPath && !postedViewPaths.has(currentPath);
+    var readPaths = shouldIncrementCurrentPath
+      ? paths.filter(function(path) { return path !== currentPath; })
+      : paths;
+
+    updateViewNumbers(readPaths, nodesByPath);
+
+    if (shouldIncrementCurrentPath) {
+      incrementCurrentViewOnce(currentPath, nodesByPath);
+    }
   }
 
   function initTOC() {
