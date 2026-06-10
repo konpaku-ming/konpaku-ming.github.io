@@ -9,7 +9,10 @@
   var pageDisposers = [];
   var postedViewPaths = new Set();
   var viewsWorkerUrl = {{ site.Params.views.workerUrl | default "" | jsonify | safeJS }};
-  var VIEW_BATCH_SIZE = 40;
+  var VIEW_BATCH_SIZE = 6;
+  var VIEW_CACHE_KEY = 'blog-view-counts-v1';
+  var VIEW_CACHE_TTL = 10 * 60 * 1000;
+  var viewCountCache = null;
 
   function addPageDisposer(disposer) {
     pageDisposers.push(disposer);
@@ -294,10 +297,70 @@
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  function normalizeViewCount(count) {
+    var value = parseInt(count, 10);
+    return !isFinite(value) || value < 0 ? 0 : value;
+  }
+
+  function loadViewCountCache() {
+    if (viewCountCache) return viewCountCache;
+    viewCountCache = {};
+
+    try {
+      var raw = localStorage.getItem(VIEW_CACHE_KEY);
+      var parsed = raw ? JSON.parse(raw) : null;
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        viewCountCache = parsed;
+      }
+    } catch (e) {
+      viewCountCache = {};
+    }
+
+    return viewCountCache;
+  }
+
+  function saveViewCountCache() {
+    try {
+      localStorage.setItem(VIEW_CACHE_KEY, JSON.stringify(loadViewCountCache()));
+    } catch (e) {}
+  }
+
+  function getCachedViewCount(path) {
+    var entry = loadViewCountCache()[path];
+    if (!entry || typeof entry.count === 'undefined') return null;
+
+    var timestamp = parseInt(entry.timestamp, 10);
+    if (!isFinite(timestamp) || Date.now() - timestamp > VIEW_CACHE_TTL) {
+      return null;
+    }
+
+    return normalizeViewCount(entry.count);
+  }
+
+  function setCachedViewCount(path, count) {
+    var value = normalizeViewCount(count);
+    var cache = loadViewCountCache();
+    cache[path] = {
+      count: value,
+      timestamp: Date.now()
+    };
+    saveViewCountCache();
+    return value;
+  }
+
   function setViewNodes(nodes, count) {
     nodes.forEach(function (node) {
       node.innerText = formatViewCount(count);
       clearViewLoadingState(node);
+    });
+  }
+
+  function setCachedViewNodes(paths, nodesByPath) {
+    paths.forEach(function (path) {
+      var count = getCachedViewCount(path);
+      if (count !== null) {
+        setViewNodes(nodesByPath.get(path) || [], count);
+      }
     });
   }
 
@@ -359,11 +422,12 @@
 
     return fetchPageJson(getViewsWorkerEndpoint('/views') + '?path=' + encodeURIComponent(path))
       .then(function (data) {
-        setViewNodes(nodes, data.views);
+        setViewNodes(nodes, setCachedViewCount(path, data.views));
       })
       .catch(function (err) {
         if (err.name === 'AbortError') return;
         console.warn('Views fetch failed:', err);
+        if (getCachedViewCount(path) !== null) return;
         setViewNodes(nodes, 0);
       });
   }
@@ -378,7 +442,7 @@
       .then(function (data) {
         var views = data.views || {};
         paths.forEach(function (path) {
-          setViewNodes(nodesByPath.get(path) || [], views[path]);
+          setViewNodes(nodesByPath.get(path) || [], setCachedViewCount(path, views[path]));
         });
       })
       .catch(function (err) {
@@ -414,7 +478,7 @@
         return res.json();
       })
       .then(function (data) {
-        setCurrentViewNodes(currentPath, data.views);
+        setCurrentViewNodes(currentPath, setCachedViewCount(currentPath, data.views));
       })
       .catch(function (err) {
         postedViewPaths.delete(currentPath);
@@ -440,6 +504,7 @@
       ? paths.filter(function(path) { return path !== currentPath; })
       : paths;
 
+    setCachedViewNodes(paths, nodesByPath);
     updateViewNumbers(readPaths, nodesByPath);
 
     if (shouldIncrementCurrentPath) {
