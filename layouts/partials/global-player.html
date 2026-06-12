@@ -8,6 +8,48 @@
 <script>
   (function () {
     var playerPromise = null;
+    var preloadPromise = null;
+
+    function getPlayerOptions() {
+      var container = document.getElementById('global-aplayer');
+      if (!container) return null;
+
+      return {
+        server: container.getAttribute('data-server') || 'netease',
+        type: container.getAttribute('data-type') || 'playlist',
+        id: container.getAttribute('data-id'),
+        fixed: true,
+        autoplay: false,
+        order: 'random',
+        loop: 'all',
+        volume: 0.6,
+        theme: '#86efac',
+        preload: 'auto',
+        listFolded: true,
+        mutex: true
+      };
+    }
+
+    function shouldPreloadMusic() {
+      var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!connection) return true;
+      if (connection.saveData) return false;
+      return !/2g/.test(connection.effectiveType || '');
+    }
+
+    window.preloadGlobalAPlayer = function () {
+      if (preloadPromise || window.globalAPlayer || !shouldPreloadMusic()) {
+        return preloadPromise || Promise.resolve(null);
+      }
+
+      var options = getPlayerOptions();
+      if (!options || typeof window.preloadNeteaseAudio !== 'function') {
+        return Promise.resolve(null);
+      }
+
+      preloadPromise = window.preloadNeteaseAudio(options);
+      return preloadPromise;
+    };
 
     window.initGlobalAPlayer = function () {
       var container = document.getElementById('global-aplayer');
@@ -27,20 +69,7 @@
         return playerPromise;
       }
 
-      playerPromise = window.createNeteaseAPlayer(container, {
-          server: container.getAttribute('data-server') || 'netease',
-          type: container.getAttribute('data-type') || 'playlist',
-          id: container.getAttribute('data-id'),
-          fixed: true,
-          autoplay: false,
-          order: 'random',
-          loop: 'all',
-          volume: 0.6,
-          theme: '#86efac',
-          preload: 'auto',
-          listFolded: true,
-          mutex: true
-        })
+      playerPromise = window.createNeteaseAPlayer(container, getPlayerOptions())
         .then(function (aplayer) {
           window.globalAPlayer = aplayer;
           return window.globalAPlayer;
@@ -53,5 +82,35 @@
 
       return playerPromise;
     };
+
+    function schedulePreload() {
+      if (!shouldPreloadMusic()) return;
+
+      var run = function () {
+        window.preloadGlobalAPlayer();
+      };
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(run, { timeout: 5000 });
+      } else {
+        window.setTimeout(run, 2500);
+      }
+    }
+
+    function bindPreloadTriggers() {
+      var links = document.querySelectorAll('a[href="#music"]');
+      Array.prototype.forEach.call(links, function (link) {
+        link.addEventListener('pointerenter', window.preloadGlobalAPlayer, { once: true });
+        link.addEventListener('focus', window.preloadGlobalAPlayer, { once: true });
+        link.addEventListener('touchstart', window.preloadGlobalAPlayer, { once: true, passive: true });
+      });
+    }
+
+    bindPreloadTriggers();
+    if (document.readyState === 'complete') {
+      schedulePreload();
+    } else {
+      window.addEventListener('load', schedulePreload, { once: true });
+    }
   })();
 </script>
