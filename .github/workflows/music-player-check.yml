@@ -30,4 +30,10 @@ jobs:
         run: hugo --minify
 
       - name: Check music player
+        # Run in non-strict mode: API availability from a GitHub Actions runner
+        # is treated as a warning, not a build failure. The player has local
+        # fallbacks, and third-party endpoints may block or throttle datacenter
+        # IPs. Build-integrity checks (generated JS, fallback files, homepage
+        # markup) remain fatal. Use `python3 .github/scripts/check_music_player.py --strict`
+        # if you want API failures to fail the workflow.
         run: python3 .github/scripts/check_music_player.py

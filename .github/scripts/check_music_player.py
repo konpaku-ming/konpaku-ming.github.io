@@ -2,12 +2,17 @@
 """Health check for the NetEase music player integration.
 
 Usage:
-    python3 .github/scripts/check_music_player.py [public_dir] [api_base] [playlist_id]
+    python3 .github/scripts/check_music_player.py [public_dir] [api_base] [playlist_id] [--strict]
 
 Defaults:
     public_dir = public
     api_base   = https://api.toolkal.com
     playlist_id = 8243918033
+
+The --strict flag makes failures in the third-party Netease API checks fatal.
+Without it, API failures are reported as warnings so that CI is not broken by
+transient outages or IP blocking, while build-integrity checks (generated JS,
+fallback files, homepage markup) remain fatal.
 """
 
 import json
@@ -18,28 +23,73 @@ import time
 import urllib.request
 from pathlib import Path
 
-PUBLIC_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("public")
-API_BASE = sys.argv[2] if len(sys.argv) > 2 else "https://api.toolkal.com"
-PLAYLIST_ID = sys.argv[3] if len(sys.argv) > 3 else "8243918033"
 PORT = 1313
 REQUEST_TIMEOUT = 30
 SITE_ORIGIN = "https://konpaku-ming.github.io"
 
 
-def fetch_response(url, timeout=REQUEST_TIMEOUT, extra_headers=None):
+def parse_args():
+    """Parse positional args: [public_dir] [api_base] [playlist_id] [--strict]."""
+    public_dir = None
+    api_base = None
+    playlist_id = None
+    strict = False
+
+    for arg in sys.argv[1:]:
+        if arg == "--strict":
+            strict = True
+        elif public_dir is None:
+            public_dir = Path(arg)
+        elif api_base is None:
+            api_base = arg
+        elif playlist_id is None:
+            playlist_id = arg
+
+    return (
+        public_dir or Path("public"),
+        api_base or "https://api.toolkal.com",
+        playlist_id or "8243918033",
+        strict,
+    )
+
+
+PUBLIC_DIR, API_BASE, PLAYLIST_ID, STRICT = parse_args()
+
+
+def fetch_response(url, timeout=REQUEST_TIMEOUT, extra_headers=None, retries=3):
     headers = {
-        "User-Agent": "Mozilla/5.0 (MusicPlayerHealthCheck/1.0)",
-        "Accept": "application/json",
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/126.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+        "Referer": f"{SITE_ORIGIN}/",
     }
     if extra_headers:
         headers.update(extra_headers)
 
-    req = urllib.request.Request(url, headers=headers)
-    return urllib.request.urlopen(req, timeout=timeout)
+    last_exc = None
+    for attempt in range(retries + 1):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            return urllib.request.urlopen(req, timeout=timeout)
+        except Exception as exc:  # pylint: disable=broad-except
+            last_exc = exc
+            if attempt < retries:
+                sleep_time = 2 ** attempt
+                print(f"Request failed (attempt {attempt + 1}/{retries + 1}): {exc}")
+                print(f"Retrying in {sleep_time}s...")
+                time.sleep(sleep_time)
+            else:
+                raise last_exc
 
 
-def fetch_json(url, timeout=REQUEST_TIMEOUT, extra_headers=None):
-    with fetch_response(url, timeout=timeout, extra_headers=extra_headers) as resp:
+def fetch_json(url, timeout=REQUEST_TIMEOUT, extra_headers=None, retries=3):
+    with fetch_response(
+        url, timeout=timeout, extra_headers=extra_headers, retries=retries
+    ) as resp:
         content_type = resp.headers.get("Content-Type", "")
         if "application/json" not in content_type:
             raise ValueError(f"Expected JSON response, got {content_type}")
@@ -50,8 +100,14 @@ def check_cors(url):
     req = urllib.request.Request(
         url,
         headers={
-            "User-Agent": "Mozilla/5.0 (MusicPlayerHealthCheck/1.0)",
-            "Accept": "application/json",
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/126.0.0.0 Safari/537.36"
+            ),
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+            "Referer": f"{SITE_ORIGIN}/",
             "Origin": SITE_ORIGIN,
         },
     )
@@ -69,12 +125,87 @@ def fail(message):
     sys.exit(1)
 
 
+def warn(message):
+    print(f"WARNING: {message}")
+
+
 def ok(message):
     print(f"OK: {message}")
 
 
 def section(title):
     print(f"\n=== {title} ===")
+
+
+def check_netease_api():
+    """Test the Netease API endpoints. Returns song_url if healthy, else None."""
+    playlist_url = f"{API_BASE}/playlist/track/all?id={PLAYLIST_ID}&limit=5"
+    print(f"GET {playlist_url}")
+    try:
+        data = fetch_json(playlist_url)
+    except Exception as exc:  # pylint: disable=broad-except
+        message = f"Playlist API request failed: {exc}"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    if data.get("code") != 200:
+        message = f"Playlist API returned code {data.get('code')}"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    songs = data.get("songs", [])
+    if not songs:
+        message = "Playlist API returned empty songs"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    ok("Playlist API works")
+
+    song_ids = [str(song.get("id")) for song in songs[:5] if song.get("id")]
+    if not song_ids:
+        message = "Could not extract song IDs"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    print(f"Song IDs: {', '.join(song_ids)}")
+
+    song_url = f"{API_BASE}/song/url?id={','.join(song_ids)}"
+    print(f"GET {song_url}")
+    try:
+        song_data = fetch_json(song_url)
+    except Exception as exc:  # pylint: disable=broad-except
+        message = f"Song URL API request failed: {exc}"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    if song_data.get("code") != 200:
+        message = f"Song URL API returned code {song_data.get('code')}"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    url_list = song_data.get("data", [])
+    playable = [item for item in url_list if item.get("url")]
+    if not playable:
+        message = "Song URL API returned no playable urls for sampled playlist tracks"
+        if STRICT:
+            fail(message)
+        warn(message)
+        return None
+
+    ok("Song URL API works")
+    return song_url
 
 
 def main():
@@ -127,46 +258,20 @@ def main():
     ok("All local fallback files present")
 
     section("Testing Netease API")
-    playlist_url = f"{API_BASE}/playlist/track/all?id={PLAYLIST_ID}&limit=5"
-    print(f"GET {playlist_url}")
-    try:
-        data = fetch_json(playlist_url)
-    except Exception as exc:  # pylint: disable=broad-except
-        fail(f"Playlist API request failed: {exc}")
+    song_url = check_netease_api()
 
-    if data.get("code") != 200:
-        fail(f"Playlist API returned code {data.get('code')}")
-    songs = data.get("songs", [])
-    if not songs:
-        fail("Playlist API returned empty songs")
-    ok("Playlist API works")
-
-    song_ids = [str(song.get("id")) for song in songs[:5] if song.get("id")]
-    if not song_ids:
-        fail("Could not extract song IDs")
-    print(f"Song IDs: {', '.join(song_ids)}")
-
-    song_url = f"{API_BASE}/song/url?id={','.join(song_ids)}"
-    print(f"GET {song_url}")
-    try:
-        song_data = fetch_json(song_url)
-    except Exception as exc:  # pylint: disable=broad-except
-        fail(f"Song URL API request failed: {exc}")
-
-    if song_data.get("code") != 200:
-        fail(f"Song URL API returned code {song_data.get('code')}")
-    url_list = song_data.get("data", [])
-    playable = [item for item in url_list if item.get("url")]
-    if not playable:
-        fail("Song URL API returned no playable urls for sampled playlist tracks")
-    ok("Song URL API works")
-
-    section("Checking browser CORS")
-    try:
-        check_cors(song_url)
-    except Exception as exc:  # pylint: disable=broad-except
-        fail(f"CORS check failed: {exc}")
-    ok("API CORS allows the blog origin")
+    if song_url:
+        section("Checking browser CORS")
+        try:
+            check_cors(song_url)
+        except Exception as exc:  # pylint: disable=broad-except
+            if STRICT:
+                fail(f"CORS check failed: {exc}")
+            warn(f"CORS check failed: {exc}")
+        else:
+            ok("API CORS allows the blog origin")
+    else:
+        warn("Skipping CORS check because Netease API is unreachable")
 
     section("Starting static server")
     server = subprocess.Popen(
