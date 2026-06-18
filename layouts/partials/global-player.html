@@ -18,6 +18,8 @@
         server: container.getAttribute('data-server') || 'netease',
         type: container.getAttribute('data-type') || 'playlist',
         id: container.getAttribute('data-id'),
+        playlistLimit: 1000,
+        initialLimit: 50,
         fixed: true,
         autoplay: false,
         order: 'random',
