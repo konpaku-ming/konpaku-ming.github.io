@@ -211,15 +211,22 @@
 
   function normalizeLimit(value) {
     var limit = parseInt(value, 10);
-    if (!isFinite(limit) || limit <= 0) return 50;
-    return Math.min(limit, 100);
+    if (!isFinite(limit) || limit <= 0) return 1000;
+    return Math.min(limit, 1000);
   }
 
-  function loadPlaylistAudio(id, limit) {
+  function normalizeInitialLimit(value, max) {
+    var limit = parseInt(value, 10);
+    if (!isFinite(limit) || limit <= 0) return 50;
+    return Math.min(limit, max);
+  }
+
+  function loadPlaylistAudio(id, limit, offset) {
+    offset = offset || 0;
     return fetchJsonCached(
-      'playlist-track-all:' + id + ':' + limit,
+      'playlist-track-all:' + id + ':' + limit + ':' + offset,
       playlistCacheTTL,
-      buildApiUrl('/playlist/track/all', { id: id, limit: limit })
+      buildApiUrl('/playlist/track/all', { id: id, limit: limit, offset: offset })
     )
       .then(function (data) {
         var songs = (data && data.songs) || [];
@@ -246,7 +253,7 @@
   function getPlaylistAudio(id, options) {
     var limit = normalizeLimit(options && options.playlistLimit);
     return withCache('playlist-audio:' + id + ':' + limit, audioCacheTTL, function () {
-      return loadPlaylistAudio(id, limit);
+      return loadPlaylistAudio(id, limit, 0);
     });
   }
 
@@ -300,9 +307,57 @@
   window.musicFallbacks = fallbackById;
   window.getNeteaseAudio = getNeteaseAudio;
   window.getMetingAudio = getNeteaseAudio;
+
+  function createAPlayer(container, options, tracks) {
+    if (!tracks.length) {
+      throw new Error('Empty music playlist');
+    }
+
+    return new APlayer({
+      container: container,
+      fixed: !!options.fixed,
+      autoplay: !!options.autoplay,
+      order: options.order || 'list',
+      loop: options.loop || 'all',
+      volume: typeof options.volume === 'number' ? options.volume : 0.6,
+      theme: options.theme || '#86efac',
+      preload: options.preload || 'metadata',
+      listFolded: options.listFolded !== false,
+      mutex: options.mutex !== false,
+      lrcType: typeof options.lrcType === 'number' ? options.lrcType : 3,
+      audio: tracks
+    });
+  }
+
+  function loadRemainingPlaylist(player, id, totalLimit, initialLimit) {
+    if (initialLimit >= totalLimit) return;
+
+    loadPlaylistAudio(id, totalLimit - initialLimit, initialLimit)
+      .then(function (restTracks) {
+        if (restTracks.length && player && player.list && typeof player.list.add === 'function') {
+          player.list.add(restTracks);
+        }
+      })
+      .catch(function (error) {
+        console.warn('Failed to load remaining playlist tracks:', error);
+      });
+  }
+
   window.preloadNeteaseAudio = function (options) {
     options = options || {};
-    return getNeteaseAudio(options.type || 'song', options.id, options).catch(function (error) {
+    var type = options.type || 'song';
+    var id = options.id;
+
+    if (type === 'playlist') {
+      var totalLimit = normalizeLimit(options.playlistLimit);
+      var initialLimit = normalizeInitialLimit(options.initialLimit, totalLimit);
+      return loadPlaylistAudio(id, initialLimit, 0).catch(function (error) {
+        console.warn('NetEase audio preload failed:', error);
+        return null;
+      });
+    }
+
+    return getNeteaseAudio(type, id, options).catch(function (error) {
       console.warn('NetEase audio preload failed:', error);
       return null;
     });
@@ -314,26 +369,24 @@
       return Promise.reject(new Error('APlayer is not available'));
     }
 
-    return getNeteaseAudio(options.type || 'song', options.id, options)
-      .then(function (tracks) {
-        if (!tracks.length) {
-          throw new Error('Empty music playlist');
-        }
+    var type = options.type || 'song';
+    var id = options.id;
 
-        return new APlayer({
-          container: container,
-          fixed: !!options.fixed,
-          autoplay: !!options.autoplay,
-          order: options.order || 'list',
-          loop: options.loop || 'all',
-          volume: typeof options.volume === 'number' ? options.volume : 0.6,
-          theme: options.theme || '#86efac',
-          preload: options.preload || 'metadata',
-          listFolded: options.listFolded !== false,
-          mutex: options.mutex !== false,
-          lrcType: typeof options.lrcType === 'number' ? options.lrcType : 3,
-          audio: tracks
+    if (type !== 'playlist') {
+      return getNeteaseAudio(type, id, options)
+        .then(function (tracks) {
+          return createAPlayer(container, options, tracks);
         });
+    }
+
+    var totalLimit = normalizeLimit(options.playlistLimit);
+    var initialLimit = normalizeInitialLimit(options.initialLimit, totalLimit);
+
+    return loadPlaylistAudio(id, initialLimit, 0)
+      .then(function (initialTracks) {
+        var player = createAPlayer(container, options, initialTracks);
+        loadRemainingPlaylist(player, id, totalLimit, initialLimit);
+        return player;
       });
   };
 })();
