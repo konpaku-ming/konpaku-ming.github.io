@@ -1,8 +1,9 @@
-import { existsSync, readdirSync, rmSync } from "node:fs";
+import { existsSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { extname, join, parse } from "node:path";
 
 const MUSIC_DIR = "assets/music";
+const META_FILE = "data/music-fallbacks.json";
 const COVER_SIZE = process.env.MUSIC_COVER_SIZE || "512";
 const FORCE = process.argv.includes("--force");
 
@@ -15,11 +16,17 @@ let extracted = 0;
 let skipped = 0;
 let withoutCover = 0;
 let failed = 0;
+const meta = {};
 
 for (const file of mp3Files) {
   const input = join(MUSIC_DIR, file);
   const id = parse(file).name;
   const output = join(MUSIC_DIR, `${id}.jpg`);
+
+  const tags = readTags(input);
+  if (tags.name || tags.artist) {
+    meta[id] = { name: tags.name, artist: tags.artist };
+  }
 
   if (!FORCE && existsSync(output)) {
     skipped += 1;
@@ -68,11 +75,14 @@ for (const file of mp3Files) {
   }
 }
 
+writeFileSync(META_FILE, JSON.stringify(meta, null, 2) + "\n");
+
 console.log(`Checked ${mp3Files.length} MP3 files`);
 console.log(`Extracted ${extracted} covers`);
 console.log(`Skipped ${skipped} existing covers`);
 console.log(`Without embedded cover ${withoutCover}`);
 console.log(`Failed ${failed}`);
+console.log(`Wrote metadata for ${Object.keys(meta).length} tracks to ${META_FILE}`);
 
 function hasEmbeddedCover(file) {
   const result = spawnSync(
@@ -92,4 +102,35 @@ function hasEmbeddedCover(file) {
   );
 
   return result.status === 0 && result.stdout.trim().length > 0;
+}
+
+function readTags(file) {
+  const result = spawnSync(
+    "ffprobe",
+    [
+      "-v",
+      "error",
+      "-show_entries",
+      "format_tags=title,artist",
+      "-of",
+      "json",
+      file,
+    ],
+    { encoding: "utf8" },
+  );
+
+  if (result.status !== 0 || !result.stdout) {
+    return { name: "", artist: "" };
+  }
+
+  try {
+    const data = JSON.parse(result.stdout);
+    const tags = data.format?.tags || {};
+    return {
+      name: tags.title || tags.TITLE || tags.TIT2 || "",
+      artist: tags.artist || tags.ARTIST || tags.TPE1 || "",
+    };
+  } catch {
+    return { name: "", artist: "" };
+  }
 }

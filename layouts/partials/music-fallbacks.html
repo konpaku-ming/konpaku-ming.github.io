@@ -1,10 +1,12 @@
 {{- $items := slice -}}
 {{- $coverExts := slice "jpg" "jpeg" "png" "webp" -}}
+{{- $meta := index site.Data "music-fallbacks" | default dict -}}
 
 {{- range resources.Match "music/*.mp3" -}}
   {{- $id := path.BaseName .Name -}}
   {{- $lrc := resources.Get (printf "music/%s.lrc" $id) -}}
   {{- $cover := false -}}
+  {{- $idMeta := index $meta $id | default dict -}}
 
   {{- range $coverExts -}}
     {{- if not $cover -}}
@@ -24,6 +26,9 @@
   {{- end -}}
   {{- with $cover -}}
     {{- $item = merge $item (dict "cover" .RelPermalink) -}}
+  {{- end -}}
+  {{- with $idMeta -}}
+    {{- $item = merge $item (dict "name" ($idMeta.name | default "") "artist" ($idMeta.artist | default "")) -}}
   {{- end -}}
 
   {{- $items = $items | append $item -}}
