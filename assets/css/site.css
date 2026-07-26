@@ -71,6 +71,24 @@
         display: none !important;
     }
 
+    /* 图片放大时让遮罩真正压住整页 */
+    .medium-zoom-overlay {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.75) !important;
+        z-index: 99990 !important;
+    }
+
+    .medium-zoom-image--opened {
+        z-index: 99991 !important;
+    }
+
+    body.medium-zoom--opened {
+        overflow: hidden;
+    }
+
     .aplayer.aplayer-fixed {
         left: auto !important;
         right: 1.5rem !important;
