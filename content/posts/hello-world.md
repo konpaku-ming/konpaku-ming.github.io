@@ -2,6 +2,7 @@
 title: "Hello World"
 date: 2026-01-19
 draft: false
+aliases: ["/posts/hello-world/"]
 type: "posts"
 description: "My New Home"
 categories: ["随笔"]

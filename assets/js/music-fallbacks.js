@@ -3,7 +3,7 @@
 (function () {
   var fallbackList = {{ $musicFallbacks | jsonify | safeJS }};
   var fallbackById = {};
-  var defaultCover = '/images/youmu.png';
+  var defaultCover = {{ "images/youmu.png" | relURL | jsonify | safeJS }};
   var neteaseApiBase = 'https://api.toolkal.com';
   var cachePrefix = 'ncm-api-cache:v2:';
   var audioCacheTTL = 10 * 60 * 1000;

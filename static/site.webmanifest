@@ -3,7 +3,7 @@
   "short_name": "",
   "icons": [
     {
-      "src": "/images/youmu.png",
+      "src": "images/youmu.png",
       "sizes": "any",
       "type": "image/png"
     }

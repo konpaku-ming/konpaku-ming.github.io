@@ -1,0 +1,38 @@
+profile:
+  name: Xuanming Ding
+  email: dxuanming@sjtu.edu.cn
+  website: https://konpaku-ming.github.io/home/
+  location: Shanghai, China
+  headline: Undergraduate student in Computer Science at Shanghai Jiao Tong University
+
+education:
+  - institution: Shanghai Jiao Tong University
+    location: Shanghai, China
+    degree: Undergraduate studies in Computer Science and Technology
+    dates: ""
+    details:
+      - ACM Honor Class
+
+research_interests: >-
+  I am interested in machine learning for audio, with a focus on general audio
+  understanding and generation, as well as multi-speaker speech recognition.
+
+publications: []
+
+research_experience:
+  - organization: X-LANCE Lab, Shanghai Jiao Tong University
+    location: Shanghai, China
+    role: Audio machine learning research
+    dates: ""
+    bullets:
+      - Researching general audio understanding and generation, as well as multi-speaker speech recognition.
+
+teaching: []
+
+honors: []
+
+skills:
+  - label: Programming
+    value: Python, C++, Rust, Kotlin
+  - label: Machine learning
+    value: PyTorch

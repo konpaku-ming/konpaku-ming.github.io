@@ -495,7 +495,10 @@
 
     if (!paths.length || !viewsWorkerUrl) return;
 
-    var currentPath = normalizeViewPath(window.location.pathname);
+    var currentPage = root.querySelector('[data-current-view-path]');
+    var currentPath = normalizeViewPath(currentPage
+      ? currentPage.getAttribute('data-current-view-path')
+      : window.location.pathname);
     var hasCurrentPath = paths.some(function(path) {
       return path === currentPath;
     });
@@ -619,6 +622,7 @@
       script.setAttribute('data-category', wrapper.getAttribute('data-giscus-category'));
       script.setAttribute('data-category-id', wrapper.getAttribute('data-giscus-category-id'));
       script.setAttribute('data-mapping', wrapper.getAttribute('data-giscus-mapping'));
+      script.setAttribute('data-term', wrapper.getAttribute('data-giscus-term') || '');
       script.setAttribute('data-strict', wrapper.getAttribute('data-giscus-strict'));
       script.setAttribute('data-reactions-enabled', wrapper.getAttribute('data-giscus-reactions-enabled'));
       script.setAttribute('data-emit-metadata', wrapper.getAttribute('data-giscus-emit-metadata'));
@@ -686,6 +690,7 @@
     if (window._swup) return;
     var swup = new Swup({
       containers: ['#main-content'],
+      linkSelector: 'a[href^="/blog/"]:not([data-no-swup]), a[href^="{{ site.BaseURL }}"]:not([data-no-swup])',
       animationSelector: false
     });
     swup.hooks.on('content:replace', function () {

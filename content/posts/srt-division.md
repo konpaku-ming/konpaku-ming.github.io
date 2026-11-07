@@ -2,6 +2,7 @@
 title: "SRT Division"
 date: 2026-01-26
 draft: false
+aliases: ["/posts/srt-division/"]
 type: "posts"
 description: "Something About SRT Division"
 math: true

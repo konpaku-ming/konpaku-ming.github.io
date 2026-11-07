@@ -44,7 +44,7 @@
       <div class="cursor-pointer flex items-center">
         <a
           {{ if .URL }}
-            href="{{ .URL }}"
+            href="{{ .Params.rootURL | default .URL }}"
             {{ if or (strings.HasPrefix .URL "http:" ) (strings.HasPrefix .URL "https:" ) }}
               target="_blank"
             {{ end }}
@@ -72,7 +72,7 @@
           <div class="flex flex-col space-y-3">
             {{ range .Children }}
               <a
-                href="{{ .URL }}"
+                href="{{ .Params.rootURL | default .URL }}"
                 {{ if or (strings.HasPrefix .URL "http:" ) (strings.HasPrefix .URL "https:" ) }}
                   target="_blank"
                 {{ end }}
@@ -94,7 +94,7 @@
     </div>
   {{ else }}
     <a
-      href="{{ .URL }}"
+      href="{{ .Params.rootURL | default .URL }}"
       {{ if or (strings.HasPrefix .URL "http:" ) (strings.HasPrefix .URL "https:" ) }}
         target="_blank"
       {{ end }}

@@ -2,6 +2,7 @@
 title: "Time of Delete-Min in Pairing Heaps"
 date: 2026-03-25
 draft: false
+aliases: ["/posts/pairing-heap/"]
 type: "posts"
 description: "Analysis on the time complexity of pairing heaps"
 math: true

@@ -1,6 +1,6 @@
 {{ define "main" }}
   {{ .Scratch.Set "scope" "single" }}
-  <article>
+  <article data-current-view-path="{{ partial "legacy-path.html" . }}">
     {{/* Hero */}}
     {{ if .Params.showHero | default (site.Params.article.showHero | default false) }}
       {{ $heroStyle := .Params.heroStyle }}

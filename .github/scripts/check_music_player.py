@@ -210,18 +210,19 @@ def check_netease_api():
 
 def main():
     section("Checking generated music-fallbacks JS")
-    index_html = PUBLIC_DIR / "index.html"
+    blog_dir = PUBLIC_DIR / "blog" if (PUBLIC_DIR / "blog/index.html").is_file() else PUBLIC_DIR
+    index_html = blog_dir / "index.html"
     if not index_html.exists():
         fail(f"{index_html} not found; run 'hugo --minify' first")
 
     content = index_html.read_text(encoding="utf-8")
     match = re.search(r"music-fallbacks\.min\.[a-f0-9]+\.js", content)
     if not match:
-        fail("music-fallbacks JS not referenced in index.html")
+        fail("music-fallbacks JS not referenced in blog/index.html")
     js_file = match.group(0)
     print(f"Found JS: {js_file}")
 
-    js_path = PUBLIC_DIR / "js" / js_file
+    js_path = blog_dir / "js" / js_file
     if not js_path.exists():
         fail(f"{js_path} not found")
 
@@ -252,7 +253,7 @@ def main():
     ]
     for fid in fallback_ids:
         for ext in ("mp3", "lrc", "jpg"):
-            path = PUBLIC_DIR / "music" / f"{fid}.{ext}"
+            path = blog_dir / "music" / f"{fid}.{ext}"
             if not path.exists():
                 fail(f"Missing {path}")
     ok("All local fallback files present")
@@ -289,10 +290,10 @@ def main():
     time.sleep(2)
 
     try:
-        section("Checking homepage")
+        section("Checking blog homepage")
         try:
             with urllib.request.urlopen(
-                f"http://localhost:{PORT}/", timeout=10
+                f"http://localhost:{PORT}/{'blog/' if blog_dir != PUBLIC_DIR else ''}", timeout=10
             ) as resp:
                 if resp.status != 200:
                     fail(f"Homepage returned HTTP {resp.status}")

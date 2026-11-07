@@ -20,7 +20,7 @@
     {{- warnf "Missing LRC fallback for NetEase music id %s" $id -}}
   {{- end -}}
 
-  {{- $item := dict "id" $id "url" .RelPermalink "cover" "/images/youmu.png" -}}
+  {{- $item := dict "id" $id "url" .RelPermalink "cover" ("images/youmu.png" | relURL) -}}
   {{- with $lrc -}}
     {{- $item = merge $item (dict "lrc" .RelPermalink) -}}
   {{- end -}}

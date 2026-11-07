@@ -1,5 +1,5 @@
 <!-- Prism.js for code highlighting -->
-<link rel="stylesheet" href="/css/prism.css">
+<link rel="stylesheet" href="{{ "css/prism.css" | relURL }}">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -22,7 +22,7 @@
 {{ end }}
 
 <!-- Prism.js for code highlighting with line numbers and copy button -->
-<script src="/js/prism.js"></script>
+<script src="{{ "js/prism.js" | relURL }}"></script>
 
 <!-- OpenCC.js for Simplified/Traditional Chinese conversion -->
 <script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/full.js"></script>

@@ -2,6 +2,7 @@
 title: "One Last Spell Card"
 date: 2026-02-06
 draft: false
+aliases: ["/posts/one-last-spellcard/"]
 type: "posts"
 description: "Continuing LuaSTG"
 math: true

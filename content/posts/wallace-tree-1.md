@@ -2,6 +2,7 @@
 title: "Wallace Tree (1)"
 date: 2026-01-21
 draft: false
+aliases: ["/posts/wallace-tree-1/"]
 type: "posts"
 description: "Something About Hardware Multiplier"
 math: true

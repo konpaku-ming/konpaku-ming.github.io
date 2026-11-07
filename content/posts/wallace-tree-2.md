@@ -2,6 +2,7 @@
 title: "Wallace Tree (2)"
 date: 2026-01-25
 draft: false
+aliases: ["/posts/wallace-tree-2/"]
 type: "posts"
 description: "Something About Xiangshan Multiplier"
 math: true
@@ -9,7 +10,7 @@ categories: ["硬件"]
 featureimage: "images/wallace-tree-2.jpg"
 ---
 
-幻影忍者前情提要：[Wallace Tree (1)](https://konpaku-ming.github.io/posts/wallace-tree-1/)
+幻影忍者前情提要：[Wallace Tree (1)]({{< relref "posts/wallace-tree-1.md" >}})
 
 鸽了几天，期间本来想修修网站的美工，可惜摆了。最后只做了一个 Music Player，还因为网页是静态的不好全局播放（笑）。主页放的是我的网易云红心歌单，如果你有跟我相近的审美，I will feel happy😀。
 

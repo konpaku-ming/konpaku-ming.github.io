@@ -2,6 +2,7 @@
 title: "Summer Notes"
 date: 2026-07-26
 draft: false
+aliases: ["/posts/summer-notes/"]
 type: "posts"
 description: "Just a dairy..."
 math: true

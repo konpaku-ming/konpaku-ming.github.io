@@ -2,6 +2,7 @@
 title: "第二个夏天"
 date: 2026-06-27
 draft: false
+aliases: ["/posts/second-summer/"]
 type: "posts"
 description: "My Second Summer in Shanghai"
 math: true

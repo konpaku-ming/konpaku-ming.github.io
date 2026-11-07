@@ -2,6 +2,7 @@
 title: "End of the Vacation"
 date: 2026-03-01
 draft: false
+aliases: ["/posts/end-of-the-vacation/"]
 type: "posts"
 description: "About the rest of my vacation"
 math: true

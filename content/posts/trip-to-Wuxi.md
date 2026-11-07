@@ -2,6 +2,7 @@
 title: "十字路口与终末旅行"
 date: 2026-05-18
 draft: false
+aliases: ["/posts/trip-to-wuxi/"]
 type: "posts"
 description: "Trip to Wuxi"
 math: true

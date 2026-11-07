@@ -2,6 +2,7 @@
 title: "浅评《东方迷宫Tri》：瑕瑜互见的缺憾续作"
 date: 2026-03-06
 draft: false
+aliases: ["/posts/game-review-1/"]
 type: "posts"
 description: "A Game Review"
 math: true

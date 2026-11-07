@@ -26,3 +26,14 @@ Thumbs.db
 *.bak
 
 CLAUDE.md
+
+# Jekyll local dependencies and build caches
+/academic/_site/
+/academic/.jekyll-cache/
+/academic/.sass-cache/
+/academic/.bundle/
+/academic/vendor/
+__pycache__/
+
+# Generated from the local CV editor source during the Pages workflow
+/academic/files/CV.pdf

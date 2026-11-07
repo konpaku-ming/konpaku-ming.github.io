@@ -3,6 +3,7 @@ title: "关于"
 description: "一点自我介绍和这个站点的缘起"
 type: "page"
 draft: false
+aliases: ["/about/", "/about/page/1/"]
 ---
 
 Hi！这里是 Youming 的小站，记录正在进行的学习、想法以及一些个人生活。

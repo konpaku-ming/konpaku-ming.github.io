@@ -4,6 +4,11 @@
 {{ $category := $giscus.category | default "Comments" }}
 {{ $categoryId := $giscus.categoryId | default "" }}
 {{ $mapping := $giscus.mapping | default "pathname" }}
+{{ $term := $giscus.term | default "" }}
+{{ if eq $mapping "pathname" }}
+  {{ $mapping = "specific" }}
+  {{ $term = strings.TrimPrefix "/" (partial "legacy-path.html" .) | default "index" }}
+{{ end }}
 {{ $strict := $giscus.strict | default "0" }}
 {{ $reactionsEnabled := $giscus.reactionsEnabled | default "1" }}
 {{ $emitMetadata := $giscus.emitMetadata | default "0" }}
@@ -20,6 +25,7 @@
   data-giscus-category="{{ $category }}"
   data-giscus-category-id="{{ $categoryId }}"
   data-giscus-mapping="{{ $mapping }}"
+  data-giscus-term="{{ $term }}"
   data-giscus-strict="{{ $strict }}"
   data-giscus-reactions-enabled="{{ $reactionsEnabled }}"
   data-giscus-emit-metadata="{{ $emitMetadata }}"

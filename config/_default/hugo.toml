@@ -5,7 +5,7 @@
 
 theme = "blowfish" # UNCOMMENT THIS LINE
 mainSections = ["posts"]
-baseURL = "https://konpaku-ming.github.io/"
+baseURL = "https://konpaku-ming.github.io/blog/"
 title = "Youming's Gensokyo"
 defaultContentLanguage = "en"
 hasCJKLanguage = true
@@ -33,6 +33,27 @@ enableEmoji = true
   category = "categories"
   author = "authors"
   series = "series"
+
+[permalinks.page]
+  posts = "/posts/:slugorcontentbasename/"
+  about = "/about/:slugorcontentbasename/"
+
+[permalinks.section]
+  posts = "/posts/"
+  about = "/about/"
+  updates = "/updates/"
+
+[permalinks.taxonomy]
+  tags = "/tags/"
+  categories = "/categories/"
+  authors = "/authors/"
+  series = "/series/"
+
+[permalinks.term]
+  tags = "/tags/:slug/"
+  categories = "/categories/:slug/"
+  authors = "/authors/:slug/"
+  series = "/series/:slug/"
 
 [sitemap]
   changefreq = 'daily'

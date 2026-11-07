@@ -1,0 +1,5 @@
+{{- $path := .RelPermalink -}}
+{{- if strings.HasPrefix $path "/blog/" -}}
+  {{- $path = strings.TrimPrefix "/blog" $path -}}
+{{- end -}}
+{{- return $path -}}

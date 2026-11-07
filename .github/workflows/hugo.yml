@@ -1,8 +1,9 @@
-name: Deploy Hugo site to Pages
+name: Deploy academicpages and Hugo to Pages
 
 on:
   push:
-    branches: ["main"] # 确认你的主分支叫 main 还是 master
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -16,17 +17,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive # 必须包含这个，否则主题会缺失
+          submodules: recursive
           fetch-depth: 0
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
-          extended: true # Blowfish 需要扩展版
+          hugo-version: '0.154.5'
+          extended: true
 
-      - name: Build
-        run: hugo --minify
+      - name: Setup Ruby and Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          working-directory: academic
+          bundler-cache: true
+
+      - name: Check combined build helpers
+        run: python3 -m unittest discover -s .github/scripts -p 'test_build_site.py' -v
+
+      - name: Generate CV.pdf from cv-editor source
+        run: |
+          python3 -m pip install --disable-pip-version-check --no-cache-dir PyMuPDF PyYAML
+          python3 scripts/build_cv_pdf.py \
+            --data academic/_data/cv_editor.yml \
+            --output academic/files/CV.pdf
+
+      - name: Build academicpages and Hugo
+        env:
+          JEKYLL_ENV: production
+        run: python3 scripts/build_site.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

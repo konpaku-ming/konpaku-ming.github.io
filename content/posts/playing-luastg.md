@@ -2,6 +2,7 @@
 title: "Playing LuaSTG..."
 date: 2026-01-31
 draft: false
+aliases: ["/posts/playing-luastg/"]
 type: "posts"
 description: "My Luastg Trial"
 math: true

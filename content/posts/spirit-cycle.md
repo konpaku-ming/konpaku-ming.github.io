@@ -2,6 +2,7 @@
 title: "从你的前前前世开始——《魂环》读后感"
 date: 2026-05-26
 draft: false
+aliases: ["/posts/spirit-cycle/"]
 type: "posts"
 description: "Comic Comment"
 math: true
@@ -117,5 +118,4 @@ featureimage: "images/spirit-cycle.png"
 
 最后放一张经常用来安利别人的八世握手图吧，希望读到此文但还没看过原作（都剧透了这么多真的好吗）的你能去品鉴一下这部作品。Bye~
 ![](https://notes.sjtu.edu.cn/uploads/upload_284e5c9f5362032d2ae743bcd3ad6680.jpg)<center style="font-size:14px;color:#808080">所以，我握住了你的手</center><br>
-
 

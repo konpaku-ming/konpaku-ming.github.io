@@ -11,8 +11,8 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
-	name = "首页"
-	url = "/"
+	name = "博客首页"
+	pageRef = "/"
 	weight = 10
 
 [[main]]
@@ -45,5 +45,11 @@
   name = "Music"
   url = "#music"
   weight = 50
+
+[[main]]
+  name = "学术主页"
+  url = "/home/"
+  params = { rootURL = "/home/" }
+  weight = 60
 
 # -- Footer Menu --

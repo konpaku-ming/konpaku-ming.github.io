@@ -2,6 +2,7 @@
 title: "EWC And LwF"
 date: 2026-06-07
 draft: false
+aliases: ["/posts/ewc-and-lwf/"]
 type: "posts"
 description: "two approaches in continual learning"
 math: true

@@ -59,7 +59,7 @@
     {{ $submenuId := printf "fullscreen-submenu-%s" (.Identifier | default .Name | anchorize) }}
       <div class="px-2">
         <a
-          href="{{ .URL }}"
+          href="{{ .Params.rootURL | default .URL }}"
           {{ with or .Name .Pre }}aria-label="{{ . }}"{{ end }}
           {{ if or (strings.HasPrefix .URL "http:" ) (strings.HasPrefix .URL "https:" ) }}
             target="_blank"
@@ -91,7 +91,7 @@
               <div class="ms-7 mt-4">
                 {{ range .Children }}
                   <a
-                    href="{{ .URL }}"
+                    href="{{ .Params.rootURL | default .URL }}"
                     {{ with or .Name .Pre }}aria-label="{{ . }}"{{ end }}
                     {{ if or (strings.HasPrefix .URL "http:" ) (strings.HasPrefix .URL "https:" ) }}
                       target="_blank"
@@ -120,7 +120,7 @@
     <div class="flex flex-wrap gap-4 mt-8 pt-8 border-t bf-border-color">
       {{ range .Site.Menus.subnavigation }}
         <a
-          href="{{ .URL }}"
+          href="{{ .Params.rootURL | default .URL }}"
           {{ with or .Name .Pre }}aria-label="{{ . }}"{{ end }}
           class="inline-flex items-center gap-2 px-2 py-2 bf-icon-color-hover rounded-full text-sm">
           {{ if .Pre }}

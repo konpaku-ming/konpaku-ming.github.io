@@ -4,7 +4,7 @@
   <div class="flex flex-col items-center">
     {{ $avatarParam := site.Params.sidebar.avatar | default "/apple-touch-icon.png" }}
     {{ $avatarPath := strings.TrimPrefix "/" $avatarParam }}
-    {{ $avatar := $avatarParam }}
+    {{ $avatar := $avatarParam | relURL }}
     {{ with resources.Get $avatarPath }}
       {{ $avatar = .RelPermalink }}
     {{ end }}

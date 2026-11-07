@@ -2,6 +2,7 @@
 title: "Bullet Dodger"
 date: 2026-02-02
 draft: false
+aliases: ["/posts/bullet-dodger/"]
 type: "posts"
 description: "Interesting Tiny Project"
 categories: ["游戏", "有趣的项目"]
