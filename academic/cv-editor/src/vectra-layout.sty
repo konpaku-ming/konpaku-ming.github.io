@@ -1,0 +1,310 @@
+%%
+%% Vectra layout primitives
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-layout}[2026/09/14 v1.2.0 Vectra layout primitives]
+
+\RequirePackage{xparse}
+\RequirePackage{enumitem}
+\RequirePackage{varwidth}
+
+% ---------------------------------------------------------------------------
+% Bullet list style
+% ---------------------------------------------------------------------------
+
+% The label is a bare math bullet, not a raised box. \raisebox -- and any other
+% box around the label, including one with its height and depth zeroed -- moves
+% the item's first line 1.3pt off the leading, and moves whatever follows the
+% list 1.3pt the other way. An entry that ended in bullets was therefore
+% followed by a different gap than an entry that ended in a line, although both
+% asked for the same one. The raise was also unnecessary: \bullet is a math
+% symbol and already sits on the math axis, which is the height the raise was
+% reaching for.
+
+\renewcommand\labelitemi{\tiny$\bullet$}
+
+% The list closes on a strut for the same reason every block does. An entry that
+% ends in bullets and an entry that ends in a line would otherwise leave the next
+% entry at different distances, because the last bullet's depth is whatever its
+% descenders happen to be while a block's is the strut. The two are the same
+% level of thing, so they have to end the same way.
+
+\newenvironment{VectraBullets}{%
+    \begin{itemize}[
+        topsep=\VectraBulletTopSeparation,
+        parsep=0pt,
+        partopsep=0pt,
+        itemsep=\VectraBulletItemSeparation,
+        leftmargin=\VectraBulletLeftMargin
+    ]%
+}{%
+    \Vectra@FinalStrut
+    \end{itemize}%
+}
+
+% ---------------------------------------------------------------------------
+% Final strut
+% ---------------------------------------------------------------------------
+%
+% This command must be defined before right-column measurement, because the
+% measurement helper uses it while boxing right-column metadata.
+
+\NewDocumentCommand{\Vectra@FinalStrut}{}{%
+    \unskip\VectraEntryStrut
+}
+
+% ---------------------------------------------------------------------------
+% Internal layout lengths
+% ---------------------------------------------------------------------------
+%
+% The right column is measured per entry. This allows metadata such as dates
+% and locations to keep their natural width while the left column automatically
+% uses the remaining space.
+
+\newlength{\VectraLeftColumnWidth}
+\newlength{\VectraRightColumnActualWidth}
+\newsavebox{\VectraRightColumnMeasureBox}
+
+\NewDocumentCommand{\Vectra@MeasureRightColumn}{+m}{%
+    \sbox{\VectraRightColumnMeasureBox}{%
+        \begin{varwidth}[t]{\textwidth}
+            \raggedleft
+            \linespread{\VectraEntryLineStretch}\selectfont
+            #1\Vectra@FinalStrut
+        \end{varwidth}%
+    }%
+    \setlength{\VectraRightColumnActualWidth}{\wd\VectraRightColumnMeasureBox}%
+    \ifdim\VectraRightColumnActualWidth>0pt
+        \setlength{\VectraLeftColumnWidth}{%
+            \dimexpr\textwidth-\VectraRightColumnActualWidth-\VectraColumnSeparation\relax
+        }%
+    \else
+        \setlength{\VectraLeftColumnWidth}{\textwidth}%
+    \fi
+}
+
+% ---------------------------------------------------------------------------
+% One-column block
+% ---------------------------------------------------------------------------
+%
+% A one-column block is a two-column block whose right column is empty, and it
+% is written that way rather than implemented separately. The separate
+% implementation ended 0.87pt higher than an entry did, because a paragraph set
+% directly in the page's vertical list and a paragraph set inside a \vtop close
+% differently. Every section that ended with a research-interests block was
+% therefore followed by a smaller gap than every section that ended with an
+% entry. Sharing the implementation makes the two equal by construction, which
+% is the only way this stays true when either is changed.
+
+\NewDocumentCommand{\Vectra@OneColumnBlock}{+m}{%
+    \Vectra@TwoColumnBlock{}{#1}%
+}
+
+% ---------------------------------------------------------------------------
+% Two-column block
+%
+% Argument 1: right column content
+% Argument 2: left column content
+%
+% The right column width is measured automatically. The implementation uses
+% \vtop rather than minipage for more stable top alignment between the left and
+% right columns.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\Vectra@TwoColumnBlock}{m +m}{%
+    \par\noindent
+    \begingroup
+    \Vectra@MeasureRightColumn{#1}%
+    \leavevmode
+    \vtop{%
+        \hsize=\VectraLeftColumnWidth
+        \parindent=0pt
+        \raggedright
+        \linespread{\VectraEntryLineStretch}\selectfont
+        \VectraEntryStrut\ignorespaces#2\Vectra@FinalStrut\par
+    }%
+    \ifdim\VectraRightColumnActualWidth>0pt
+        \hspace{\VectraColumnSeparation}%
+        \vtop{%
+            \hsize=\VectraRightColumnActualWidth
+            \parindent=0pt
+            \raggedleft
+            \linespread{\VectraEntryLineStretch}\selectfont
+            \VectraEntryStrut\ignorespaces#1\Vectra@FinalStrut\par
+        }%
+    \fi
+    \par
+    \endgroup
+}
+
+% ---------------------------------------------------------------------------
+% Indexed two-column block
+%
+% Argument 1: prefix, such as T1 or M1
+% Argument 2: left-column record body
+% Argument 3: right-column metadata
+%
+% The left column uses a true hanging indent. Wrapped lines align with the
+% record text, not with the prefix. The right column is measured automatically.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\Vectra@IndexedTwoColumnBlock}{m +m +m}{%
+    \par\noindent
+    \begingroup
+    \Vectra@MeasureRightColumn{#3}%
+    \leavevmode
+    \vtop{%
+        \hsize=\VectraLeftColumnWidth
+        \parindent=0pt
+        \raggedright
+        \linespread{\VectraEntryLineStretch}\selectfont
+        \begingroup
+        \setlength{\parindent}{0pt}%
+        \hangindent=\dimexpr\VectraIndexedEntryPrefixWidth+\VectraIndexedEntryPrefixSeparation\relax
+        \hangafter=1
+        \noindent
+        \VectraEntryStrut
+        \makebox[\VectraIndexedEntryPrefixWidth][l]{%
+            \ifblank{#1}{}{[#1]}%
+        }%
+        \hspace{\VectraIndexedEntryPrefixSeparation}%
+        \ignorespaces
+        #2\unskip\VectraEntryStrut
+        \par
+        \endgroup
+    }%
+    \ifdim\VectraRightColumnActualWidth>0pt
+        \hspace{\VectraColumnSeparation}%
+        \vtop{%
+            \hsize=\VectraRightColumnActualWidth
+            \parindent=0pt
+            \raggedleft
+            \linespread{\VectraEntryLineStretch}\selectfont
+            \VectraEntryStrut\ignorespaces#3\Vectra@FinalStrut\par
+        }%
+    \fi
+    \par
+    \endgroup
+}
+
+% ---------------------------------------------------------------------------
+% Section content and last entry gap tracking
+%
+% Entry commands add spacing after each entry. When a new section begins,
+% Vectra cancels the last trailing entry gap so that section-to-section spacing
+% is controlled only by section spacing.
+%
+% Vectra also tracks whether the current section has already printed content.
+% This allows group headings such as Talks, Media, and Teaching groups to avoid
+% adding extra top spacing when they are the first item immediately after a
+% section title.
+% ---------------------------------------------------------------------------
+
+\newlength{\VectraLastEntryGap}
+\setlength{\VectraLastEntryGap}{0pt}
+
+\newif\ifVectra@sectionhascontent
+\Vectra@sectionhascontentfalse
+
+% Both records are set globally. They are written by an entry and read by the
+% next section or group heading, so they have to survive whatever grouping sits
+% between the two: a document that wraps entries in braces to change a length or
+% a font would otherwise lose the record, the trailing gap would not be
+% canceled, and the next section would be pushed down by it.
+
+\NewDocumentCommand{\Vectra@ResetSectionContent}{}{%
+    \global\Vectra@sectionhascontentfalse
+}
+
+\NewDocumentCommand{\Vectra@MarkSectionContent}{}{%
+    \global\Vectra@sectionhascontenttrue
+}
+
+% The register is assigned directly rather than through \setlength: \setlength
+% is robust, so a \global prefix in front of it does not reach the assignment
+% inside and the record stays local, which is the defect this guards against.
+
+\NewDocumentCommand{\Vectra@SetLastEntryGap}{m}{%
+    \global\VectraLastEntryGap=\glueexpr#1\relax
+    \Vectra@MarkSectionContent
+}
+
+\NewDocumentCommand{\Vectra@ClearLastEntryGap}{}{%
+    \global\VectraLastEntryGap=0pt\relax
+}
+
+\NewDocumentCommand{\Vectra@CancelLastEntryGap}{}{%
+    \ifdim\VectraLastEntryGap>0pt
+        \vspace{-\VectraLastEntryGap}%
+    \fi
+    \Vectra@ClearLastEntryGap
+}
+
+% ---------------------------------------------------------------------------
+% Entry spacing helpers
+% ---------------------------------------------------------------------------
+%
+% Every gap starts by handing the same depth to whatever follows. TeX sets the
+% glue before the next line from \prevdepth, so an entry that ends in a bullet
+% list -- whose last line is as deep as its descenders happen to be -- would
+% otherwise be followed by a different distance than one that ends in a block,
+% whose last line ends on a strut. The two are the same level of thing and the
+% reader sees the difference, so the depth is normalized here, once, rather than
+% in each of the entry commands.
+
+\NewDocumentCommand{\Vectra@NormalizeDepth}{}{%
+    \ifdim\prevdepth>-1000pt
+        \prevdepth=\dp\strutbox
+    \fi
+}
+
+\NewDocumentCommand{\Vectra@MajorEntryGap}{}{%
+    \par\Vectra@NormalizeDepth\vspace{\VectraMajorEntrySeparation}%
+    \Vectra@SetLastEntryGap{\VectraMajorEntrySeparation}%
+}
+
+\NewDocumentCommand{\Vectra@RecordEntryGap}{}{%
+    \par\Vectra@NormalizeDepth\vspace{\VectraRecordEntrySeparation}%
+    \Vectra@SetLastEntryGap{\VectraRecordEntrySeparation}%
+}
+
+\NewDocumentCommand{\Vectra@CompactGap}{}{%
+    \par\Vectra@NormalizeDepth\vspace{\VectraCompactEntrySeparation}%
+    \Vectra@SetLastEntryGap{\VectraCompactEntrySeparation}%
+}
+
+\NewDocumentCommand{\Vectra@SkillGap}{}{%
+    \par\Vectra@NormalizeDepth\vspace{\VectraSkillEntrySeparation}%
+    \Vectra@SetLastEntryGap{\VectraSkillEntrySeparation}%
+}
+
+% The space before a bullet list is set with \vspace* and a normalized depth.
+% A plain \vspace here was partly absorbed: the list's first line is shorter than
+% a text line, TeX computes the interline glue from that height, and about 1.3pt
+% of the requested separation disappeared into the calculation. The entry that
+% followed then sat that much lower than after an entry with no bullets, so two
+% entries of the same level ended at different distances.
+\NewDocumentCommand{\Vectra@BeforeBullets}{}{%
+    \par\Vectra@NormalizeDepth\vspace*{\VectraEntryBulletSeparation}%
+}
+
+% ---------------------------------------------------------------------------
+% Optional note block
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraEntryNote}{+m}{%
+    \Vectra@OneColumnBlock{#1}%
+    \Vectra@CompactGap
+}
+
+\endinput

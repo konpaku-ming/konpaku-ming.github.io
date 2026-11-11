@@ -1,0 +1,27 @@
+Vectra: Versatile Experience and Career Template for Research and Academia
+
+Copyright (c) 2026 Yixuan Huang
+
+Vectra is distributed under the LaTeX Project Public License, version 1.3c or
+any later version. The complete license text is provided in LICENSE.
+
+This work has the LPPL maintenance status "maintained".
+The Current Maintainer of this work is Yixuan Huang.
+
+The official repository is:
+
+    https://github.com/yixnhuang/vectra
+
+Generated CVs, resumes, and other documents are not derivative works of Vectra
+merely because they were produced with the template. Their content belongs to
+their respective authors, and they do not need to display attribution to Vectra
+or Yixuan Huang.
+
+Modified versions must comply with the LPPL, identify their changes, and avoid
+using the Vectra name or branding in a way that suggests official status or
+endorsement.
+
+Third-party fonts, icons, images, and other materials, if any, remain subject to
+their own license terms.
+The `fonts/wqy-placeholder.ttf` file is a subset of WenQuanYi Zen Hei and is
+covered by its separate license in `fonts/WQY-LICENSE.txt`.

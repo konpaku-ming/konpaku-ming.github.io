@@ -142,7 +142,7 @@ class SiteStructureTests(unittest.TestCase):
         html, document = self.document(self.public_dir / "blog" / "index.html")
         self.assertIn("global-aplayer", html)
         self.assertIn("music-fallbacks.min.", html)
-        self.assertIn("/home/", [anchor.get("href") for anchor in document.attributes("a")])
+        self.assertNotIn("/home/", [anchor.get("href") for anchor in document.attributes("a")])
 
     def test_legacy_redirects(self):
         alias_count = 0

@@ -1,0 +1,26 @@
+%%
+%% Vectra color settings
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-colors}[2026/09/14 v1.2.0 Vectra color settings]
+
+\RequirePackage[dvipsnames]{xcolor}
+
+\definecolor{VectraTextColor}{RGB}{0,0,0}
+\definecolor{VectraLinkColor}{RGB}{13,73,163}
+\definecolor{VectraRuleColor}{RGB}{0,0,0}
+\definecolor{VectraSubtleTextColor}{RGB}{0,0,0}
+
+\AtBeginDocument{\color{VectraTextColor}}
+
+\endinput

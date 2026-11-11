@@ -46,10 +46,4 @@
   url = "#music"
   weight = 50
 
-[[main]]
-  name = "学术主页"
-  url = "/home/"
-  params = { rootURL = "/home/" }
-  weight = 60
-
 # -- Footer Menu --

@@ -1,0 +1,22 @@
+# latexmkrc for Vectra
+#
+# This configuration is intentionally minimal. The Makefile controls the main
+# build targets and output names.
+#
+# The CV contains a small local CJK font subset for the Chinese placeholders.
+# XeLaTeX keeps the Latin layout stable while allowing that font to be embedded.
+
+$pdf_mode = 5;
+
+$xelatex = 'xelatex -interaction=nonstopmode -file-line-error -synctex=1 %O %S';
+
+# Continue far enough to report useful errors.
+$halt_on_error = 0;
+
+# Clean common auxiliary files.
+$clean_ext = 'aux bbl bcf blg brf fdb_latexmk fls idx ilg ind lof log lot nav out run.xml snm synctex.gz toc vrb xdv';
+
+# Silence some unnecessary latexmk messages.
+$silent = 0;
+
+$out_dir = 'build';

@@ -35,5 +35,8 @@ CLAUDE.md
 /academic/vendor/
 __pycache__/
 
-# Generated from the local CV editor source during the Pages workflow
+# Generated from the LaTeX CV template during the Pages workflow
 /academic/files/CV.pdf
+
+# Build artifacts from the LaTeX CV template
+/academic/cv-editor/build/

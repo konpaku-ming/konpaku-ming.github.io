@@ -1,0 +1,262 @@
+%%
+%% Vectra header settings
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-header}[2026/09/14 v1.2.0 Vectra header settings]
+
+% ---------------------------------------------------------------------------
+% Profile fields
+% ---------------------------------------------------------------------------
+
+\newcommand{\Vectra@name}{}
+\newcommand{\Vectra@email}{}
+\newcommand{\Vectra@website}{}
+\newcommand{\Vectra@github}{}
+\newcommand{\Vectra@linkedin}{}
+\newcommand{\Vectra@orcid}{}
+\newcommand{\Vectra@phone}{}
+\newcommand{\Vectra@location}{}
+\newcommand{\Vectra@title}{}
+
+\newcommand{\VectraSetName}[1]{\renewcommand{\Vectra@name}{#1}}
+\newcommand{\VectraSetEmail}[1]{\renewcommand{\Vectra@email}{#1}}
+\newcommand{\VectraSetWebsite}[1]{\renewcommand{\Vectra@website}{#1}}
+\newcommand{\VectraSetGitHub}[1]{\renewcommand{\Vectra@github}{#1}}
+\newcommand{\VectraSetLinkedIn}[1]{\renewcommand{\Vectra@linkedin}{#1}}
+\newcommand{\VectraSetORCID}[1]{\renewcommand{\Vectra@orcid}{#1}}
+\newcommand{\VectraSetPhone}[1]{\renewcommand{\Vectra@phone}{#1}}
+\newcommand{\VectraSetLocation}[1]{\renewcommand{\Vectra@location}{#1}}
+\newcommand{\VectraSetTitle}[1]{\renewcommand{\Vectra@title}{#1}}
+
+% ---------------------------------------------------------------------------
+% Header width
+% ---------------------------------------------------------------------------
+%
+% Users normally should not need to change this. Maintainers may tune the
+% default in vectra-design.sty. A public setter is provided for controlled
+% local adjustment.
+
+\NewDocumentCommand{\VectraSetHeaderWidth}{m}{%
+    \renewcommand{\VectraHeaderWidth}{#1}%
+}
+
+% ---------------------------------------------------------------------------
+% Custom contact items
+% ---------------------------------------------------------------------------
+%
+% Custom contact links are appended after the built-in contact fields.
+%
+% Example:
+%
+%   \VectraAddContactLink{Google Scholar}{https://scholar.google.com/...}
+%   \VectraAddContactLink{Lab}{https://example-lab.org}
+%
+% A text-only item can be added with:
+%
+%   \VectraAddContactText{Ann Arbor, MI}
+%
+% Empty display text is ignored. If a URL is empty, the display text is printed
+% as plain text.
+
+\newcommand{\Vectra@customcontacts}{}
+
+\NewDocumentCommand{\VectraAddContactLink}{m m}{%
+    \gappto\Vectra@customcontacts{%
+        \Vectra@ContactCustomLink{#1}{#2}%
+    }%
+}
+
+\NewDocumentCommand{\VectraAddContactText}{m}{%
+    \gappto\Vectra@customcontacts{%
+        \Vectra@ContactCustomText{#1}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactCustomLink}{m m}{%
+    \ifblank{#1}{}{%
+        \ifblank{#2}{%
+            \Vectra@ContactItem{#1}%
+        }{%
+            \Vectra@ContactItem{\href{#2}{#1}}%
+        }%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactCustomText}{m}{%
+    \ifblank{#1}{}{%
+        \Vectra@ContactItem{#1}%
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Contact line wrapping
+% ---------------------------------------------------------------------------
+%
+% Contact items are kept as unbreakable units with \mbox.
+%
+% Separators are inserted with \discretionary. If no line break occurs, the
+% separator is printed. If a line break occurs at that point, the separator is
+% omitted, so no line ends with "|" and no line begins with "|".
+%
+% The no-break part uses primitive kerns and \char124 rather than
+% \VectraContactSeparator because \hspace and \textbar are not safe inside a
+% discretionary list.
+
+\newif\ifVectra@contactprinted
+
+\NewDocumentCommand{\Vectra@ContactSeparator}{}{%
+    \discretionary{}{}{%
+        \kern\VectraContactSeparatorSpace
+        \char124
+        \kern\VectraContactSeparatorSpace
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactItem}{m}{%
+    \ifVectra@contactprinted
+        \Vectra@ContactSeparator
+    \fi
+    \mbox{#1}%
+    \Vectra@contactprintedtrue
+    \ignorespaces
+}
+
+% ---------------------------------------------------------------------------
+% Individual contact fields
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\Vectra@ContactEmail}{}{%
+    \ifdefempty{\Vectra@email}{}{%
+        \Vectra@ContactItem{\href{mailto:\Vectra@email}{\Vectra@email}}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactWebsite}{}{%
+    \ifdefempty{\Vectra@website}{}{%
+        \Vectra@ContactItem{\href{\Vectra@website}{\Vectra@website}}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactGitHub}{}{%
+    \ifdefempty{\Vectra@github}{}{%
+        \Vectra@ContactItem{\href{\Vectra@github}{GitHub}}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactLinkedIn}{}{%
+    \ifdefempty{\Vectra@linkedin}{}{%
+        \Vectra@ContactItem{\href{\Vectra@linkedin}{LinkedIn}}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactORCID}{}{%
+    \ifdefempty{\Vectra@orcid}{}{%
+        \Vectra@ContactItem{\href{https://orcid.org/\Vectra@orcid}{ORCID}}%
+    }%
+}
+
+% A phone number is written for a person -- "(734) 649-2336" -- and a tel: URI
+% is not. A space ends the URI, so the link generated from the printed form
+% reached only "tel:(734", which is not a number anyone can call. The dialable
+% form is derived here rather than asked of the user: spaces, brackets, dots and
+% the separating hyphens are removed, a leading + is kept, and what remains is
+% the digit string RFC 3966 wants. The printed text is untouched.
+
+\ExplSyntaxOn
+\str_new:N \l_vectra_phone_str
+\cs_new:Npn \Vectra@phoneuri {}
+\NewDocumentCommand{\Vectra@SetPhoneURI}{m}{%
+    % x-expanded: the argument arrives as \Vectra@phone, and an unexpanded
+    % \str_set:Nn would store that control sequence rather than the number.
+    \str_set:Nx \l_vectra_phone_str {#1}
+    \str_remove_all:Nn \l_vectra_phone_str {~}
+    \str_remove_all:Nn \l_vectra_phone_str {(}
+    \str_remove_all:Nn \l_vectra_phone_str {)}
+    \str_remove_all:Nn \l_vectra_phone_str {[}
+    \str_remove_all:Nn \l_vectra_phone_str {]}
+    \str_remove_all:Nn \l_vectra_phone_str {-}
+    \str_remove_all:Nn \l_vectra_phone_str {.}
+    \str_remove_all:Nn \l_vectra_phone_str {/}
+    % Defined with x-expansion so that the name expands to the characters
+    % themselves. hyperref reads the URL without expanding an ordinary macro,
+    % so anything less leaves the control sequence in the link.
+    \cs_set:Npx \Vectra@phoneuri {\str_use:N \l_vectra_phone_str}
+}
+\ExplSyntaxOff
+
+\NewDocumentCommand{\Vectra@ContactPhone}{}{%
+    \ifdefempty{\Vectra@phone}{}{%
+        \Vectra@SetPhoneURI{\Vectra@phone}%
+        \Vectra@ContactItem{\href{tel:\Vectra@phoneuri}{\Vectra@phone}}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactLocation}{}{%
+    \ifdefempty{\Vectra@location}{}{%
+        \Vectra@ContactItem{\Vectra@location}%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@ContactCustomItems}{}{%
+    \Vectra@customcontacts
+}
+
+% ---------------------------------------------------------------------------
+% Header renderer
+% ---------------------------------------------------------------------------
+%
+% The block is centered with \centering inside a group rather than with the
+% center environment. center is a trivlist, and it adds \topsep and \parskip of
+% its own above and below the block -- about 10pt below at 11pt body size, on
+% top of whatever \VectraHeaderBottomSpace asks for. That made the documented
+% meaning of the parameter false: setting it to 0pt still left a gap larger than
+% the one between two sections, and no value could close it. With the
+% environment gone the parameter is the whole distance, which is what its name
+% claims and what a document needs in order to tune it.
+
+\NewDocumentCommand{\VectraMakeHeader}{}{%
+    \par
+    \begingroup
+    \centering
+        \begin{minipage}{\VectraHeaderWidth}
+            \centering
+            {\VectraNameFont \Vectra@name\par}
+            \ifdefempty{\Vectra@title}{}{%
+                \vspace{0.05cm}
+                {\normalsize \Vectra@title\par}
+            }%
+            \vspace{\VectraHeaderNameContactSpace}
+            {\VectraContactFont
+                \Vectra@contactprintedfalse
+                % Phone leads. A resume header reads in decreasing immediacy,
+                % and the phone is the fastest channel; it is also where most
+                % US resume conventions put it. A document with no phone set
+                % is unaffected -- the macro emits nothing -- so the academic
+                % CV, which deliberately carries no phone, is unchanged.
+                \Vectra@ContactPhone
+                \Vectra@ContactEmail
+                \Vectra@ContactWebsite
+                \Vectra@ContactGitHub
+                \Vectra@ContactLinkedIn
+                \Vectra@ContactORCID
+                \Vectra@ContactLocation
+                \Vectra@ContactCustomItems
+                \par
+            }%
+        \end{minipage}
+    \par
+    \endgroup
+    \vspace{\VectraHeaderBottomSpace}
+}
+
+\endinput

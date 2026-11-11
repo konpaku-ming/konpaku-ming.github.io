@@ -1,0 +1,63 @@
+%%
+%% Vectra footer settings
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-footer}[2026/09/14 v1.2.0 Vectra footer settings]
+
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}
+
+\newcommand{\Vectra@dateMode}{today}
+\newcommand{\Vectra@fixedDate}{}
+\newcommand{\Vectra@footerMode}{full}
+
+\newcommand{\VectraSetDateMode}[1]{\renewcommand{\Vectra@dateMode}{#1}}
+\newcommand{\VectraSetFixedDate}[1]{\renewcommand{\Vectra@fixedDate}{#1}}
+\newcommand{\VectraSetFooterMode}[1]{\renewcommand{\Vectra@footerMode}{#1}}
+
+\NewDocumentCommand{\Vectra@FooterDateText}{}{%
+    \ifdefstring{\Vectra@dateMode}{none}{}{%
+        \ifdefstring{\Vectra@dateMode}{fixed}{%
+            \ifblank{\Vectra@fixedDate}{}{Last updated: \Vectra@fixedDate}%
+        }{%
+            Last updated: \today
+        }%
+    }%
+}
+
+\NewDocumentCommand{\Vectra@FooterPageText}{}{%
+    \VectraFooterPagePrefix~\thepage\ \VectraFooterPageConnector~\pageref*{LastPage}%
+}
+
+\NewDocumentCommand{\VectraSetupFooter}{}{%
+    \pagestyle{fancy}
+    \fancyhf{}
+    \ifdefstring{\Vectra@footerMode}{none}{%
+        \fancyfoot{}%
+    }{%
+        \ifdefstring{\Vectra@footerMode}{simple}{%
+            \fancyfoot[C]{\VectraFooterFont \Vectra@name}%
+            \fancyfoot[R]{\VectraFooterFont \Vectra@FooterPageText}%
+        }{%
+            \fancyfoot[L]{\VectraFooterFont \Vectra@FooterDateText}%
+            \fancyfoot[C]{\VectraFooterFont \Vectra@name}%
+            \fancyfoot[R]{\VectraFooterFont \Vectra@FooterPageText}%
+        }%
+    }%
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+
+\AtBeginDocument{\VectraSetupFooter}
+
+\endinput

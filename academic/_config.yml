@@ -41,6 +41,7 @@ exclude:
   - vendor
   - .bundle
   - .jekyll-cache
+  - cv-editor
 
 collections:
   publications:

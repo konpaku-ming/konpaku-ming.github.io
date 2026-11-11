@@ -1,0 +1,28 @@
+%%
+%% Xuanming Ding academic CV
+%%
+%% The layout is provided by the Vectra template in src/.
+%% Edit profile.tex, settings.tex, and the files in sections/.
+%%
+
+\makeatletter
+\def\input@path{{src/}{./}}
+\makeatother
+
+\documentclass{vectra}
+
+\input{profile.tex}
+\input{settings.tex}
+
+\begin{document}
+
+\VectraMakeHeader
+
+\input{sections/education.tex}
+\input{sections/research-interests.tex}
+\input{sections/research-experience.tex}
+\input{sections/teaching-experience.tex}
+\input{sections/honors.tex}
+\input{sections/skills.tex}
+
+\end{document}

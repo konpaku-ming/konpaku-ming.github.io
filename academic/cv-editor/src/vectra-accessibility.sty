@@ -1,0 +1,76 @@
+%%
+%% Vectra accessibility and PDF metadata settings
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-accessibility}[2026/09/14 v1.2.0 Vectra accessibility settings]
+
+\RequirePackage{iftex}
+
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+\fi
+
+\newcommand{\Vectra@pdftitle}{Curriculum Vitae}
+\newcommand{\Vectra@pdfauthor}{}
+\newcommand{\Vectra@pdfsubject}{Curriculum Vitae}
+\newcommand{\Vectra@pdfkeywords}{CV, resume, academic CV}
+
+% The document's natural language, written into the PDF catalog as /Lang.
+%
+% A screen reader chooses its pronunciation rules and voice from this entry.
+% With no /Lang it falls back to the reading machine's own locale, so an English
+% CV opened on a Chinese-configured system is not read with an accent -- it is
+% read with the wrong phonology, which is unintelligible rather than merely
+% awkward. WCAG 2.2 makes it a level-A requirement (3.1.1, Language of Page) and
+% PDF/UA requires it of the document and of any passage that changes language.
+%
+% It is a property of the document rather than of the class, which is why it is
+% a setter with a default and not a constant: a Chinese thesis sets zh-CN.
+% Use a BCP 47 tag -- en, en-US, zh-CN, de.
+\newcommand{\Vectra@pdflang}{en}
+
+\newcommand{\VectraSetPDFTitle}[1]{\renewcommand{\Vectra@pdftitle}{#1}}
+\newcommand{\VectraSetPDFAuthor}[1]{\renewcommand{\Vectra@pdfauthor}{#1}}
+\newcommand{\VectraSetPDFSubject}[1]{\renewcommand{\Vectra@pdfsubject}{#1}}
+\newcommand{\VectraSetPDFKeywords}[1]{\renewcommand{\Vectra@pdfkeywords}{#1}}
+\newcommand{\VectraSetPDFLang}[1]{\renewcommand{\Vectra@pdflang}{#1}}
+
+\RequirePackage[
+    colorlinks=true,
+    urlcolor=VectraLinkColor,
+    linkcolor=VectraLinkColor,
+    citecolor=VectraLinkColor
+]{hyperref}
+
+\RequirePackage{bookmark}
+
+\AtBeginDocument{%
+    \hypersetup{
+        pdftitle={\Vectra@pdftitle},
+        pdfauthor={\Vectra@pdfauthor},
+        pdfsubject={\Vectra@pdfsubject},
+        pdfkeywords={\Vectra@pdfkeywords},
+        pdflang={\Vectra@pdflang},
+        pdfcreator={Vectra}
+    }%
+    % hyperref's pdflang key does not reach the catalog under pdfTeX when it
+    % is set this late -- the generated file has no /Lang entry, which was
+    % checked rather than assumed. Writing the entry directly is what actually
+    % declares the language to a reading tool.
+    \ifPDFTeX
+        \pdfcatalog{/Lang (\Vectra@pdflang)}%
+    \fi
+}
+
+\endinput

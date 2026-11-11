@@ -1,0 +1,54 @@
+%%
+%% Vectra core settings
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-core}[2026/09/14 v1.2.0 Vectra core settings]
+
+\RequirePackage[
+    ignoreheadfoot,
+    nomarginpar,
+    top=\VectraMarginTop,
+    bottom=\VectraMarginBottom,
+    left=\VectraMarginLeft,
+    right=\VectraMarginRight,
+    footskip=\VectraFooterSkip
+]{geometry}
+
+\RequirePackage{etoolbox}
+\RequirePackage{xparse}
+\RequirePackage{calc}
+\RequirePackage{needspace}
+\RequirePackage{changepage}
+
+\raggedright
+\linespread{\VectraBodyLineStretch}\selectfont
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+
+% article leaves \parskip elastic at 0pt plus 1pt. Every list boundary carries
+% one, so an entry that ends in bullets was followed by up to a point more space
+% than an entry that ends in a line, and the amount moved with however much the
+% page happened to stretch. In a document where every vertical distance is a
+% design parameter, that is a leak: paragraphs here are separated by the values
+% in vectra-design, not by glue the page can negotiate.
+%
+% It is set at the beginning of the document because article sets \parskip from
+% inside \normalsize, which runs after this package is loaded and would put the
+% elastic value back.
+\AtBeginDocument{\setlength{\parskip}{0pt}}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{\VectraColumnSeparation}
+
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+
+\endinput

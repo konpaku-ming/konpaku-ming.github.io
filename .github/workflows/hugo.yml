@@ -2,7 +2,6 @@ name: Deploy academicpages and Hugo to Pages
 
 on:
   push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -36,12 +35,16 @@ jobs:
       - name: Check combined build helpers
         run: python3 -m unittest discover -s .github/scripts -p 'test_build_site.py' -v
 
-      - name: Generate CV.pdf from cv-editor source
-        run: |
-          python3 -m pip install --disable-pip-version-check --no-cache-dir PyMuPDF PyYAML
-          python3 scripts/build_cv_pdf.py \
-            --data academic/_data/cv_editor.yml \
-            --output academic/files/CV.pdf
+      - name: Build CV.pdf from cv-editor template
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          working_directory: academic/cv-editor
+          compiler: latexmk
+          args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
+
+      - name: Copy generated CV.pdf
+        run: cp academic/cv-editor/build/main.pdf academic/files/CV.pdf
 
       - name: Build academicpages and Hugo
         env:

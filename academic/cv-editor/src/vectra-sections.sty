@@ -1,0 +1,687 @@
+%%
+%% Vectra section and content commands
+%% Copyright (c) 2026 Yixuan Huang
+%%
+%% This file is part of Vectra.
+%% Distributed under the LaTeX Project Public License, version 1.3c or later.
+%% This work has the LPPL maintenance status "maintained".
+%% The Current Maintainer of this work is Yixuan Huang.
+%%
+%% Official repository:
+%% https://github.com/yixnhuang/vectra
+%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{vectra-sections}[2026/09/14 v1.2.0 Vectra section commands]
+
+\RequirePackage{titlesec}
+
+% ---------------------------------------------------------------------------
+% Section formatting
+% ---------------------------------------------------------------------------
+
+\titleformat{\section}
+    {\needspace{\VectraSectionNeedSpace}\VectraSectionFont}
+    {}
+    {0pt}
+    {}
+    [\vspace{\VectraSectionRuleSpace}{\color{VectraRuleColor}\titlerule[\VectraSectionRuleThickness]}]
+
+\titlespacing{\section}
+    {0pt}
+    {\VectraSectionTopSpace}
+    {\VectraSectionBottomSpace}
+
+% ---------------------------------------------------------------------------
+% Internal line-building helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@entrylineprinted
+
+\NewDocumentCommand{\Vectra@BeginEntryLines}{}{%
+    \Vectra@entrylineprintedfalse
+}
+
+\NewDocumentCommand{\Vectra@EntryLine}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@entrylineprinted
+            \VectraEntryBreak
+        \fi
+        #2%
+        \Vectra@entrylineprintedtrue
+    }%
+}
+
+\NewDocumentCommand{\Vectra@MetaBlock}{m m}{%
+    \Vectra@BeginEntryLines
+    \Vectra@EntryLine{#1}{#1}%
+    \Vectra@EntryLine{#2}{#2}%
+}
+
+% ---------------------------------------------------------------------------
+% Compact inline field helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@compactfieldprinted
+
+\NewDocumentCommand{\Vectra@BeginCompactFields}{}{%
+    \Vectra@compactfieldprintedfalse
+}
+
+\NewDocumentCommand{\Vectra@CompactField}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@compactfieldprinted
+            ,\space
+        \fi
+        #2%
+        \Vectra@compactfieldprintedtrue
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Publication link helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@publicationlinkprinted
+
+\NewDocumentCommand{\VectraPublicationLink}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@publicationlinkprinted
+            \unskip\VectraPublicationLinkSeparator
+        \fi
+        \ifblank{#2}{[#1]}{[\href{#2}{#1}]}%
+        \Vectra@publicationlinkprintedtrue
+    }%
+    \ignorespaces
+}
+
+\NewDocumentCommand{\Vectra@PublicationLinksInline}{+m}{%
+    \ifblank{#1}{}{%
+        {\VectraPublicationLinkFont
+            \Vectra@publicationlinkprintedfalse
+            #1\unskip
+        }%
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Talk link helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@talklinkprinted
+
+\NewDocumentCommand{\VectraTalkLink}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@talklinkprinted
+            \unskip\VectraTalkLinkSeparator
+        \fi
+        \ifblank{#2}{[#1]}{[\href{#2}{#1}]}%
+        \Vectra@talklinkprintedtrue
+    }%
+    \ignorespaces
+}
+
+\NewDocumentCommand{\Vectra@TalkLinksInline}{+m}{%
+    \ifblank{#1}{}{%
+        {\VectraTalkLinkFont
+            \Vectra@talklinkprintedfalse
+            #1\unskip
+        }%
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Media link helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@medialinkprinted
+
+\NewDocumentCommand{\VectraMediaLink}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@medialinkprinted
+            \unskip\VectraMediaLinkSeparator
+        \fi
+        \ifblank{#2}{[#1]}{[\href{#2}{#1}]}%
+        \Vectra@medialinkprintedtrue
+    }%
+    \ignorespaces
+}
+
+\NewDocumentCommand{\Vectra@MediaLinksInline}{+m}{%
+    \ifblank{#1}{}{%
+        {\VectraMediaLinkFont
+            \Vectra@medialinkprintedfalse
+            #1\unskip
+        }%
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Teaching link helpers
+% ---------------------------------------------------------------------------
+
+\newif\ifVectra@teachinglinkprinted
+
+\NewDocumentCommand{\VectraTeachingLink}{m m}{%
+    \ifblank{#1}{}{%
+        \ifVectra@teachinglinkprinted
+            \unskip\VectraTeachingLinkSeparator
+        \fi
+        \ifblank{#2}{[#1]}{[\href{#2}{#1}]}%
+        \Vectra@teachinglinkprintedtrue
+    }%
+    \ignorespaces
+}
+
+\NewDocumentCommand{\Vectra@TeachingLinksInline}{+m}{%
+    \ifblank{#1}{}{%
+        {\VectraTeachingLinkFont
+            \Vectra@teachinglinkprintedfalse
+            #1\unskip
+        }%
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Section command
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraSection}{m}{%
+    \par
+    \Vectra@CancelLastEntryGap
+    \Vectra@ResetSectionContent
+    \section{#1}%
+}
+
+% ---------------------------------------------------------------------------
+% Group heading commands
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraPublicationGroup}{m}{%
+    \par
+    \Vectra@CancelLastEntryGap
+    \ifVectra@sectionhascontent
+        \vspace{\VectraPublicationGroupTopSpace}%
+    \fi
+    \noindent{\VectraPublicationGroupFont #1}%
+    \par\vspace{\VectraPublicationGroupBottomSpace}%
+    \Vectra@SetLastEntryGap{\VectraPublicationGroupBottomSpace}%
+}
+
+\NewDocumentCommand{\VectraTalkGroup}{m}{%
+    \par
+    \Vectra@CancelLastEntryGap
+    \ifVectra@sectionhascontent
+        \vspace{\VectraTalkGroupTopSpace}%
+    \fi
+    \noindent{\VectraTalkGroupFont #1}%
+    \par\vspace{\VectraTalkGroupBottomSpace}%
+    \Vectra@SetLastEntryGap{\VectraTalkGroupBottomSpace}%
+}
+
+\NewDocumentCommand{\VectraMediaGroup}{m}{%
+    \par
+    \Vectra@CancelLastEntryGap
+    \ifVectra@sectionhascontent
+        \vspace{\VectraMediaGroupTopSpace}%
+    \fi
+    \noindent{\VectraMediaGroupFont #1}%
+    \par\vspace{\VectraMediaGroupBottomSpace}%
+    \Vectra@SetLastEntryGap{\VectraMediaGroupBottomSpace}%
+}
+
+\NewDocumentCommand{\VectraTeachingGroup}{m}{%
+    \par
+    \Vectra@CancelLastEntryGap
+    \ifVectra@sectionhascontent
+        \vspace{\VectraTeachingGroupTopSpace}%
+    \fi
+    \noindent{\VectraTeachingGroupFont #1}%
+    \par\vspace{\VectraTeachingGroupBottomSpace}%
+    \Vectra@SetLastEntryGap{\VectraTeachingGroupBottomSpace}%
+}
+
+% ---------------------------------------------------------------------------
+% Research interests
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraResearchInterests}{+m}{%
+    \Vectra@OneColumnBlock{#1}%
+    \Vectra@MajorEntryGap
+}
+
+% ---------------------------------------------------------------------------
+% Education
+%
+% Arguments:
+%   1 Institution
+%   2 Degree or program
+%   3 Location
+%   4 Date
+%
+% Location and date may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraEducationEntry}{mmmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{#3}{#4}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \Vectra@MajorEntryGap
+}
+
+\NewDocumentCommand{\VectraEducationEntryDetailed}{mmmmmmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{#3}{#4}%
+    }{%
+        \leftskip=\VectraEducationLeftIndent
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+        \Vectra@EntryLine{#5}{#5}%
+        \Vectra@EntryLine{#6}{#6}%
+    }%
+    \vspace{\VectraEducationNoteSeparation}%
+    \Vectra@TwoColumnBlock{}{%
+        \leftskip=\VectraEducationLeftIndent
+        \VectraEntryStrut #7\par
+    }%
+    \Vectra@MajorEntryGap
+}
+
+\NewDocumentCommand{\VectraEducationBulletList}{m m}{%
+    \Vectra@CancelLastEntryGap
+    \vspace{\VectraEducationBulletTopSpace}%
+    \noindent
+    \hspace*{\VectraEducationBulletIndent}%
+    \makebox[\VectraEducationBulletLabelWidth][l]{\tiny$\bullet$}%
+    \VectraEntryStrut #1%
+    \ifblank{#2}{%
+        \par
+    }{%
+        \VectraEntryBreak
+        \noindent
+        \hspace*{\VectraEducationBulletIndent}%
+        \makebox[\VectraEducationBulletLabelWidth][l]{\tiny$\bullet$}%
+        \VectraEntryStrut #2\par
+    }%
+    \Vectra@MajorEntryGap
+}
+% ---------------------------------------------------------------------------
+% Research experience
+%
+% Arguments:
+%   1 Institution
+%   2 Role
+%   3 Location
+%   4 Date
+%   5 Advisor
+%   6 Topics
+%   7 Bullet items
+%
+% Advisor, topics, location, date, and bullets may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraResearchExperienceEntry}{mmmmmm +m}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{#3}{}
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+    }%
+    \ifblank{#5}{}{%
+        \Vectra@TwoColumnBlock{}{%
+            \Vectra@BeginEntryLines
+            \Vectra@EntryLine{#5}{Advisor: #5}%
+        }%
+    }%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#4}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \ifblank{#7}{%
+        \Vectra@MajorEntryGap
+    }{%
+        \Vectra@BeforeBullets
+        \begin{VectraBullets}
+            #7%
+        \end{VectraBullets}
+        \Vectra@MajorEntryGap
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% General experience
+%
+% Arguments:
+%   1 Organization
+%   2 Role
+%   3 Location
+%   4 Date
+%   5 Area, topic, or technologies
+%   6 Additional note
+%   7 Bullet items
+%
+% Location, date, area, note, and bullets may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraExperienceEntry}{mmmmmm +m}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{#3}{#4}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+        \Vectra@EntryLine{#5}{\textit{#5}}%
+        \Vectra@EntryLine{#6}{#6}%
+    }%
+    \ifblank{#7}{%
+        \Vectra@MajorEntryGap
+    }{%
+        \Vectra@BeforeBullets
+        \begin{VectraBullets}
+            #7%
+        \end{VectraBullets}
+        \Vectra@MajorEntryGap
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Projects
+%
+% Arguments:
+%   1 Project title
+%   2 Date
+%   3 Technologies, methods, or role
+%   4 Bullet items
+%
+% Date, technologies, and bullets may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraProjectEntry}{mmm +m}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#2}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#3}{\textit{#3}}%
+    }%
+    \ifblank{#4}{%
+        \Vectra@MajorEntryGap
+    }{%
+        \Vectra@BeforeBullets
+        \begin{VectraBullets}
+            #4%
+        \end{VectraBullets}
+        \Vectra@MajorEntryGap
+    }%
+}
+
+% ---------------------------------------------------------------------------
+% Publications
+%
+% Arguments:
+%   1 Prefix
+%   2 Authors
+%   3 Title
+%   4 Venue
+%   5 Year
+%   6 Location
+%   7 Links
+%
+% Format:
+%   [C1] Authors. Title. Venue, Year. Location. [Links]
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraPublicationEntry}{mmmmmmm}{%
+    \par
+    \begingroup
+    \setlength{\parindent}{0pt}%
+    \hangindent=\dimexpr\VectraPublicationPrefixWidth+\VectraPublicationPrefixSeparation\relax
+    \hangafter=1
+    \noindent
+    \makebox[\VectraPublicationPrefixWidth][l]{%
+        \ifblank{#1}{}{[#1]}%
+    }%
+    \hspace{\VectraPublicationPrefixSeparation}%
+    \ignorespaces
+    \ifblank{#2}{}{#2. }%
+    \ifblank{#3}{}{\textbf{#3}.}%
+    \ifblank{#4}{%
+        \ifblank{#5}{}{ #5.}%
+    }{%
+        \space\textit{#4}%
+        \ifblank{#5}{}{, #5}%
+        .%
+    }%
+    \ifblank{#6}{}{ #6.}%
+    \Vectra@PublicationLinksInline{#7}%
+    \par
+    \endgroup
+    \Vectra@RecordEntryGap
+}
+
+\NewDocumentCommand{\VectraPublicationNote}{+m}{%
+    \Vectra@OneColumnBlock{%
+        {\VectraPublicationNoteFont #1}%
+    }%
+    \par\vspace{\VectraPublicationNoteBottomSpace}%
+    \Vectra@SetLastEntryGap{\VectraPublicationNoteBottomSpace}%
+}
+
+% ---------------------------------------------------------------------------
+% Talks
+%
+% Arguments:
+%   1 Prefix
+%   2 Talk title
+%   3 Event, host, seminar, conference, workshop, or venue
+%   4 Location
+%   5 Links
+%   6 Date
+%
+% Format:
+%   [T1] Title. Event, Location. [Links]       Date
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraTalkEntry}{mmmmmm}{%
+    \Vectra@IndexedTwoColumnBlock{#1}{%
+        \ifblank{#2}{}{\textbf{#2}. }%
+        \Vectra@BeginCompactFields
+        \Vectra@CompactField{#3}{\textit{#3}}%
+        \Vectra@CompactField{#4}{#4}%
+        \ifVectra@compactfieldprinted
+            .%
+        \fi
+        \Vectra@TalkLinksInline{#5}%
+    }{%
+        \ifblank{#6}{}{\textit{#6}}%
+    }%
+    \Vectra@RecordEntryGap
+}
+
+% ---------------------------------------------------------------------------
+% Media
+%
+% Arguments:
+%   1 Prefix
+%   2 Title
+%   3 Outlet
+%   4 Links
+%   5 Date
+%
+% Format:
+%   [M1] Title. Outlet. [Links]       Date
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraMediaEntry}{mmmmm}{%
+    \Vectra@IndexedTwoColumnBlock{#1}{%
+        \ifblank{#2}{}{\textbf{#2}. }%
+        \ifblank{#3}{}{\textit{#3}.}%
+        \Vectra@MediaLinksInline{#4}%
+    }{%
+        \ifblank{#5}{}{\textit{#5}}%
+    }%
+    \Vectra@RecordEntryGap
+}
+
+% ---------------------------------------------------------------------------
+% Teaching
+%
+% Arguments:
+%   1 Institution
+%   2 Course title or teaching activity
+%   3 Links
+%   4 Term or date
+%
+% Format:
+%   Institution, Course Title. [Links]       Term
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraTeachingEntry}{mmmm}{%
+    \Vectra@TwoColumnBlock{%
+        \ifblank{#4}{}{\textit{#4}}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{#1}%
+        \ifblank{#2}{}{%
+            \ifblank{#1}{}{\unskip,\space}%
+            \textbf{#2}.%
+        }%
+        \Vectra@TeachingLinksInline{#3}%
+    }%
+    \Vectra@RecordEntryGap
+}
+
+\NewDocumentCommand{\VectraTeachingCourseEntry}{mm}{%
+    \Vectra@TwoColumnBlock{%
+        #2%
+    }{%
+        \Vectra@BeginEntryLines
+        \ifblank{#1}{}{\textbf{#1}}%
+    }%
+    \Vectra@RecordEntryGap
+}
+
+\NewDocumentCommand{\VectraTeachingCourseInstitutionEntry}{mmm}{%
+    \Vectra@TwoColumnBlock{%
+        #3%
+    }{%
+        \ifblank{#1}{}{\textbf{#1}}%
+        \ifblank{#2}{}{\space\textbar\space #2}%%
+    }%
+    \Vectra@RecordEntryGap
+}
+
+% ---------------------------------------------------------------------------
+% Awards
+%
+% Arguments:
+%   1 Award name
+%   2 Organization or description
+%   3 Year
+%
+% Organization/description and year may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraAwardEntry}{mmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#3}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \Vectra@CompactGap
+}
+
+% ---------------------------------------------------------------------------
+% Leadership and service
+%
+% Arguments:
+%   1 Role
+%   2 Organization
+%   3 Date
+%
+% Organization and date may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraServiceEntry}{mmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#3}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \Vectra@CompactGap
+}
+
+% ---------------------------------------------------------------------------
+% Skills
+%
+% Arguments:
+%   1 Role
+%   2 Organization
+%   3 Date
+%
+% Organization and date may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraSkillGroup}{mm}{%
+    \Vectra@OneColumnBlock{%
+        \textbf{#1:} #2%
+    }%
+    \Vectra@SkillGap
+}
+
+% ---------------------------------------------------------------------------
+% Certifications
+%
+% Arguments:
+%   1 Certification name
+%   2 Issuer
+%   3 Date or note
+%
+% Issuer and date/note may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraCertificationEntry}{mmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#3}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \Vectra@CompactGap
+}
+
+% ---------------------------------------------------------------------------
+% Generic compact entry
+%
+% Arguments:
+%   1 Title
+%   2 Description
+%   3 Date or metadata
+%
+% Description and metadata may be left empty.
+% ---------------------------------------------------------------------------
+
+\NewDocumentCommand{\VectraCompactEntry}{mmm}{%
+    \Vectra@TwoColumnBlock{%
+        \Vectra@MetaBlock{}{#3}%
+    }{%
+        \Vectra@BeginEntryLines
+        \Vectra@EntryLine{#1}{\textbf{#1}}%
+        \Vectra@EntryLine{#2}{#2}%
+    }%
+    \Vectra@CompactGap
+}
+
+\endinput

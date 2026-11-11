@@ -1,14 +1,20 @@
 ---
-title: CV editor
+title: CV source
 permalink: /cv-editor/
-description: "Editable CV source and live preview for Xuanming Ding."
+description: "Editable LaTeX source for Xuanming Ding's CV."
 layout: single
 author_profile: false
 classes: wide
 ---
 
-<link rel="stylesheet" href="{{ '/assets/css/cv-editor.css' | relative_url }}">
+The downloadable [CV.pdf]({{ '/files/CV.pdf' | relative_url }}) is built from the editable **Vectra** LaTeX template in this repository.
 
-{% include cv-editor.html %}
+Edit these files to update the CV:
 
-<script src="{{ '/assets/js/cv-editor.js' | relative_url }}" defer></script>
+- `academic/cv-editor/profile.tex` for your name, email, website, and PDF metadata.
+- `academic/cv-editor/settings.tex` for page and footer settings.
+- `academic/cv-editor/sections/` for education, research interests, research experience, publications, teaching, awards, and skills.
+
+The GitHub Actions workflow compiles `academic/cv-editor/main.tex` on every push, then publishes the generated PDF at `/home/files/CV.pdf`.
+
+[Open the CV source on GitHub](https://github.com/{{ site.repository }}/tree/main/academic/cv-editor)
