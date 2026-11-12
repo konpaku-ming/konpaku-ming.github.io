@@ -41,12 +41,17 @@ jobs:
           root_file: main.tex
           working_directory: academic/cv-editor
           compiler: latexmk
-          args: -xelatex -outdir=build -file-line-error -halt-on-error -interaction=nonstopmode
+          args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
 
       - name: Copy generated CV.pdf
         run: |
-          test -f academic/cv-editor/build/main.pdf
-          cp academic/cv-editor/build/main.pdf academic/files/CV.pdf
+          cv_pdf="$(find academic/cv-editor -maxdepth 2 -type f -name main.pdf -print -quit)"
+          if [ -z "$cv_pdf" ]; then
+            echo "::error::LaTeX build did not produce main.pdf"
+            find academic/cv-editor -maxdepth 2 -type f -print | sort
+            exit 1
+          fi
+          cp "$cv_pdf" academic/files/CV.pdf
 
       - name: Build academicpages and Hugo
         env:
