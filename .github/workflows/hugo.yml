@@ -41,10 +41,12 @@ jobs:
           root_file: main.tex
           working_directory: academic/cv-editor
           compiler: latexmk
-          args: -xelatex -file-line-error -halt-on-error -interaction=nonstopmode
+          args: -xelatex -outdir=build -file-line-error -halt-on-error -interaction=nonstopmode
 
       - name: Copy generated CV.pdf
-        run: cp academic/cv-editor/build/main.pdf academic/files/CV.pdf
+        run: |
+          test -f academic/cv-editor/build/main.pdf
+          cp academic/cv-editor/build/main.pdf academic/files/CV.pdf
 
       - name: Build academicpages and Hugo
         env:
