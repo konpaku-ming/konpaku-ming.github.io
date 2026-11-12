@@ -51,6 +51,7 @@ jobs:
             find academic/cv-editor -maxdepth 2 -type f -print | sort
             exit 1
           fi
+          mkdir -p academic/files
           cp "$cv_pdf" academic/files/CV.pdf
 
       - name: Build academicpages and Hugo
