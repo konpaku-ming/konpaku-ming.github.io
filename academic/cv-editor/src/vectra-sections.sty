@@ -338,19 +338,26 @@
             \Vectra@EntryLine{#5}{Advisor: #5}%
         }%
     }%
+    \vspace{\VectraResearchProjectTopSpace}%
     \Vectra@TwoColumnBlock{%
         \Vectra@MetaBlock{}{#4}%
     }{%
+        \leftskip=\VectraResearchProjectIndent
         \Vectra@BeginEntryLines
         \Vectra@EntryLine{#2}{#2}%
     }%
     \ifblank{#7}{%
         \Vectra@MajorEntryGap
     }{%
+        \begingroup
+        \setlength{\VectraBulletLeftMargin}{\VectraResearchBulletIndent}%
+        \setlength{\VectraEntryBulletSeparation}{\VectraResearchBulletTopSpace}%
+        \setlength{\VectraBulletItemSeparation}{\VectraResearchBulletItemSeparation}%
         \Vectra@BeforeBullets
         \begin{VectraBullets}
             #7%
         \end{VectraBullets}
+        \endgroup
         \Vectra@MajorEntryGap
     }%
 }

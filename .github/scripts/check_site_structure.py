@@ -48,7 +48,7 @@ class SiteStructureTests(unittest.TestCase):
         self.assertIn("AcademicPages", html)
         self.assertIn("author__name", html)
         links = [urlsplit(anchor.get("href") or "").path for anchor in document.attributes("a")]
-        self.assertTrue({"/home/files/CV.pdf", "/home/publication/", "/home/misc/"} <= set(links))
+        self.assertTrue({"/home/files/CV.pdf", "/home/publication/"} <= set(links))
         self.assertFalse(any(path.startswith("/blog/") for path in links))
         self.assertNotIn("/blog/", html)
         self.assertNotIn("global-aplayer", html)
@@ -61,7 +61,7 @@ class SiteStructureTests(unittest.TestCase):
             "/home/assets/css/main.css",
             [urlsplit(link.get("href") or "").path for link in document.attributes("link")],
         )
-        for route in ("cv-editor", "publication", "misc", "sitemap"):
+        for route in ("cv-editor", "publication", "sitemap"):
             self.document(self.public_dir / f"home/{route}/index.html")
         self.assertTrue((self.public_dir / "home/files/CV.pdf").is_file())
 
@@ -133,7 +133,7 @@ class SiteStructureTests(unittest.TestCase):
 
     def test_relocated_blog_pages(self):
         routes = (
-            "", "posts", "about", "about/acgn", "updates",
+            "", "posts", "about", "updates",
             "categories", "tags", "authors", "series",
         )
         for route in routes:

@@ -1,5 +1,5 @@
 ---
-title: "从你的前前前世开始——《魂环》读后感"
+title: "从你的前前前世开始——《魂环》漫谈"
 date: 2026-05-26
 draft: false
 aliases: ["/posts/spirit-cycle/"]
