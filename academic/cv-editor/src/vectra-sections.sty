@@ -642,6 +642,7 @@
 
 \NewDocumentCommand{\VectraSkillGroup}{mm}{%
     \Vectra@OneColumnBlock{%
+        \settowidth{\hangindent}{\textbf{#1:}\space}%
         \textbf{#1:} #2%
     }%
     \Vectra@SkillGap

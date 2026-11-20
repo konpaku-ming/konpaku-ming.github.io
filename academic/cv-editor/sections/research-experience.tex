@@ -2,13 +2,13 @@
 
 \VectraResearchExperienceEntry
     {X-LANCE Lab, Shanghai Jiao Tong University}
-    {\textbf{Robust Speaker-Attributed Transcription for Long-Form Conversational Audio}}
+    {\textbf{Multi-Model Evidence Fusion for Long-Form Multi-Speaker ASR}}
     {Shanghai, China}
     {09/2026 -- Present}
     {\href{https://chenxie95.github.io/en}{Assoc.Prof. Xie Chen}}
     {}
     {
-        \item Proposed a cascaded transcription framework that combines outputs from multiple ASR and speaker diarization models to generate speaker-attributed transcripts with timestamps.
-        \item Designed a mechanism that cross-checks transcript text, timestamps, and speaker labels to better handle overlapping speech and reduce omissions.
-        \item Conducted systematic ablation studies and error propagation analysis, and evaluated the framework across multiple benchmarks.
+        \item Designed and implemented a multi-model evidence-fusion pipeline that produces timestamped transcripts with speaker labels for long-form conversations.
+        \item Integrated multi-speaker ASR, speaker diarization, and VAD outputs, leveraging their complementary strengths in transcription, speaker attribution, and speech-boundary detection. Used voting across multiple ASR outputs to select reliable transcripts and cross-validated timestamps with VAD and diarization.
+        \item Evaluated the pipeline on AliMeeting, AMI, and other benchmarks, achieving lower cpWER and tcpWER than a standalone multi-speaker ASR model. The pipeline maintained strong performance across diverse multi-speaker scenarios, including conversational speech, podcasts, and classroom interactions.
     }

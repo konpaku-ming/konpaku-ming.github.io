@@ -1,0 +1,10 @@
+\VectraSection{SELECTED PROJECTS}
+
+\VectraProjectEntry
+    {\href{https://github.com/konpaku-ming/Rx-Compiler}{Rx-Compiler}}
+    {}
+    {}
+    {
+        \item Built a Kotlin compiler for Rx, a simplified Rust dialect, covering lexing, parsing, semantic analysis, and LLVM IR generation. The compiler emits standard LLVM IR that can be compiled and linked into native executables using Clang and the LLVM toolchain.
+        \item Designed a custom AST and hand-wrote the lexer and parser without using third-party parsing libraries. Performed five-pass semantic analysis over the AST, including explicit type checking and scope resolution, and implemented Rust-inspired trait and impl blocks. Built a custom LLVM IR builder that translates Rust's type, control-flow, and memory semantics into standard LLVM IR.
+    }
